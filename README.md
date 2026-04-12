@@ -1,1 +1,1 @@
-# zhangbin2025.github.io
+# 围棋学习资源
