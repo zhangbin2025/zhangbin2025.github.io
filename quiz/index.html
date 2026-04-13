@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实战选点题 | 围棋智能助手</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1 { font-size: 1.5em; }
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .header-actions select {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        .icon-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .icon-btn:hover { background: rgba(255,255,255,0.3); }
+        .source-group {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .source-header {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            font-weight: bold;
+            color: #555;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .source-header:hover { background: #f0f0f0; }
+        .source-toggle {
+            font-size: 0.8em;
+            color: #999;
+        }
+        .quiz-list {
+            padding: 0;
+        }
+        .quiz-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #f5f5f5;
+            text-decoration: none;
+            color: inherit;
+            transition: background 0.2s;
+        }
+        .quiz-item:last-child { border-bottom: none; }
+        .quiz-item:hover { background: #fafafa; }
+        .quiz-item:visited { opacity: 0.6; }
+        .quiz-number {
+            width: 28px;
+            height: 28px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 12px;
+            flex-shrink: 0;
+            font-size: 0.9em;
+        }
+        .quiz-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .quiz-title {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        .quiz-meta {
+            font-size: 0.85em;
+            color: #888;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .quiz-tag {
+            padding: 2px 8px;
+            background: #fff3e0;
+            color: #e65100;
+            border-radius: 10px;
+            font-size: 0.8em;
+        }
+        .quiz-count {
+            padding: 4px 10px;
+            background: #e3f2fd;
+            color: #1976d2;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 0.85em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 实战选点题</h1>
+            <div class="header-actions">
+                <select id="dateFilter" onchange="filterByDate()">
+                    
+                    <option value="2026-04-12" >2026-04-12</option>
+                    
+                </select>
+                <button class="icon-btn" onclick="clearVisited()" title="清除记录">🗑️</button>
+            </div>
+        </header>
+        
+        <div id="content">
+            
+            <div class="date-section" data-date="2026-04-12">
+                
+                <div class="source-group">
+                    <div class="source-header" onclick="toggleSource(this)">
+                        <span>🏷️ 野狐 (11份, 32题)</span>
+                        <span class="source-toggle">▼</span>
+                    </div>
+                    <div class="quiz-list">
+                        
+                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159180003.html" class="quiz-item" data-quiz-id="202604131159180003">
+                            <div class="quiz-number">1</div>
+                            <div class="quiz-info">
+                                <div class="quiz-title">赖均辅 vs 王舜博</div>
+                                <div class="quiz-meta">
+                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                                    <span class="quiz-tag">恶手题</span>
+                                </div>
+                            </div>
+                            <div class="quiz-count">2题</div>
+                        </a>
+                        
+                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190004.html" class="quiz-item" data-quiz-id="202604131159190004">
+                            <div class="quiz-number">2</div>
+                            <div class="quiz-info">
+                                <div class="quiz-title">张紫良 vs 이지현M</div>
+                                <div class="quiz-meta">
+                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                                    <span class="quiz-tag">恶手题</span>
+                                </div>
+                            </div>
+                            <div class="quiz-count">1题</div>
+                        </a>
+                        
+                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190007.html" class="quiz-item" data-quiz-id="202604131159190007">
+                            <div class="quiz-number">3</div>
+                            <div class="quiz-info">
+                                <div class="quiz-title">傅彧 vs 谢科</div>
+                                <div class="quiz-meta">
+                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                                    <span class="quiz-tag">恶手题</span>
+                                </div>
+                            </div>
+                            <div class="quiz-count">3题</div>
+                        </a>
+                        
+                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190008.html" class="quiz-item" data-quiz-id="202604131159190008">
+                            <div class="quiz-number">4</div>
+                            <div class="quiz-info">
+                                <div class="quiz-title">白宝祥 vs 江维杰</div>
+                                <div class="quiz-meta">
+                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                                    <span class="quiz-tag">恶手题</span>
+                                </div>
+                            </div>
+                            <div class="quiz-count">4题</div>
+                        </a>
+                        
+                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190009.html" class="quiz-item" data-quiz-id="202604131159190009">
+                            <div class="quiz-number">5</div>
+                            <div class="quiz-info">
+                                <div class="quiz-title">郑载想 vs 杨鼎新</div>
+                                <div class="quiz-meta">
+                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                                    <span class="quiz-tag">恶手题</span>
+                                </div>
+                            </div>
+                            <div class="quiz-count">2题</div>
+                        </a>
+                        
+                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190010.html" class="quiz-item" data-quiz-id="202604131159190010">
+                            <div class="quiz-number">6</div>
+                            <div class="quiz-info">
+                                <div class="quiz-title">芮乃伟 vs 한종진</div>
+                                <div class="quiz-meta">
+                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                                    <span class="quiz-tag">恶手题</span>
+                                </div>
+                            </div>
+                            <div class="quiz-count">2题</div>
+                        </a>
+                        
+                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190011.html" class="quiz-item" data-quiz-id="202604131159190011">
+                            <div class="quiz-number">7</div>
+                            <div class="quiz-info">
+                                <div class="quiz-title">桂诗云 vs 唐嘉雯</div>
+                                <div class="quiz-meta">
+                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                                    <span class="quiz-tag">恶手题</span>
+                                </div>
+                            </div>
+                            <div class="quiz-count">3题</div>
+                        </a>
+                        
+                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190012.html" class="quiz-item" data-quiz-id="202604131159190012">
+                            <div class="quiz-number">8</div>
+                            <div class="quiz-info">
+                                <div class="quiz-title">赵奕斐 vs 於之莹</div>
+                                <div class="quiz-meta">
+                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                                    <span class="quiz-tag">恶手题</span>
+                                </div>
+                            </div>
+                            <div class="quiz-count">2题</div>
+                        </a>
+                        
+                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190013.html" class="quiz-item" data-quiz-id="202604131159190013">
+                            <div class="quiz-number">9</div>
+                            <div class="quiz-info">
+                                <div class="quiz-title">李赫 vs 周泓余</div>
+                                <div class="quiz-meta">
+                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                                    <span class="quiz-tag">恶手题</span>
+                                </div>
+                            </div>
+                            <div class="quiz-count">2题</div>
+                        </a>
+                        
+                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190014.html" class="quiz-item" data-quiz-id="202604131159190014">
+                            <div class="quiz-number">10</div>
+                            <div class="quiz-info">
+                                <div class="quiz-title">屠晓宇 vs 박정환</div>
+                                <div class="quiz-meta">
+                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                                    <span class="quiz-tag">恶手题</span>
+                                </div>
+                            </div>
+                            <div class="quiz-count">1题</div>
+                        </a>
+                        
+                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190015.html" class="quiz-item" data-quiz-id="202604131159190015">
+                            <div class="quiz-number">11</div>
+                            <div class="quiz-info">
+                                <div class="quiz-title">胡耀宇 vs 이원영</div>
+                                <div class="quiz-meta">
+                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                                    <span class="quiz-tag">恶手题</span>
+                                </div>
+                            </div>
+                            <div class="quiz-count">10题</div>
+                        </a>
+                        
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+        
+        <footer>
+            <p>围棋智能助手 &copy; 2026</p>
+        </footer>
+    </div>
+    
+    <script>
+        function filterByDate() {
+            const selectedDate = document.getElementById('dateFilter').value;
+            document.querySelectorAll('.date-section').forEach(section => {
+                if (!selectedDate || section.dataset.date === selectedDate) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        }
+        
+        function toggleSource(header) {
+            const list = header.nextElementSibling;
+            const toggle = header.querySelector('.source-toggle');
+            if (list.style.display === 'none') {
+                list.style.display = 'block';
+                toggle.textContent = '▼';
+            } else {
+                list.style.display = 'none';
+                toggle.textContent = '▶';
+            }
+        }
+        
+        document.querySelectorAll('.quiz-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const quizId = this.dataset.quizId;
+                let visited = JSON.parse(localStorage.getItem('visited_quiz') || '[]');
+                if (!visited.includes(quizId)) {
+                    visited.push(quizId);
+                    localStorage.setItem('visited_quiz', JSON.stringify(visited));
+                }
+            });
+        });
+        
+        function restoreVisited() {
+            const visited = JSON.parse(localStorage.getItem('visited_quiz') || '[]');
+            document.querySelectorAll('.quiz-item').forEach(item => {
+                if (visited.includes(item.dataset.quizId)) {
+                    item.style.opacity = '0.5';
+                }
+            });
+        }
+        
+        function clearVisited() {
+            localStorage.removeItem('visited_quiz');
+            document.querySelectorAll('.quiz-item').forEach(item => {
+                item.style.opacity = '1';
+            });
+        }
+        
+        filterByDate();
+        restoreVisited();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>定式研究 | 围棋智能助手</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1 { font-size: 1.5em; }
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .icon-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .icon-btn:hover { background: rgba(255,255,255,0.3); }
+        
+        /* 日期选择栏 */
+        .date-bar {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .date-bar label {
+            font-weight: 500;
+            color: #555;
+        }
+        .date-bar select {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9em;
+            min-width: 120px;
+        }
+        
+        /* 分类切换标签 */
+        .category-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 15px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .category-tab {
+            flex: 1;
+            padding: 15px 20px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            color: #666;
+            background: #f8f9fa;
+            border: none;
+            font-size: 1em;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .category-tab:hover {
+            background: #f0f0f0;
+        }
+        .category-tab.active {
+            background: #667eea;
+            color: white;
+        }
+        .category-tab .count {
+            font-size: 0.85em;
+            padding: 2px 8px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        .category-tab.active .count {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        /* 日期内容区域 */
+        .date-content {
+            display: none;
+        }
+        .date-content.active {
+            display: block;
+        }
+        
+        /* 定式列表 */
+        .joseki-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+            display: none;
+        }
+        .joseki-section.active {
+            display: block;
+        }
+        .joseki-list {
+            padding: 0;
+        }
+        .joseki-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #f5f5f5;
+            text-decoration: none;
+            color: inherit;
+            transition: background 0.2s;
+        }
+        .joseki-item:last-child { border-bottom: none; }
+        .joseki-item:hover { background: #fafafa; }
+        .joseki-item:visited { opacity: 0.6; }
+        .joseki-number {
+            width: 32px;
+            height: 32px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 12px;
+            flex-shrink: 0;
+            font-size: 0.9em;
+        }
+        .joseki-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .joseki-title {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .joseki-players {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+        .stone-icon {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .stone-black {
+            background: radial-gradient(circle at 30% 30%, #666, #000);
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        .stone-white {
+            background: radial-gradient(circle at 30% 30%, #fff, #ddd);
+            border: 1px solid #ccc;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+        .joseki-vs {
+            color: #999;
+            font-weight: normal;
+        }
+        .joseki-meta {
+            font-size: 0.85em;
+            color: #666;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .joseki-tag {
+            padding: 2px 8px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 10px;
+            font-size: 0.8em;
+        }
+        .joseki-tag.new {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        .joseki-id {
+            font-family: monospace;
+            font-size: 0.85em;
+            color: #888;
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .joseki-event {
+            color: #888;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 0.85em;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 定式研究</h1>
+            <div class="header-actions">
+                <button class="icon-btn" onclick="clearVisited()" title="清除记录">🗑️</button>
+            </div>
+        </header>
+        
+        <!-- 日期选择栏 -->
+        <div class="date-bar">
+            <label>📅 日期</label>
+            <select id="dateFilter" onchange="filterByDate()">
+                
+                <option value="2026-04-12" selected>2026-04-12</option>
+                
+            </select>
+        </div>
+        
+        <!-- 所有日期的数据 -->
+        
+        <div class="date-content active" data-date="2026-04-12">
+            <!-- 分类切换标签 -->
+            <div class="category-tabs">
+                <div class="category-tab active" onclick="switchTab('2026-04-12', 'new')" id="tab-2026-04-12-new">
+                    ✨ 新定式
+                    <span class="count">20</span>
+                </div>
+                <div class="category-tab " onclick="switchTab('2026-04-12', 'ai')" id="tab-2026-04-12-ai">
+                    🤖 AI定式
+                    <span class="count">21</span>
+                </div>
+            </div>
+            
+            <!-- 新定式列表 -->
+            <div class="joseki-section active" id="section-2026-04-12-new">
+                
+                <div class="joseki-list">
+                    
+                    <a href="/joseki/2026-04-12/joseki_001.html" class="joseki-item" data-joseki-id="new_1">
+                        <div class="joseki-number">1</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    李赫
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    周泓余
+                                </span>
+                                <span>(53手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_002.html" class="joseki-item" data-joseki-id="new_2">
+                        <div class="joseki-number">2</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    심재익
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    赵斐
+                                </span>
+                                <span>(49手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_003.html" class="joseki-item" data-joseki-id="new_3">
+                        <div class="joseki-number">3</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    赵奕斐
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    於之莹
+                                </span>
+                                <span>(43手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_004.html" class="joseki-item" data-joseki-id="new_4">
+                        <div class="joseki-number">4</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    郑载想
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    杨鼎新
+                                </span>
+                                <span>(41手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_005.html" class="joseki-item" data-joseki-id="new_5">
+                        <div class="joseki-number">5</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    白宝祥
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    江维杰
+                                </span>
+                                <span>(40手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_006.html" class="joseki-item" data-joseki-id="new_6">
+                        <div class="joseki-number">6</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    张紫良
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    이지현M
+                                </span>
+                                <span>(38手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_007.html" class="joseki-item" data-joseki-id="new_7">
+                        <div class="joseki-number">7</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    屠晓宇
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    박정환
+                                </span>
+                                <span>(37手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_008.html" class="joseki-item" data-joseki-id="new_8">
+                        <div class="joseki-number">8</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    陈祈睿
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    王春晖
+                                </span>
+                                <span>(36手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_009.html" class="joseki-item" data-joseki-id="new_9">
+                        <div class="joseki-number">9</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    芮乃伟
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    한종진
+                                </span>
+                                <span>(36手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_010.html" class="joseki-item" data-joseki-id="new_10">
+                        <div class="joseki-number">10</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    胡耀宇
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    이원영
+                                </span>
+                                <span>(35手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_011.html" class="joseki-item" data-joseki-id="new_11">
+                        <div class="joseki-number">11</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    赖均辅
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    王舜博
+                                </span>
+                                <span>(32手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_012.html" class="joseki-item" data-joseki-id="new_12">
+                        <div class="joseki-number">12</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    檀啸
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    변상일
+                                </span>
+                                <span>(31手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_013.html" class="joseki-item" data-joseki-id="new_13">
+                        <div class="joseki-number">13</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    傅彧
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    谢科
+                                </span>
+                                <span>(31手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_014.html" class="joseki-item" data-joseki-id="new_14">
+                        <div class="joseki-number">14</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    赵奕斐
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    於之莹
+                                </span>
+                                <span>(29手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_015.html" class="joseki-item" data-joseki-id="new_15">
+                        <div class="joseki-number">15</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    王世一
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    杨隽翀
+                                </span>
+                                <span>(28手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_016.html" class="joseki-item" data-joseki-id="new_16">
+                        <div class="joseki-number">16</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    桂诗云
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    唐嘉雯
+                                </span>
+                                <span>(28手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_017.html" class="joseki-item" data-joseki-id="new_17">
+                        <div class="joseki-number">17</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    심재익
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    赵斐
+                                </span>
+                                <span>(26手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_018.html" class="joseki-item" data-joseki-id="new_18">
+                        <div class="joseki-number">18</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    屠晓宇
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    박정환
+                                </span>
+                                <span>(26手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_019.html" class="joseki-item" data-joseki-id="new_19">
+                        <div class="joseki-number">19</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    傅彧
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    谢科
+                                </span>
+                                <span>(25手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_020.html" class="joseki-item" data-joseki-id="new_20">
+                        <div class="joseki-number">20</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    张紫良
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    이지현M
+                                </span>
+                                <span>(19手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                </div>
+                
+            </div>
+            
+            <!-- AI定式列表 -->
+            <div class="joseki-section " id="section-2026-04-12-ai">
+                
+                <div class="joseki-list">
+                    
+                    <a href="/joseki/2026-04-12/joseki_021.html" class="joseki-item" data-joseki-id="joseki_8557">
+                        <div class="joseki-number">1</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    赖均辅
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    王舜博
+                                </span>
+                                <span>(16手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 10次</span>
+                                <span class="joseki-id">ID: joseki_8557</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_022.html" class="joseki-item" data-joseki-id="joseki_9051">
+                        <div class="joseki-number">2</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    芮乃伟
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    한종진
+                                </span>
+                                <span>(13手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 10次</span>
+                                <span class="joseki-id">ID: joseki_9051</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_023.html" class="joseki-item" data-joseki-id="joseki_8158">
+                        <div class="joseki-number">3</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    傅彧
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    谢科
+                                </span>
+                                <span>(10手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 11次</span>
+                                <span class="joseki-id">ID: joseki_8158</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_024.html" class="joseki-item" data-joseki-id="joseki_7695">
+                        <div class="joseki-number">4</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    桂诗云
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    唐嘉雯
+                                </span>
+                                <span>(26手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 12次</span>
+                                <span class="joseki-id">ID: joseki_7695</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_025.html" class="joseki-item" data-joseki-id="joseki_7532">
+                        <div class="joseki-number">5</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    陈祈睿
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    王春晖
+                                </span>
+                                <span>(19手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 12次</span>
+                                <span class="joseki-id">ID: joseki_7532</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_026.html" class="joseki-item" data-joseki-id="joseki_7224">
+                        <div class="joseki-number">6</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    芮乃伟
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    한종진
+                                </span>
+                                <span>(13手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 13次</span>
+                                <span class="joseki-id">ID: joseki_7224</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_027.html" class="joseki-item" data-joseki-id="joseki_6593">
+                        <div class="joseki-number">7</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    白宝祥
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    江维杰
+                                </span>
+                                <span>(15手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 14次</span>
+                                <span class="joseki-id">ID: joseki_6593</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_028.html" class="joseki-item" data-joseki-id="joseki_6547">
+                        <div class="joseki-number">8</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    檀啸
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    변상일
+                                </span>
+                                <span>(10手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 15次</span>
+                                <span class="joseki-id">ID: joseki_6547</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_029.html" class="joseki-item" data-joseki-id="joseki_5839">
+                        <div class="joseki-number">9</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    王世一
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    杨隽翀
+                                </span>
+                                <span>(30手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 17次</span>
+                                <span class="joseki-id">ID: joseki_5839</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_030.html" class="joseki-item" data-joseki-id="joseki_5430">
+                        <div class="joseki-number">10</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    赖均辅
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    王舜博
+                                </span>
+                                <span>(23手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 18次</span>
+                                <span class="joseki-id">ID: joseki_5430</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_031.html" class="joseki-item" data-joseki-id="joseki_4904">
+                        <div class="joseki-number">11</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    胡耀宇
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    이원영
+                                </span>
+                                <span>(11手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 21次</span>
+                                <span class="joseki-id">ID: joseki_4904</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_032.html" class="joseki-item" data-joseki-id="joseki_4439">
+                        <div class="joseki-number">12</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    胡耀宇
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    이원영
+                                </span>
+                                <span>(31手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 24次</span>
+                                <span class="joseki-id">ID: joseki_4439</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_033.html" class="joseki-item" data-joseki-id="joseki_3430">
+                        <div class="joseki-number">13</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    王世一
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    杨隽翀
+                                </span>
+                                <span>(10手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 33次</span>
+                                <span class="joseki-id">ID: joseki_3430</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_034.html" class="joseki-item" data-joseki-id="joseki_3360">
+                        <div class="joseki-number">14</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    檀啸
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    변상일
+                                </span>
+                                <span>(26手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 34次</span>
+                                <span class="joseki-id">ID: joseki_3360</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_035.html" class="joseki-item" data-joseki-id="joseki_2921">
+                        <div class="joseki-number">15</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    桂诗云
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    唐嘉雯
+                                </span>
+                                <span>(18手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 40次</span>
+                                <span class="joseki-id">ID: joseki_2921</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_036.html" class="joseki-item" data-joseki-id="joseki_2468">
+                        <div class="joseki-number">16</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    屠晓宇
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    박정환
+                                </span>
+                                <span>(16手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 49次</span>
+                                <span class="joseki-id">ID: joseki_2468</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_037.html" class="joseki-item" data-joseki-id="joseki_2268">
+                        <div class="joseki-number">17</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    张紫良
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    이지현M
+                                </span>
+                                <span>(12手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 55次</span>
+                                <span class="joseki-id">ID: joseki_2268</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_038.html" class="joseki-item" data-joseki-id="joseki_1963">
+                        <div class="joseki-number">18</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    李赫
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    周泓余
+                                </span>
+                                <span>(14手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 66次</span>
+                                <span class="joseki-id">ID: joseki_1963</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_039.html" class="joseki-item" data-joseki-id="joseki_1284">
+                        <div class="joseki-number">19</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    傅彧
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    谢科
+                                </span>
+                                <span>(15手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 110次</span>
+                                <span class="joseki-id">ID: joseki_1284</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_040.html" class="joseki-item" data-joseki-id="joseki_556">
+                        <div class="joseki-number">20</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    李赫
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    周泓余
+                                </span>
+                                <span>(12手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 297次</span>
+                                <span class="joseki-id">ID: joseki_556</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="/joseki/2026-04-12/joseki_041.html" class="joseki-item" data-joseki-id="joseki_145">
+                        <div class="joseki-number">21</div>
+                        <div class="joseki-info">
+                            <div class="joseki-title">
+                                <span class="joseki-players">
+                                    <span class="stone-icon stone-black"></span>
+                                    郑载想
+                                    <span class="joseki-vs">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    杨鼎新
+                                </span>
+                                <span>(18手)</span>
+                            </div>
+                            <div class="joseki-meta">
+                                <span class="joseki-tag new">定式库: 1267次</span>
+                                <span class="joseki-id">ID: joseki_145</span>
+                                <span class="joseki-event">第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <footer>
+            <p>围棋智能助手 &copy; 2026</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 当前状态和默认日期
+        let currentDate = '2026-04-12';
+        let currentTabs = {};
+        
+        // 初始化每个日期的默认标签
+        
+        currentTabs['2026-04-12'] = 'new';
+        
+        
+        function switchTab(date, tab) {
+            currentTabs[date] = tab;
+            
+            // 更新标签样式
+            document.querySelectorAll('.date-content[data-date="' + date + '"] .category-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('tab-' + date + '-' + tab).classList.add('active');
+            
+            // 更新内容显示
+            document.querySelectorAll('.date-content[data-date="' + date + '"] .joseki-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('section-' + date + '-' + tab).classList.add('active');
+        }
+        
+        function filterByDate() {
+            const selectedDate = document.getElementById('dateFilter').value;
+            currentDate = selectedDate;
+            
+            // 隐藏所有日期内容
+            document.querySelectorAll('.date-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // 显示选中的日期内容
+            const selectedContent = document.querySelector('.date-content[data-date="' + selectedDate + '"]');
+            if (selectedContent) {
+                selectedContent.classList.add('active');
+            }
+        }
+        
+        document.querySelectorAll('.joseki-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const josekiId = this.dataset.josekiId;
+                let visited = JSON.parse(localStorage.getItem('visited_joseki') || '[]');
+                if (!visited.includes(josekiId)) {
+                    visited.push(josekiId);
+                    localStorage.setItem('visited_joseki', JSON.stringify(visited));
+                }
+            });
+        });
+        
+        function restoreVisited() {
+            const visited = JSON.parse(localStorage.getItem('visited_joseki') || '[]');
+            document.querySelectorAll('.joseki-item').forEach(item => {
+                if (visited.includes(item.dataset.josekiId)) {
+                    item.style.opacity = '0.5';
+                }
+            });
+        }
+        
+        function clearVisited() {
+            localStorage.removeItem('visited_joseki');
+            document.querySelectorAll('.joseki-item').forEach(item => {
+                item.style.opacity = '1';
+            });
+        }
+        
+        restoreVisited();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>围棋棋谱 - 实战选点</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 6px;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            padding: 8px;
+            max-width: 100%;
+            width: 100%;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .header h1 {
+            font-size: 15px;
+            color: #333;
+            margin-bottom: 2px;
+            line-height: 1.2;
+        }
+        .header .info {
+            color: #666;
+            font-size: 11px;
+            line-height: 1.3;
+        }
+        .problem-info {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .tag-phase-layout { background: #4CAF50; color: white; }
+        .tag-phase-middle { background: #2196F3; color: white; }
+        .tag-phase-endgame { background: #FF9800; color: white; }
+        .tag-difficulty-easy { background: #81C784; color: white; }
+        .tag-difficulty-medium { background: #FFB74D; color: white; }
+        .tag-difficulty-hard { background: #E57373; color: white; }
+        .tag-blunder { background: #F44336; color: white; }
+        .board-container {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+            position: relative;
+            width: 100%;
+        }
+        #board {
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            max-width: 100%;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            display: block;
+            cursor: pointer;
+        }
+        .btn {
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            background: #f0f0f0;
+            color: #333;
+            padding: 8px 12px;
+        }
+        .btn:active {
+            transform: scale(0.95);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-success {
+            background: #4CAF50;
+            color: white;
+        }
+        .btn-danger {
+            background: #F44336;
+            color: white;
+        }
+        .btn-option {
+            width: 75px;
+            min-width: 75px;
+            max-width: 75px;
+            padding: 6px 2px;
+            font-weight: bold;
+            font-size: 10px;
+            text-align: center;
+            justify-content: center;
+            white-space: nowrap;
+        }
+        .btn-option.correct {
+            background: #4CAF50;
+            color: white;
+        }
+        .btn-option.wrong {
+            background: #F44336;
+            color: white;
+        }
+        .btn-option.neutral {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            padding: 0;
+            font-size: 16px;
+            min-width: 36px;
+        }
+        
+        /* 主面板 */
+        .main-panel {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin: 12px 0;
+            flex-wrap: wrap;
+        }
+        .main-panel-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            min-width: 140px;
+        }
+        .main-panel-center {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        #moveSlider {
+            flex: 1;
+            min-width: 80px;
+        }
+        
+        /* 变化图面板 */
+        .variation-panel {
+            display: none;
+            margin: 12px 0;
+        }
+        .variation-panel.active {
+            display: block;
+        }
+        .variation-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .variation-options {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: flex-start;
+        }
+        .variation-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        /* 试下模式面板 */
+        .tryplay-panel {
+            display: none;
+            margin: 12px 0;
+        }
+        .tryplay-panel.active {
+            display: block;
+        }
+        .tryplay-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .progress-text {
+            font-size: 14px;
+            color: #666;
+            font-weight: bold;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+        .stone-black, .stone-white {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+        .stone-black {
+            background: radial-gradient(circle at 30% 30%, #666, #000);
+        }
+        .stone-white {
+            background: radial-gradient(circle at 30% 30%, #fff, #ccc);
+            border: 1px solid #ddd;
+        }
+        @media (min-width: 600px) {
+            .container {
+                max-width: 500px;
+                padding: 20px;
+            }
+            .header h1 {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 id="gameTitle">胡耀宇 vs 이원영</h1>
+            <div class="info" id="gameInfo"> </div>
+            <div class="problem-info" id="problemInfo">
+                <span class="tag tag-phase-middle" id="phaseTag">中盘</span>
+                <span class="tag tag-difficulty-medium" id="difficultyTag">中等</span>
+            </div>
+        </div>
+
+        <div class="board-container">
+            <canvas id="board"></canvas>
+        </div>
+
+        <!-- 主面板 -->
+        <div class="main-panel" id="mainPanel">
+            <div class="main-panel-left">
+                <button class="btn btn-icon" onclick="prevMove()" title="上一手">◀</button>
+                <input type="range" id="moveSlider" min="0" max="0" value="0" oninput="goToMove(this.value)">
+                <button class="btn btn-icon" onclick="nextMove()" title="下一手">▶</button>
+            </div>
+            <div class="main-panel-center">
+                <button class="btn btn-icon" onclick="prevProblem()" id="prevProblemBtn" title="上一题">⬅️</button>
+                <span class="progress-text" id="progressText">1 / 10</span>
+                <button class="btn btn-icon" onclick="nextProblem()" id="nextProblemBtn" title="下一题">➡️</button>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span id="turnIndicator" style="font-size: 12px; color: #666; white-space: nowrap;">当前：黑棋下</span>
+                <button class="btn btn-icon" id="soundToggleBtn" onclick="toggleSound()" title="音效开关" style="background: #f0f0f0;">🔊</button>
+                <button class="btn btn-icon" onclick="saveToSGF()" title="保存SGF" style="background: #f0f0f0;">💾</button>
+            </div>
+        </div>
+
+        <!-- 变化图面板 -->
+        <div class="variation-panel" id="variationPanel">
+            <div class="variation-header" id="variationHeader" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px;">
+                <div class="variation-options" id="variationOptions" style="flex: 1; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start;"></div>
+                <button class="btn btn-icon btn-danger" onclick="backToMain()" title="返回主面板" style="flex-shrink: 0;">↩</button>
+            </div>
+            <div class="variation-controls" id="variationControls" style="display: none; justify-content: center; align-items: center; gap: 8px;">
+                <button class="btn btn-icon" onclick="varPrev()" title="上一步">◀</button>
+                <span id="varProgress">0 / 0</span>
+                <button class="btn btn-icon" onclick="varNext()" title="下一步">▶</button>
+                <button class="btn btn-icon" onclick="saveToSGF()" title="保存SGF">💾</button>
+                <button class="btn btn-icon btn-danger" onclick="exitVariationView()" title="返回">↩</button>
+            </div>
+        </div>
+
+        <!-- 试下面板 -->
+        <div class="tryplay-panel" id="tryplayPanel">
+            <div class="tryplay-controls">
+                <button class="btn btn-icon" onclick="tryPrev()" title="上一步">◀</button>
+                <span id="tryProgress">0 / 0</span>
+                <button class="btn btn-icon" onclick="tryNext()" title="下一步">▶</button>
+                <button class="btn btn-icon" onclick="saveToSGF()" title="保存SGF">💾</button>
+                <button class="btn btn-icon btn-danger" onclick="exitTryPlay()" title="退出试下">↩</button>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="stone-black"></div>
+                <span id="blackName">胡耀宇</span>
+            </div>
+            <div class="legend-item">
+                <div class="stone-white"></div>
+                <span id="whiteName">이원영</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== 音效系统 ====================
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let soundEnabled = true;
+        let audioUnlocked = false;
+        let noiseBuffer = null;
+
+        function createNoiseBuffer() {
+            const bufferSize = audioCtx.sampleRate * 0.1;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+            return buffer;
+        }
+
+        function unlockAudio() {
+            if (!audioUnlocked && audioCtx.state === 'suspended') {
+                audioCtx.resume().then(() => { audioUnlocked = true; });
+            }
+            if (!noiseBuffer) noiseBuffer = createNoiseBuffer();
+        }
+        document.addEventListener('click', unlockAudio, { once: true });
+        document.addEventListener('touchstart', unlockAudio, { once: true });
+
+        function playStoneSound() {
+            if (!soundEnabled) return;
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            if (!noiseBuffer) noiseBuffer = createNoiseBuffer();
+            const noise = audioCtx.createBufferSource();
+            noise.buffer = noiseBuffer;
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'bandpass';
+            filter.frequency.value = 2500;
+            filter.Q.value = 1;
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.06);
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+            noise.start(audioCtx.currentTime);
+            noise.stop(audioCtx.currentTime + 0.06);
+            const osc = audioCtx.createOscillator();
+            osc.type = 'triangle';
+            osc.frequency.value = 400;
+            const oscGain = audioCtx.createGain();
+            oscGain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            oscGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+            osc.connect(oscGain);
+            oscGain.connect(audioCtx.destination);
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.05);
+        }
+
+        function playCaptureSound() {
+            if (!soundEnabled) return;
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            if (!noiseBuffer) noiseBuffer = createNoiseBuffer();
+            const noise = audioCtx.createBufferSource();
+            noise.buffer = noiseBuffer;
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 1200;
+            filter.frequency.linearRampToValueAtTime(600, audioCtx.currentTime + 0.15);
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(0.6, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.18);
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+            noise.start(audioCtx.currentTime);
+            noise.stop(audioCtx.currentTime + 0.18);
+        }
+
+        function playMultiCaptureSound(count) {
+            if (!soundEnabled || count <= 0) return;
+            playCaptureSound();
+            const extraCount = Math.min(count - 1, 4);
+            for (let i = 0; i < extraCount; i++) {
+                setTimeout(() => {
+                    if (audioCtx.state === 'running' && soundEnabled) {
+                        const noise = audioCtx.createBufferSource();
+                        noise.buffer = noiseBuffer;
+                        const filter = audioCtx.createBiquadFilter();
+                        filter.type = 'bandpass';
+                        filter.frequency.value = 2000 - i * 200;
+                        const gain = audioCtx.createGain();
+                        gain.gain.setValueAtTime(0.3 - i * 0.05, audioCtx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                        noise.connect(filter);
+                        filter.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        noise.start(audioCtx.currentTime);
+                        noise.stop(audioCtx.currentTime + 0.08);
+                    }
+                }, i * 60);
+            }
+        }
+
+        // ==================== 选择音效 ====================
+        function playSelectSound() {
+            if (!soundEnabled) return;
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.08);
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        // ==================== 后退音效 ====================
+        function playBackSound() {
+            if (!soundEnabled) return;
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            // 轻快的提示音，表示回退
+            const osc = audioCtx.createOscillator();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.08);
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.08);
+        }
+
+        // ==================== 正确音效 ====================
+        function playCorrectSound() {
+            if (!soundEnabled) return;
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            // 播放两个音符：C5 和 E5（大三度，愉悦感）
+            [523.25, 659.25].forEach((freq, i) => {
+                const osc = audioCtx.createOscillator();
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+                const gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(0, audioCtx.currentTime + i * 0.1);
+                gain.gain.linearRampToValueAtTime(0.4, audioCtx.currentTime + i * 0.1 + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + i * 0.1 + 0.25);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(audioCtx.currentTime + i * 0.1);
+                osc.stop(audioCtx.currentTime + i * 0.1 + 0.3);
+            });
+        }
+
+        // ==================== 错误音效 ====================
+        function playWrongSound() {
+            if (!soundEnabled) return;
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            // 播放下降音调（不和谐感）
+            const osc = audioCtx.createOscillator();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+            osc.frequency.linearRampToValueAtTime(200, audioCtx.currentTime + 0.3);
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.3);
+        }
+
+        // ==================== 数据 ====================
+        const BOARD_SIZE = 19;
+        const handicapStones = [];
+        const problems = [{"index": 0, "move_num": 197, "phase": "endgame", "difficulty": "easy", "is_blunder": true, "position": [{"color": "B", "coord": "pd"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "dp"}, {"color": "B", "coord": "nd"}, {"color": "W", "coord": "qo"}, {"color": "B", "coord": "np"}, {"color": "W", "coord": "pk"}, {"color": "B", "coord": "cc"}, {"color": "W", "coord": "dc"}, {"color": "B", "coord": "cd"}, {"color": "W", "coord": "cf"}, {"color": "B", "coord": "ce"}, {"color": "W", "coord": "de"}, {"color": "B", "coord": "bf"}, {"color": "W", "coord": "cb"}, {"color": "B", "coord": "bb"}, {"color": "W", "coord": "be"}, {"color": "B", "coord": "db"}, {"color": "W", "coord": "bc"}, {"color": "B", "coord": "ca"}, {"color": "W", "coord": "bd"}, {"color": "B", "coord": "cb"}, {"color": "W", "coord": "bg"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "cg"}, {"color": "B", "coord": "fc"}, {"color": "W", "coord": "ff"}, {"color": "B", "coord": "hd"}, {"color": "W", "coord": "cn"}, {"color": "B", "coord": "fq"}, {"color": "W", "coord": "iq"}, {"color": "B", "coord": "kq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "go"}, {"color": "W", "coord": "io"}, {"color": "B", "coord": "gm"}, {"color": "W", "coord": "fn"}, {"color": "B", "coord": "gn"}, {"color": "W", "coord": "im"}, {"color": "B", "coord": "dm"}, {"color": "W", "coord": "lp"}, {"color": "B", "coord": "kp"}, {"color": "W", "coord": "ko"}, {"color": "B", "coord": "lq"}, {"color": "W", "coord": "dk"}, {"color": "B", "coord": "ek"}, {"color": "W", "coord": "el"}, {"color": "B", "coord": "dl"}, {"color": "W", "coord": "fk"}, {"color": "B", "coord": "ej"}, {"color": "W", "coord": "fl"}, {"color": "B", "coord": "dn"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "co"}, {"color": "W", "coord": "do"}, {"color": "B", "coord": "bn"}, {"color": "W", "coord": "en"}, {"color": "B", "coord": "bp"}, {"color": "W", "coord": "bl"}, {"color": "B", "coord": "bm"}, {"color": "W", "coord": "hl"}, {"color": "B", "coord": "ci"}, {"color": "W", "coord": "di"}, {"color": "B", "coord": "dj"}, {"color": "W", "coord": "cj"}, {"color": "B", "coord": "ei"}, {"color": "W", "coord": "dh"}, {"color": "B", "coord": "gi"}, {"color": "W", "coord": "fi"}, {"color": "B", "coord": "fj"}, {"color": "W", "coord": "gj"}, {"color": "B", "coord": "fh"}, {"color": "W", "coord": "eh"}, {"color": "B", "coord": "fi"}, {"color": "W", "coord": "bi"}, {"color": "B", "coord": "hj"}, {"color": "W", "coord": "gk"}, {"color": "B", "coord": "hg"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "br"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "bo"}, {"color": "W", "coord": "cr"}, {"color": "B", "coord": "aq"}, {"color": "W", "coord": "hf"}, {"color": "B", "coord": "if"}, {"color": "W", "coord": "he"}, {"color": "B", "coord": "ie"}, {"color": "W", "coord": "ig"}, {"color": "B", "coord": "ih"}, {"color": "W", "coord": "jg"}, {"color": "B", "coord": "gg"}, {"color": "W", "coord": "gd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "gc"}, {"color": "W", "coord": "fe"}, {"color": "B", "coord": "id"}, {"color": "W", "coord": "hh"}, {"color": "B", "coord": "hi"}, {"color": "W", "coord": "jh"}, {"color": "B", "coord": "jj"}, {"color": "W", "coord": "lh"}, {"color": "B", "coord": "jl"}, {"color": "W", "coord": "fp"}, {"color": "B", "coord": "lj"}, {"color": "W", "coord": "kk"}, {"color": "B", "coord": "ji"}, {"color": "W", "coord": "ii"}, {"color": "B", "coord": "fg"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "hk"}, {"color": "W", "coord": "me"}, {"color": "B", "coord": "md"}, {"color": "W", "coord": "le"}, {"color": "B", "coord": "jm"}, {"color": "W", "coord": "il"}, {"color": "B", "coord": "jk"}, {"color": "W", "coord": "jn"}, {"color": "B", "coord": "ld"}, {"color": "W", "coord": "oh"}, {"color": "B", "coord": "nj"}, {"color": "W", "coord": "pi"}, {"color": "B", "coord": "ln"}, {"color": "W", "coord": "kn"}, {"color": "B", "coord": "lm"}, {"color": "W", "coord": "lo"}, {"color": "B", "coord": "nn"}, {"color": "W", "coord": "pp"}, {"color": "B", "coord": "oq"}, {"color": "W", "coord": "mq"}, {"color": "B", "coord": "mr"}, {"color": "W", "coord": "re"}, {"color": "B", "coord": "qf"}, {"color": "W", "coord": "qc"}, {"color": "B", "coord": "qe"}, {"color": "W", "coord": "pc"}, {"color": "B", "coord": "nh"}, {"color": "W", "coord": "ng"}, {"color": "B", "coord": "mh"}, {"color": "W", "coord": "qd"}, {"color": "B", "coord": "mg"}, {"color": "W", "coord": "ne"}, {"color": "B", "coord": "oe"}, {"color": "W", "coord": "of"}, {"color": "B", "coord": "pg"}, {"color": "W", "coord": "pf"}, {"color": "B", "coord": "og"}, {"color": "W", "coord": "nf"}, {"color": "B", "coord": "qg"}, {"color": "W", "coord": "pe"}, {"color": "B", "coord": "od"}, {"color": "W", "coord": "ke"}, {"color": "B", "coord": "kd"}, {"color": "W", "coord": "rf"}, {"color": "B", "coord": "rg"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "rh"}, {"color": "W", "coord": "ri"}, {"color": "B", "coord": "ph"}, {"color": "W", "coord": "oi"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "qj"}, {"color": "B", "coord": "rj"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "gp"}, {"color": "W", "coord": "gl"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "si"}, {"color": "B", "coord": "sf"}, {"color": "W", "coord": "rd"}, {"color": "B", "coord": "kf"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "je"}, {"color": "W", "coord": "sg"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "cl"}, {"color": "B", "coord": "cm"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ir"}, {"color": "W", "coord": "hq"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "ap"}, {"color": "B", "coord": "ao"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ip"}, {"color": "W", "coord": "jp"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "am"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "dr"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "em"}, {"color": "W", "coord": "fm"}, {"color": "B", "coord": "cq"}], "options": [{"coord": "sh", "color": "W", "winrate": "36.1%", "comment": "/\"jueyi白36.1% | -1.5目", "moves": [{"color": "W", "coord": "sh"}, {"color": "B", "coord": "gq"}, {"color": "W", "coord": "hp"}, {"color": "B", "coord": "eq"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "qr"}, {"color": "W", "coord": "fo"}, {"color": "B", "coord": "ep"}, {"color": "W", "coord": "eo"}, {"color": "B", "coord": "cs"}], "is_correct": false, "sort_order": 1, "letter": "A"}, {"coord": "ik", "color": "W", "winrate": "31.6%", "comment": "/\"jueyi白31.6% | -3.0目", "moves": [{"color": "W", "coord": "ik"}, {"color": "B", "coord": "ij"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "eq"}, {"color": "W", "coord": "er"}, {"color": "B", "coord": "eo"}, {"color": "W", "coord": "ds"}, {"color": "B", "coord": "gq"}, {"color": "W", "coord": "hr"}, {"color": "B", "coord": "fs"}], "is_correct": false, "sort_order": 2, "letter": "B"}, {"coord": "gq", "color": "W", "winrate": "85.8%", "comment": "/\"jueyi白85.8% | +3.0目", "moves": [{"color": "W", "coord": "gq"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "eq"}, {"color": "W", "coord": "fo"}, {"color": "B", "coord": "cs"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ee"}, {"color": "W", "coord": "ed"}, {"color": "B", "coord": "qi"}], "is_correct": true, "sort_order": 0, "letter": "C"}], "practical_move": {"coord": "sh", "color": "W", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "W", "coord": "sh"}, {"color": "B", "coord": "gq"}, {"color": "W", "coord": "hp"}, {"color": "B", "coord": "eq"}, {"color": "W", "coord": "fo"}, {"color": "B", "coord": "ep"}, {"color": "W", "coord": "eo"}, {"color": "B", "coord": "cs"}, {"color": "W", "coord": "nk"}, {"color": "B", "coord": "mj"}, {"color": "W", "coord": "ni"}, {"color": "B", "coord": "mi"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "qr"}, {"color": "W", "coord": "nb"}]}}, {"index": 1, "move_num": 206, "phase": "endgame", "difficulty": "easy", "is_blunder": true, "position": [{"color": "B", "coord": "pd"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "dp"}, {"color": "B", "coord": "nd"}, {"color": "W", "coord": "qo"}, {"color": "B", "coord": "np"}, {"color": "W", "coord": "pk"}, {"color": "B", "coord": "cc"}, {"color": "W", "coord": "dc"}, {"color": "B", "coord": "cd"}, {"color": "W", "coord": "cf"}, {"color": "B", "coord": "ce"}, {"color": "W", "coord": "de"}, {"color": "B", "coord": "bf"}, {"color": "W", "coord": "cb"}, {"color": "B", "coord": "bb"}, {"color": "W", "coord": "be"}, {"color": "B", "coord": "db"}, {"color": "W", "coord": "bc"}, {"color": "B", "coord": "ca"}, {"color": "W", "coord": "bd"}, {"color": "B", "coord": "cb"}, {"color": "W", "coord": "bg"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "cg"}, {"color": "B", "coord": "fc"}, {"color": "W", "coord": "ff"}, {"color": "B", "coord": "hd"}, {"color": "W", "coord": "cn"}, {"color": "B", "coord": "fq"}, {"color": "W", "coord": "iq"}, {"color": "B", "coord": "kq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "go"}, {"color": "W", "coord": "io"}, {"color": "B", "coord": "gm"}, {"color": "W", "coord": "fn"}, {"color": "B", "coord": "gn"}, {"color": "W", "coord": "im"}, {"color": "B", "coord": "dm"}, {"color": "W", "coord": "lp"}, {"color": "B", "coord": "kp"}, {"color": "W", "coord": "ko"}, {"color": "B", "coord": "lq"}, {"color": "W", "coord": "dk"}, {"color": "B", "coord": "ek"}, {"color": "W", "coord": "el"}, {"color": "B", "coord": "dl"}, {"color": "W", "coord": "fk"}, {"color": "B", "coord": "ej"}, {"color": "W", "coord": "fl"}, {"color": "B", "coord": "dn"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "co"}, {"color": "W", "coord": "do"}, {"color": "B", "coord": "bn"}, {"color": "W", "coord": "en"}, {"color": "B", "coord": "bp"}, {"color": "W", "coord": "bl"}, {"color": "B", "coord": "bm"}, {"color": "W", "coord": "hl"}, {"color": "B", "coord": "ci"}, {"color": "W", "coord": "di"}, {"color": "B", "coord": "dj"}, {"color": "W", "coord": "cj"}, {"color": "B", "coord": "ei"}, {"color": "W", "coord": "dh"}, {"color": "B", "coord": "gi"}, {"color": "W", "coord": "fi"}, {"color": "B", "coord": "fj"}, {"color": "W", "coord": "gj"}, {"color": "B", "coord": "fh"}, {"color": "W", "coord": "eh"}, {"color": "B", "coord": "fi"}, {"color": "W", "coord": "bi"}, {"color": "B", "coord": "hj"}, {"color": "W", "coord": "gk"}, {"color": "B", "coord": "hg"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "br"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "bo"}, {"color": "W", "coord": "cr"}, {"color": "B", "coord": "aq"}, {"color": "W", "coord": "hf"}, {"color": "B", "coord": "if"}, {"color": "W", "coord": "he"}, {"color": "B", "coord": "ie"}, {"color": "W", "coord": "ig"}, {"color": "B", "coord": "ih"}, {"color": "W", "coord": "jg"}, {"color": "B", "coord": "gg"}, {"color": "W", "coord": "gd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "gc"}, {"color": "W", "coord": "fe"}, {"color": "B", "coord": "id"}, {"color": "W", "coord": "hh"}, {"color": "B", "coord": "hi"}, {"color": "W", "coord": "jh"}, {"color": "B", "coord": "jj"}, {"color": "W", "coord": "lh"}, {"color": "B", "coord": "jl"}, {"color": "W", "coord": "fp"}, {"color": "B", "coord": "lj"}, {"color": "W", "coord": "kk"}, {"color": "B", "coord": "ji"}, {"color": "W", "coord": "ii"}, {"color": "B", "coord": "fg"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "hk"}, {"color": "W", "coord": "me"}, {"color": "B", "coord": "md"}, {"color": "W", "coord": "le"}, {"color": "B", "coord": "jm"}, {"color": "W", "coord": "il"}, {"color": "B", "coord": "jk"}, {"color": "W", "coord": "jn"}, {"color": "B", "coord": "ld"}, {"color": "W", "coord": "oh"}, {"color": "B", "coord": "nj"}, {"color": "W", "coord": "pi"}, {"color": "B", "coord": "ln"}, {"color": "W", "coord": "kn"}, {"color": "B", "coord": "lm"}, {"color": "W", "coord": "lo"}, {"color": "B", "coord": "nn"}, {"color": "W", "coord": "pp"}, {"color": "B", "coord": "oq"}, {"color": "W", "coord": "mq"}, {"color": "B", "coord": "mr"}, {"color": "W", "coord": "re"}, {"color": "B", "coord": "qf"}, {"color": "W", "coord": "qc"}, {"color": "B", "coord": "qe"}, {"color": "W", "coord": "pc"}, {"color": "B", "coord": "nh"}, {"color": "W", "coord": "ng"}, {"color": "B", "coord": "mh"}, {"color": "W", "coord": "qd"}, {"color": "B", "coord": "mg"}, {"color": "W", "coord": "ne"}, {"color": "B", "coord": "oe"}, {"color": "W", "coord": "of"}, {"color": "B", "coord": "pg"}, {"color": "W", "coord": "pf"}, {"color": "B", "coord": "og"}, {"color": "W", "coord": "nf"}, {"color": "B", "coord": "qg"}, {"color": "W", "coord": "pe"}, {"color": "B", "coord": "od"}, {"color": "W", "coord": "ke"}, {"color": "B", "coord": "kd"}, {"color": "W", "coord": "rf"}, {"color": "B", "coord": "rg"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "rh"}, {"color": "W", "coord": "ri"}, {"color": "B", "coord": "ph"}, {"color": "W", "coord": "oi"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "qj"}, {"color": "B", "coord": "rj"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "gp"}, {"color": "W", "coord": "gl"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "si"}, {"color": "B", "coord": "sf"}, {"color": "W", "coord": "rd"}, {"color": "B", "coord": "kf"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "je"}, {"color": "W", "coord": "sg"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "cl"}, {"color": "B", "coord": "cm"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ir"}, {"color": "W", "coord": "hq"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "ap"}, {"color": "B", "coord": "ao"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ip"}, {"color": "W", "coord": "jp"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "am"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "dr"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "em"}, {"color": "W", "coord": "fm"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "sh"}, {"color": "B", "coord": "gq"}, {"color": "W", "coord": "hp"}, {"color": "B", "coord": "eq"}, {"color": "W", "coord": "fo"}, {"color": "B", "coord": "ep"}, {"color": "W", "coord": "eo"}, {"color": "B", "coord": "cs"}, {"color": "W", "coord": "nk"}], "options": [{"coord": "mj", "color": "B", "winrate": "61.0%", "comment": "/\"jueyi黑61.0% | +1.0目", "moves": [{"color": "B", "coord": "mj"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "qr"}, {"color": "W", "coord": "mp"}, {"color": "B", "coord": "rq"}, {"color": "W", "coord": "nr"}, {"color": "B", "coord": "hr"}, {"color": "W", "coord": "qp"}, {"color": "B", "coord": "lr"}, {"color": "W", "coord": "no"}], "is_correct": false, "sort_order": 1, "letter": "A"}, {"coord": "mk", "color": "B", "winrate": "92.1%", "comment": "/\"jueyi黑92.1% | +3.5目", "moves": [{"color": "B", "coord": "mk"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "qr"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "mb"}, {"color": "W", "coord": "nc"}, {"color": "B", "coord": "oc"}, {"color": "W", "coord": "ob"}, {"color": "B", "coord": "mc"}, {"color": "W", "coord": "rq"}], "is_correct": true, "sort_order": 0, "letter": "B"}], "practical_move": {"coord": "mj", "color": "B", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "B", "coord": "mj"}, {"color": "W", "coord": "ni"}, {"color": "B", "coord": "mi"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "qr"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "mb"}, {"color": "W", "coord": "mp"}, {"color": "B", "coord": "hn"}, {"color": "W", "coord": "in"}, {"color": "B", "coord": "rq"}, {"color": "W", "coord": "rp"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "lf"}, {"color": "B", "coord": "lg"}]}}, {"index": 2, "move_num": 248, "phase": "endgame", "difficulty": "easy", "is_blunder": true, "position": [{"color": "B", "coord": "pd"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "dp"}, {"color": "B", "coord": "nd"}, {"color": "W", "coord": "qo"}, {"color": "B", "coord": "np"}, {"color": "W", "coord": "pk"}, {"color": "B", "coord": "cc"}, {"color": "W", "coord": "dc"}, {"color": "B", "coord": "cd"}, {"color": "W", "coord": "cf"}, {"color": "B", "coord": "ce"}, {"color": "W", "coord": "de"}, {"color": "B", "coord": "bf"}, {"color": "W", "coord": "cb"}, {"color": "B", "coord": "bb"}, {"color": "W", "coord": "be"}, {"color": "B", "coord": "db"}, {"color": "W", "coord": "bc"}, {"color": "B", "coord": "ca"}, {"color": "W", "coord": "bd"}, {"color": "B", "coord": "cb"}, {"color": "W", "coord": "bg"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "cg"}, {"color": "B", "coord": "fc"}, {"color": "W", "coord": "ff"}, {"color": "B", "coord": "hd"}, {"color": "W", "coord": "cn"}, {"color": "B", "coord": "fq"}, {"color": "W", "coord": "iq"}, {"color": "B", "coord": "kq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "go"}, {"color": "W", "coord": "io"}, {"color": "B", "coord": "gm"}, {"color": "W", "coord": "fn"}, {"color": "B", "coord": "gn"}, {"color": "W", "coord": "im"}, {"color": "B", "coord": "dm"}, {"color": "W", "coord": "lp"}, {"color": "B", "coord": "kp"}, {"color": "W", "coord": "ko"}, {"color": "B", "coord": "lq"}, {"color": "W", "coord": "dk"}, {"color": "B", "coord": "ek"}, {"color": "W", "coord": "el"}, {"color": "B", "coord": "dl"}, {"color": "W", "coord": "fk"}, {"color": "B", "coord": "ej"}, {"color": "W", "coord": "fl"}, {"color": "B", "coord": "dn"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "co"}, {"color": "W", "coord": "do"}, {"color": "B", "coord": "bn"}, {"color": "W", "coord": "en"}, {"color": "B", "coord": "bp"}, {"color": "W", "coord": "bl"}, {"color": "B", "coord": "bm"}, {"color": "W", "coord": "hl"}, {"color": "B", "coord": "ci"}, {"color": "W", "coord": "di"}, {"color": "B", "coord": "dj"}, {"color": "W", "coord": "cj"}, {"color": "B", "coord": "ei"}, {"color": "W", "coord": "dh"}, {"color": "B", "coord": "gi"}, {"color": "W", "coord": "fi"}, {"color": "B", "coord": "fj"}, {"color": "W", "coord": "gj"}, {"color": "B", "coord": "fh"}, {"color": "W", "coord": "eh"}, {"color": "B", "coord": "fi"}, {"color": "W", "coord": "bi"}, {"color": "B", "coord": "hj"}, {"color": "W", "coord": "gk"}, {"color": "B", "coord": "hg"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "br"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "bo"}, {"color": "W", "coord": "cr"}, {"color": "B", "coord": "aq"}, {"color": "W", "coord": "hf"}, {"color": "B", "coord": "if"}, {"color": "W", "coord": "he"}, {"color": "B", "coord": "ie"}, {"color": "W", "coord": "ig"}, {"color": "B", "coord": "ih"}, {"color": "W", "coord": "jg"}, {"color": "B", "coord": "gg"}, {"color": "W", "coord": "gd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "gc"}, {"color": "W", "coord": "fe"}, {"color": "B", "coord": "id"}, {"color": "W", "coord": "hh"}, {"color": "B", "coord": "hi"}, {"color": "W", "coord": "jh"}, {"color": "B", "coord": "jj"}, {"color": "W", "coord": "lh"}, {"color": "B", "coord": "jl"}, {"color": "W", "coord": "fp"}, {"color": "B", "coord": "lj"}, {"color": "W", "coord": "kk"}, {"color": "B", "coord": "ji"}, {"color": "W", "coord": "ii"}, {"color": "B", "coord": "fg"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "hk"}, {"color": "W", "coord": "me"}, {"color": "B", "coord": "md"}, {"color": "W", "coord": "le"}, {"color": "B", "coord": "jm"}, {"color": "W", "coord": "il"}, {"color": "B", "coord": "jk"}, {"color": "W", "coord": "jn"}, {"color": "B", "coord": "ld"}, {"color": "W", "coord": "oh"}, {"color": "B", "coord": "nj"}, {"color": "W", "coord": "pi"}, {"color": "B", "coord": "ln"}, {"color": "W", "coord": "kn"}, {"color": "B", "coord": "lm"}, {"color": "W", "coord": "lo"}, {"color": "B", "coord": "nn"}, {"color": "W", "coord": "pp"}, {"color": "B", "coord": "oq"}, {"color": "W", "coord": "mq"}, {"color": "B", "coord": "mr"}, {"color": "W", "coord": "re"}, {"color": "B", "coord": "qf"}, {"color": "W", "coord": "qc"}, {"color": "B", "coord": "qe"}, {"color": "W", "coord": "pc"}, {"color": "B", "coord": "nh"}, {"color": "W", "coord": "ng"}, {"color": "B", "coord": "mh"}, {"color": "W", "coord": "qd"}, {"color": "B", "coord": "mg"}, {"color": "W", "coord": "ne"}, {"color": "B", "coord": "oe"}, {"color": "W", "coord": "of"}, {"color": "B", "coord": "pg"}, {"color": "W", "coord": "pf"}, {"color": "B", "coord": "og"}, {"color": "W", "coord": "nf"}, {"color": "B", "coord": "qg"}, {"color": "W", "coord": "pe"}, {"color": "B", "coord": "od"}, {"color": "W", "coord": "ke"}, {"color": "B", "coord": "kd"}, {"color": "W", "coord": "rf"}, {"color": "B", "coord": "rg"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "rh"}, {"color": "W", "coord": "ri"}, {"color": "B", "coord": "ph"}, {"color": "W", "coord": "oi"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "qj"}, {"color": "B", "coord": "rj"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "gp"}, {"color": "W", "coord": "gl"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "si"}, {"color": "B", "coord": "sf"}, {"color": "W", "coord": "rd"}, {"color": "B", "coord": "kf"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "je"}, {"color": "W", "coord": "sg"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "cl"}, {"color": "B", "coord": "cm"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ir"}, {"color": "W", "coord": "hq"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "ap"}, {"color": "B", "coord": "ao"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ip"}, {"color": "W", "coord": "jp"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "am"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "dr"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "em"}, {"color": "W", "coord": "fm"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "sh"}, {"color": "B", "coord": "gq"}, {"color": "W", "coord": "hp"}, {"color": "B", "coord": "eq"}, {"color": "W", "coord": "fo"}, {"color": "B", "coord": "ep"}, {"color": "W", "coord": "eo"}, {"color": "B", "coord": "cs"}, {"color": "W", "coord": "nk"}, {"color": "B", "coord": "mj"}, {"color": "W", "coord": "ni"}, {"color": "B", "coord": "mi"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "qr"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "mb"}, {"color": "W", "coord": "mp"}, {"color": "B", "coord": "hn"}, {"color": "W", "coord": "in"}, {"color": "B", "coord": "rq"}, {"color": "W", "coord": "rp"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "lf"}, {"color": "B", "coord": "lg"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "hr"}, {"color": "W", "coord": "jr"}, {"color": "B", "coord": "lr"}, {"color": "W", "coord": "jq"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "kg"}, {"color": "B", "coord": "jf"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "sr"}, {"color": "W", "coord": "nc"}, {"color": "B", "coord": "pn"}, {"color": "W", "coord": "no"}, {"color": "B", "coord": "op"}, {"color": "W", "coord": "qn"}, {"color": "B", "coord": "pm"}, {"color": "W", "coord": "qm"}, {"color": "B", "coord": "oc"}, {"color": "W", "coord": "ob"}, {"color": "B", "coord": "mc"}, {"color": "W", "coord": "oo"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "nr"}, {"color": "B", "coord": "nq"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "or"}, {"color": "W", "coord": "km"}], "options": [{"coord": "pl", "color": "B", "winrate": "94.9%", "comment": "/\"jueyi黑94.9% | +4.0目", "moves": [{"color": "B", "coord": "pl"}, {"color": "W", "coord": "ll"}, {"color": "B", "coord": "ml"}, {"color": "W", "coord": "mk"}, {"color": "B", "coord": "po"}, {"color": "W", "coord": "qp"}, {"color": "B", "coord": "ql"}, {"color": "W", "coord": "rl"}, {"color": "B", "coord": "ok"}, {"color": "W", "coord": "nl"}], "is_correct": true, "sort_order": 0, "letter": "A"}, {"coord": "kl", "color": "B", "winrate": "67.9%", "comment": "/\"jueyi黑67.9% | +1.0目", "moves": [{"color": "B", "coord": "kl"}, {"color": "W", "coord": "mn"}, {"color": "B", "coord": "mm"}, {"color": "W", "coord": "on"}, {"color": "B", "coord": "ol"}, {"color": "W", "coord": "om"}, {"color": "B", "coord": "sp"}, {"color": "W", "coord": "ro"}, {"color": "B", "coord": "nl"}, {"color": "W", "coord": "pl"}], "is_correct": false, "sort_order": 2, "letter": "B"}, {"coord": "nl", "color": "B", "winrate": "69.9%", "comment": "/\"jueyi黑69.9% | +1.0目", "moves": [{"color": "B", "coord": "nl"}, {"color": "W", "coord": "mk"}, {"color": "B", "coord": "ll"}, {"color": "W", "coord": "ol"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "po"}, {"color": "B", "coord": "om"}, {"color": "W", "coord": "pl"}, {"color": "B", "coord": "oj"}], "is_correct": false, "sort_order": 1, "letter": "C"}], "practical_move": {"coord": "kl", "color": "B", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "B", "coord": "kl"}, {"color": "W", "coord": "mn"}, {"color": "B", "coord": "mm"}, {"color": "W", "coord": "on"}, {"color": "B", "coord": "ol"}, {"color": "W", "coord": "om"}, {"color": "B", "coord": "nl"}, {"color": "W", "coord": "pl"}, {"color": "B", "coord": "ok"}, {"color": "W", "coord": "nm"}, {"color": "B", "coord": "oj"}, {"color": "W", "coord": "ab"}, {"color": "B", "coord": "ec"}, {"color": "W", "coord": "ee"}, {"color": "B", "coord": "sp"}]}}, {"index": 3, "move_num": 263, "phase": "endgame", "difficulty": "easy", "is_blunder": true, "position": [{"color": "B", "coord": "pd"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "dp"}, {"color": "B", "coord": "nd"}, {"color": "W", "coord": "qo"}, {"color": "B", "coord": "np"}, {"color": "W", "coord": "pk"}, {"color": "B", "coord": "cc"}, {"color": "W", "coord": "dc"}, {"color": "B", "coord": "cd"}, {"color": "W", "coord": "cf"}, {"color": "B", "coord": "ce"}, {"color": "W", "coord": "de"}, {"color": "B", "coord": "bf"}, {"color": "W", "coord": "cb"}, {"color": "B", "coord": "bb"}, {"color": "W", "coord": "be"}, {"color": "B", "coord": "db"}, {"color": "W", "coord": "bc"}, {"color": "B", "coord": "ca"}, {"color": "W", "coord": "bd"}, {"color": "B", "coord": "cb"}, {"color": "W", "coord": "bg"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "cg"}, {"color": "B", "coord": "fc"}, {"color": "W", "coord": "ff"}, {"color": "B", "coord": "hd"}, {"color": "W", "coord": "cn"}, {"color": "B", "coord": "fq"}, {"color": "W", "coord": "iq"}, {"color": "B", "coord": "kq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "go"}, {"color": "W", "coord": "io"}, {"color": "B", "coord": "gm"}, {"color": "W", "coord": "fn"}, {"color": "B", "coord": "gn"}, {"color": "W", "coord": "im"}, {"color": "B", "coord": "dm"}, {"color": "W", "coord": "lp"}, {"color": "B", "coord": "kp"}, {"color": "W", "coord": "ko"}, {"color": "B", "coord": "lq"}, {"color": "W", "coord": "dk"}, {"color": "B", "coord": "ek"}, {"color": "W", "coord": "el"}, {"color": "B", "coord": "dl"}, {"color": "W", "coord": "fk"}, {"color": "B", "coord": "ej"}, {"color": "W", "coord": "fl"}, {"color": "B", "coord": "dn"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "co"}, {"color": "W", "coord": "do"}, {"color": "B", "coord": "bn"}, {"color": "W", "coord": "en"}, {"color": "B", "coord": "bp"}, {"color": "W", "coord": "bl"}, {"color": "B", "coord": "bm"}, {"color": "W", "coord": "hl"}, {"color": "B", "coord": "ci"}, {"color": "W", "coord": "di"}, {"color": "B", "coord": "dj"}, {"color": "W", "coord": "cj"}, {"color": "B", "coord": "ei"}, {"color": "W", "coord": "dh"}, {"color": "B", "coord": "gi"}, {"color": "W", "coord": "fi"}, {"color": "B", "coord": "fj"}, {"color": "W", "coord": "gj"}, {"color": "B", "coord": "fh"}, {"color": "W", "coord": "eh"}, {"color": "B", "coord": "fi"}, {"color": "W", "coord": "bi"}, {"color": "B", "coord": "hj"}, {"color": "W", "coord": "gk"}, {"color": "B", "coord": "hg"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "br"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "bo"}, {"color": "W", "coord": "cr"}, {"color": "B", "coord": "aq"}, {"color": "W", "coord": "hf"}, {"color": "B", "coord": "if"}, {"color": "W", "coord": "he"}, {"color": "B", "coord": "ie"}, {"color": "W", "coord": "ig"}, {"color": "B", "coord": "ih"}, {"color": "W", "coord": "jg"}, {"color": "B", "coord": "gg"}, {"color": "W", "coord": "gd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "gc"}, {"color": "W", "coord": "fe"}, {"color": "B", "coord": "id"}, {"color": "W", "coord": "hh"}, {"color": "B", "coord": "hi"}, {"color": "W", "coord": "jh"}, {"color": "B", "coord": "jj"}, {"color": "W", "coord": "lh"}, {"color": "B", "coord": "jl"}, {"color": "W", "coord": "fp"}, {"color": "B", "coord": "lj"}, {"color": "W", "coord": "kk"}, {"color": "B", "coord": "ji"}, {"color": "W", "coord": "ii"}, {"color": "B", "coord": "fg"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "hk"}, {"color": "W", "coord": "me"}, {"color": "B", "coord": "md"}, {"color": "W", "coord": "le"}, {"color": "B", "coord": "jm"}, {"color": "W", "coord": "il"}, {"color": "B", "coord": "jk"}, {"color": "W", "coord": "jn"}, {"color": "B", "coord": "ld"}, {"color": "W", "coord": "oh"}, {"color": "B", "coord": "nj"}, {"color": "W", "coord": "pi"}, {"color": "B", "coord": "ln"}, {"color": "W", "coord": "kn"}, {"color": "B", "coord": "lm"}, {"color": "W", "coord": "lo"}, {"color": "B", "coord": "nn"}, {"color": "W", "coord": "pp"}, {"color": "B", "coord": "oq"}, {"color": "W", "coord": "mq"}, {"color": "B", "coord": "mr"}, {"color": "W", "coord": "re"}, {"color": "B", "coord": "qf"}, {"color": "W", "coord": "qc"}, {"color": "B", "coord": "qe"}, {"color": "W", "coord": "pc"}, {"color": "B", "coord": "nh"}, {"color": "W", "coord": "ng"}, {"color": "B", "coord": "mh"}, {"color": "W", "coord": "qd"}, {"color": "B", "coord": "mg"}, {"color": "W", "coord": "ne"}, {"color": "B", "coord": "oe"}, {"color": "W", "coord": "of"}, {"color": "B", "coord": "pg"}, {"color": "W", "coord": "pf"}, {"color": "B", "coord": "og"}, {"color": "W", "coord": "nf"}, {"color": "B", "coord": "qg"}, {"color": "W", "coord": "pe"}, {"color": "B", "coord": "od"}, {"color": "W", "coord": "ke"}, {"color": "B", "coord": "kd"}, {"color": "W", "coord": "rf"}, {"color": "B", "coord": "rg"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "rh"}, {"color": "W", "coord": "ri"}, {"color": "B", "coord": "ph"}, {"color": "W", "coord": "oi"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "qj"}, {"color": "B", "coord": "rj"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "gp"}, {"color": "W", "coord": "gl"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "si"}, {"color": "B", "coord": "sf"}, {"color": "W", "coord": "rd"}, {"color": "B", "coord": "kf"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "je"}, {"color": "W", "coord": "sg"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "cl"}, {"color": "B", "coord": "cm"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ir"}, {"color": "W", "coord": "hq"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "ap"}, {"color": "B", "coord": "ao"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ip"}, {"color": "W", "coord": "jp"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "am"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "dr"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "em"}, {"color": "W", "coord": "fm"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "sh"}, {"color": "B", "coord": "gq"}, {"color": "W", "coord": "hp"}, {"color": "B", "coord": "eq"}, {"color": "W", "coord": "fo"}, {"color": "B", "coord": "ep"}, {"color": "W", "coord": "eo"}, {"color": "B", "coord": "cs"}, {"color": "W", "coord": "nk"}, {"color": "B", "coord": "mj"}, {"color": "W", "coord": "ni"}, {"color": "B", "coord": "mi"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "qr"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "mb"}, {"color": "W", "coord": "mp"}, {"color": "B", "coord": "hn"}, {"color": "W", "coord": "in"}, {"color": "B", "coord": "rq"}, {"color": "W", "coord": "rp"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "lf"}, {"color": "B", "coord": "lg"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "hr"}, {"color": "W", "coord": "jr"}, {"color": "B", "coord": "lr"}, {"color": "W", "coord": "jq"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "kg"}, {"color": "B", "coord": "jf"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "sr"}, {"color": "W", "coord": "nc"}, {"color": "B", "coord": "pn"}, {"color": "W", "coord": "no"}, {"color": "B", "coord": "op"}, {"color": "W", "coord": "qn"}, {"color": "B", "coord": "pm"}, {"color": "W", "coord": "qm"}, {"color": "B", "coord": "oc"}, {"color": "W", "coord": "ob"}, {"color": "B", "coord": "mc"}, {"color": "W", "coord": "oo"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "nr"}, {"color": "B", "coord": "nq"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "or"}, {"color": "W", "coord": "km"}, {"color": "B", "coord": "kl"}, {"color": "W", "coord": "mn"}, {"color": "B", "coord": "mm"}, {"color": "W", "coord": "on"}, {"color": "B", "coord": "ol"}, {"color": "W", "coord": "om"}, {"color": "B", "coord": "nl"}, {"color": "W", "coord": "pl"}, {"color": "B", "coord": "ok"}, {"color": "W", "coord": "nm"}, {"color": "B", "coord": "oj"}, {"color": "W", "coord": "ab"}, {"color": "B", "coord": "ec"}, {"color": "W", "coord": "ee"}, {"color": "B", "coord": "sp"}], "options": [{"coord": "eb", "color": "W", "winrate": "42.5%", "comment": "/\"jueyi白42.5% | -0.5目", "moves": [{"color": "W", "coord": "eb"}, {"color": "B", "coord": "fb"}, {"color": "W", "coord": "so"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "jc"}, {"color": "B", "coord": "jd"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "pb"}, {"color": "W", "coord": "qb"}, {"color": "B", "coord": "qp"}], "is_correct": false, "sort_order": 2, "letter": "A"}, {"coord": "so", "color": "W", "winrate": "81.6%", "comment": "/\"jueyi白81.6% | +1.0目", "moves": [{"color": "W", "coord": "so"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "jc"}, {"color": "B", "coord": "jd"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "pb"}, {"color": "W", "coord": "qb"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ma"}, {"color": "B", "coord": "la"}], "is_correct": true, "sort_order": 0, "letter": "B"}, {"coord": "ro", "color": "W", "winrate": "45.1%", "comment": "/\"jueyi白45.1% | -0.5目", "moves": [{"color": "W", "coord": "ro"}, {"color": "B", "coord": "pb"}, {"color": "W", "coord": "qb"}, {"color": "B", "coord": "na"}, {"color": "W", "coord": "pa"}, {"color": "B", "coord": "ac"}, {"color": "W", "coord": "ad"}, {"color": "B", "coord": "gr"}, {"color": "W", "coord": "ks"}], "is_correct": false, "sort_order": 1, "letter": "C"}], "practical_move": {"coord": "ro", "color": "W", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "W", "coord": "ro"}, {"color": "B", "coord": "pb"}, {"color": "W", "coord": "qb"}, {"color": "B", "coord": "na"}, {"color": "W", "coord": "pa"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ik"}, {"color": "B", "coord": "ij"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "ac"}, {"color": "W", "coord": "ad"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "eb"}, {"color": "B", "coord": "fb"}, {"color": "W", "coord": "qq"}]}}, {"index": 4, "move_num": 275, "phase": "endgame", "difficulty": "easy", "is_blunder": true, "position": [{"color": "B", "coord": "pd"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "dp"}, {"color": "B", "coord": "nd"}, {"color": "W", "coord": "qo"}, {"color": "B", "coord": "np"}, {"color": "W", "coord": "pk"}, {"color": "B", "coord": "cc"}, {"color": "W", "coord": "dc"}, {"color": "B", "coord": "cd"}, {"color": "W", "coord": "cf"}, {"color": "B", "coord": "ce"}, {"color": "W", "coord": "de"}, {"color": "B", "coord": "bf"}, {"color": "W", "coord": "cb"}, {"color": "B", "coord": "bb"}, {"color": "W", "coord": "be"}, {"color": "B", "coord": "db"}, {"color": "W", "coord": "bc"}, {"color": "B", "coord": "ca"}, {"color": "W", "coord": "bd"}, {"color": "B", "coord": "cb"}, {"color": "W", "coord": "bg"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "cg"}, {"color": "B", "coord": "fc"}, {"color": "W", "coord": "ff"}, {"color": "B", "coord": "hd"}, {"color": "W", "coord": "cn"}, {"color": "B", "coord": "fq"}, {"color": "W", "coord": "iq"}, {"color": "B", "coord": "kq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "go"}, {"color": "W", "coord": "io"}, {"color": "B", "coord": "gm"}, {"color": "W", "coord": "fn"}, {"color": "B", "coord": "gn"}, {"color": "W", "coord": "im"}, {"color": "B", "coord": "dm"}, {"color": "W", "coord": "lp"}, {"color": "B", "coord": "kp"}, {"color": "W", "coord": "ko"}, {"color": "B", "coord": "lq"}, {"color": "W", "coord": "dk"}, {"color": "B", "coord": "ek"}, {"color": "W", "coord": "el"}, {"color": "B", "coord": "dl"}, {"color": "W", "coord": "fk"}, {"color": "B", "coord": "ej"}, {"color": "W", "coord": "fl"}, {"color": "B", "coord": "dn"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "co"}, {"color": "W", "coord": "do"}, {"color": "B", "coord": "bn"}, {"color": "W", "coord": "en"}, {"color": "B", "coord": "bp"}, {"color": "W", "coord": "bl"}, {"color": "B", "coord": "bm"}, {"color": "W", "coord": "hl"}, {"color": "B", "coord": "ci"}, {"color": "W", "coord": "di"}, {"color": "B", "coord": "dj"}, {"color": "W", "coord": "cj"}, {"color": "B", "coord": "ei"}, {"color": "W", "coord": "dh"}, {"color": "B", "coord": "gi"}, {"color": "W", "coord": "fi"}, {"color": "B", "coord": "fj"}, {"color": "W", "coord": "gj"}, {"color": "B", "coord": "fh"}, {"color": "W", "coord": "eh"}, {"color": "B", "coord": "fi"}, {"color": "W", "coord": "bi"}, {"color": "B", "coord": "hj"}, {"color": "W", "coord": "gk"}, {"color": "B", "coord": "hg"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "br"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "bo"}, {"color": "W", "coord": "cr"}, {"color": "B", "coord": "aq"}, {"color": "W", "coord": "hf"}, {"color": "B", "coord": "if"}, {"color": "W", "coord": "he"}, {"color": "B", "coord": "ie"}, {"color": "W", "coord": "ig"}, {"color": "B", "coord": "ih"}, {"color": "W", "coord": "jg"}, {"color": "B", "coord": "gg"}, {"color": "W", "coord": "gd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "gc"}, {"color": "W", "coord": "fe"}, {"color": "B", "coord": "id"}, {"color": "W", "coord": "hh"}, {"color": "B", "coord": "hi"}, {"color": "W", "coord": "jh"}, {"color": "B", "coord": "jj"}, {"color": "W", "coord": "lh"}, {"color": "B", "coord": "jl"}, {"color": "W", "coord": "fp"}, {"color": "B", "coord": "lj"}, {"color": "W", "coord": "kk"}, {"color": "B", "coord": "ji"}, {"color": "W", "coord": "ii"}, {"color": "B", "coord": "fg"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "hk"}, {"color": "W", "coord": "me"}, {"color": "B", "coord": "md"}, {"color": "W", "coord": "le"}, {"color": "B", "coord": "jm"}, {"color": "W", "coord": "il"}, {"color": "B", "coord": "jk"}, {"color": "W", "coord": "jn"}, {"color": "B", "coord": "ld"}, {"color": "W", "coord": "oh"}, {"color": "B", "coord": "nj"}, {"color": "W", "coord": "pi"}, {"color": "B", "coord": "ln"}, {"color": "W", "coord": "kn"}, {"color": "B", "coord": "lm"}, {"color": "W", "coord": "lo"}, {"color": "B", "coord": "nn"}, {"color": "W", "coord": "pp"}, {"color": "B", "coord": "oq"}, {"color": "W", "coord": "mq"}, {"color": "B", "coord": "mr"}, {"color": "W", "coord": "re"}, {"color": "B", "coord": "qf"}, {"color": "W", "coord": "qc"}, {"color": "B", "coord": "qe"}, {"color": "W", "coord": "pc"}, {"color": "B", "coord": "nh"}, {"color": "W", "coord": "ng"}, {"color": "B", "coord": "mh"}, {"color": "W", "coord": "qd"}, {"color": "B", "coord": "mg"}, {"color": "W", "coord": "ne"}, {"color": "B", "coord": "oe"}, {"color": "W", "coord": "of"}, {"color": "B", "coord": "pg"}, {"color": "W", "coord": "pf"}, {"color": "B", "coord": "og"}, {"color": "W", "coord": "nf"}, {"color": "B", "coord": "qg"}, {"color": "W", "coord": "pe"}, {"color": "B", "coord": "od"}, {"color": "W", "coord": "ke"}, {"color": "B", "coord": "kd"}, {"color": "W", "coord": "rf"}, {"color": "B", "coord": "rg"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "rh"}, {"color": "W", "coord": "ri"}, {"color": "B", "coord": "ph"}, {"color": "W", "coord": "oi"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "qj"}, {"color": "B", "coord": "rj"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "gp"}, {"color": "W", "coord": "gl"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "si"}, {"color": "B", "coord": "sf"}, {"color": "W", "coord": "rd"}, {"color": "B", "coord": "kf"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "je"}, {"color": "W", "coord": "sg"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "cl"}, {"color": "B", "coord": "cm"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ir"}, {"color": "W", "coord": "hq"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "ap"}, {"color": "B", "coord": "ao"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ip"}, {"color": "W", "coord": "jp"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "am"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "dr"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "em"}, {"color": "W", "coord": "fm"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "sh"}, {"color": "B", "coord": "gq"}, {"color": "W", "coord": "hp"}, {"color": "B", "coord": "eq"}, {"color": "W", "coord": "fo"}, {"color": "B", "coord": "ep"}, {"color": "W", "coord": "eo"}, {"color": "B", "coord": "cs"}, {"color": "W", "coord": "nk"}, {"color": "B", "coord": "mj"}, {"color": "W", "coord": "ni"}, {"color": "B", "coord": "mi"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "qr"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "mb"}, {"color": "W", "coord": "mp"}, {"color": "B", "coord": "hn"}, {"color": "W", "coord": "in"}, {"color": "B", "coord": "rq"}, {"color": "W", "coord": "rp"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "lf"}, {"color": "B", "coord": "lg"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "hr"}, {"color": "W", "coord": "jr"}, {"color": "B", "coord": "lr"}, {"color": "W", "coord": "jq"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "kg"}, {"color": "B", "coord": "jf"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "sr"}, {"color": "W", "coord": "nc"}, {"color": "B", "coord": "pn"}, {"color": "W", "coord": "no"}, {"color": "B", "coord": "op"}, {"color": "W", "coord": "qn"}, {"color": "B", "coord": "pm"}, {"color": "W", "coord": "qm"}, {"color": "B", "coord": "oc"}, {"color": "W", "coord": "ob"}, {"color": "B", "coord": "mc"}, {"color": "W", "coord": "oo"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "nr"}, {"color": "B", "coord": "nq"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "or"}, {"color": "W", "coord": "km"}, {"color": "B", "coord": "kl"}, {"color": "W", "coord": "mn"}, {"color": "B", "coord": "mm"}, {"color": "W", "coord": "on"}, {"color": "B", "coord": "ol"}, {"color": "W", "coord": "om"}, {"color": "B", "coord": "nl"}, {"color": "W", "coord": "pl"}, {"color": "B", "coord": "ok"}, {"color": "W", "coord": "nm"}, {"color": "B", "coord": "oj"}, {"color": "W", "coord": "ab"}, {"color": "B", "coord": "ec"}, {"color": "W", "coord": "ee"}, {"color": "B", "coord": "sp"}, {"color": "W", "coord": "ro"}, {"color": "B", "coord": "pb"}, {"color": "W", "coord": "qb"}, {"color": "B", "coord": "na"}, {"color": "W", "coord": "pa"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ik"}, {"color": "B", "coord": "ij"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "ac"}, {"color": "W", "coord": "ad"}, {"color": "B", "coord": "qp"}], "options": [{"coord": "eb", "color": "W", "winrate": "44.0%", "comment": "/\"jueyi白44.0% | -0.5目", "moves": [{"color": "W", "coord": "eb"}, {"color": "B", "coord": "fb"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "pj"}, {"color": "W", "coord": "po"}, {"color": "B", "coord": "gr"}, {"color": "W", "coord": "is"}, {"color": "B", "coord": "hs"}, {"color": "W", "coord": "ks"}, {"color": "B", "coord": "ls"}], "is_correct": false, "sort_order": 2, "letter": "A"}, {"coord": "oa", "color": "W", "winrate": "49.3%", "comment": "/\"jueyi白49.3% | -0.5目", "moves": [{"color": "W", "coord": "oa"}, {"color": "B", "coord": "ma"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "gr"}, {"color": "W", "coord": "ks"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ls"}, {"color": "B", "coord": "ms"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "so"}], "is_correct": false, "sort_order": 1, "letter": "B"}, {"coord": "is", "color": "W", "winrate": "85.9%", "comment": "/\"jueyi白85.9% | +1.0目", "moves": [{"color": "W", "coord": "is"}, {"color": "B", "coord": "gr"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "pj"}, {"color": "W", "coord": "po"}, {"color": "B", "coord": "hs"}, {"color": "W", "coord": "ks"}, {"color": "B", "coord": "ls"}, {"color": "W", "coord": "so"}, {"color": "B", "coord": "ma"}], "is_correct": true, "sort_order": 0, "letter": "C"}], "practical_move": {"coord": "eb", "color": "W", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "W", "coord": "eb"}, {"color": "B", "coord": "fb"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "ma"}, {"color": "W", "coord": "oa"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ea"}, {"color": "B", "coord": "fa"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "al"}, {"color": "W", "coord": "ak"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "gr"}, {"color": "B", "coord": "fr"}, {"color": "W", "coord": "qq"}]}}, {"index": 5, "move_num": 277, "phase": "endgame", "difficulty": "easy", "is_blunder": true, "position": [{"color": "B", "coord": "pd"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "dp"}, {"color": "B", "coord": "nd"}, {"color": "W", "coord": "qo"}, {"color": "B", "coord": "np"}, {"color": "W", "coord": "pk"}, {"color": "B", "coord": "cc"}, {"color": "W", "coord": "dc"}, {"color": "B", "coord": "cd"}, {"color": "W", "coord": "cf"}, {"color": "B", "coord": "ce"}, {"color": "W", "coord": "de"}, {"color": "B", "coord": "bf"}, {"color": "W", "coord": "cb"}, {"color": "B", "coord": "bb"}, {"color": "W", "coord": "be"}, {"color": "B", "coord": "db"}, {"color": "W", "coord": "bc"}, {"color": "B", "coord": "ca"}, {"color": "W", "coord": "bd"}, {"color": "B", "coord": "cb"}, {"color": "W", "coord": "bg"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "cg"}, {"color": "B", "coord": "fc"}, {"color": "W", "coord": "ff"}, {"color": "B", "coord": "hd"}, {"color": "W", "coord": "cn"}, {"color": "B", "coord": "fq"}, {"color": "W", "coord": "iq"}, {"color": "B", "coord": "kq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "go"}, {"color": "W", "coord": "io"}, {"color": "B", "coord": "gm"}, {"color": "W", "coord": "fn"}, {"color": "B", "coord": "gn"}, {"color": "W", "coord": "im"}, {"color": "B", "coord": "dm"}, {"color": "W", "coord": "lp"}, {"color": "B", "coord": "kp"}, {"color": "W", "coord": "ko"}, {"color": "B", "coord": "lq"}, {"color": "W", "coord": "dk"}, {"color": "B", "coord": "ek"}, {"color": "W", "coord": "el"}, {"color": "B", "coord": "dl"}, {"color": "W", "coord": "fk"}, {"color": "B", "coord": "ej"}, {"color": "W", "coord": "fl"}, {"color": "B", "coord": "dn"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "co"}, {"color": "W", "coord": "do"}, {"color": "B", "coord": "bn"}, {"color": "W", "coord": "en"}, {"color": "B", "coord": "bp"}, {"color": "W", "coord": "bl"}, {"color": "B", "coord": "bm"}, {"color": "W", "coord": "hl"}, {"color": "B", "coord": "ci"}, {"color": "W", "coord": "di"}, {"color": "B", "coord": "dj"}, {"color": "W", "coord": "cj"}, {"color": "B", "coord": "ei"}, {"color": "W", "coord": "dh"}, {"color": "B", "coord": "gi"}, {"color": "W", "coord": "fi"}, {"color": "B", "coord": "fj"}, {"color": "W", "coord": "gj"}, {"color": "B", "coord": "fh"}, {"color": "W", "coord": "eh"}, {"color": "B", "coord": "fi"}, {"color": "W", "coord": "bi"}, {"color": "B", "coord": "hj"}, {"color": "W", "coord": "gk"}, {"color": "B", "coord": "hg"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "br"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "bo"}, {"color": "W", "coord": "cr"}, {"color": "B", "coord": "aq"}, {"color": "W", "coord": "hf"}, {"color": "B", "coord": "if"}, {"color": "W", "coord": "he"}, {"color": "B", "coord": "ie"}, {"color": "W", "coord": "ig"}, {"color": "B", "coord": "ih"}, {"color": "W", "coord": "jg"}, {"color": "B", "coord": "gg"}, {"color": "W", "coord": "gd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "gc"}, {"color": "W", "coord": "fe"}, {"color": "B", "coord": "id"}, {"color": "W", "coord": "hh"}, {"color": "B", "coord": "hi"}, {"color": "W", "coord": "jh"}, {"color": "B", "coord": "jj"}, {"color": "W", "coord": "lh"}, {"color": "B", "coord": "jl"}, {"color": "W", "coord": "fp"}, {"color": "B", "coord": "lj"}, {"color": "W", "coord": "kk"}, {"color": "B", "coord": "ji"}, {"color": "W", "coord": "ii"}, {"color": "B", "coord": "fg"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "hk"}, {"color": "W", "coord": "me"}, {"color": "B", "coord": "md"}, {"color": "W", "coord": "le"}, {"color": "B", "coord": "jm"}, {"color": "W", "coord": "il"}, {"color": "B", "coord": "jk"}, {"color": "W", "coord": "jn"}, {"color": "B", "coord": "ld"}, {"color": "W", "coord": "oh"}, {"color": "B", "coord": "nj"}, {"color": "W", "coord": "pi"}, {"color": "B", "coord": "ln"}, {"color": "W", "coord": "kn"}, {"color": "B", "coord": "lm"}, {"color": "W", "coord": "lo"}, {"color": "B", "coord": "nn"}, {"color": "W", "coord": "pp"}, {"color": "B", "coord": "oq"}, {"color": "W", "coord": "mq"}, {"color": "B", "coord": "mr"}, {"color": "W", "coord": "re"}, {"color": "B", "coord": "qf"}, {"color": "W", "coord": "qc"}, {"color": "B", "coord": "qe"}, {"color": "W", "coord": "pc"}, {"color": "B", "coord": "nh"}, {"color": "W", "coord": "ng"}, {"color": "B", "coord": "mh"}, {"color": "W", "coord": "qd"}, {"color": "B", "coord": "mg"}, {"color": "W", "coord": "ne"}, {"color": "B", "coord": "oe"}, {"color": "W", "coord": "of"}, {"color": "B", "coord": "pg"}, {"color": "W", "coord": "pf"}, {"color": "B", "coord": "og"}, {"color": "W", "coord": "nf"}, {"color": "B", "coord": "qg"}, {"color": "W", "coord": "pe"}, {"color": "B", "coord": "od"}, {"color": "W", "coord": "ke"}, {"color": "B", "coord": "kd"}, {"color": "W", "coord": "rf"}, {"color": "B", "coord": "rg"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "rh"}, {"color": "W", "coord": "ri"}, {"color": "B", "coord": "ph"}, {"color": "W", "coord": "oi"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "qj"}, {"color": "B", "coord": "rj"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "gp"}, {"color": "W", "coord": "gl"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "si"}, {"color": "B", "coord": "sf"}, {"color": "W", "coord": "rd"}, {"color": "B", "coord": "kf"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "je"}, {"color": "W", "coord": "sg"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "cl"}, {"color": "B", "coord": "cm"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ir"}, {"color": "W", "coord": "hq"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "ap"}, {"color": "B", "coord": "ao"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ip"}, {"color": "W", "coord": "jp"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "am"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "dr"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "em"}, {"color": "W", "coord": "fm"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "sh"}, {"color": "B", "coord": "gq"}, {"color": "W", "coord": "hp"}, {"color": "B", "coord": "eq"}, {"color": "W", "coord": "fo"}, {"color": "B", "coord": "ep"}, {"color": "W", "coord": "eo"}, {"color": "B", "coord": "cs"}, {"color": "W", "coord": "nk"}, {"color": "B", "coord": "mj"}, {"color": "W", "coord": "ni"}, {"color": "B", "coord": "mi"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "qr"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "mb"}, {"color": "W", "coord": "mp"}, {"color": "B", "coord": "hn"}, {"color": "W", "coord": "in"}, {"color": "B", "coord": "rq"}, {"color": "W", "coord": "rp"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "lf"}, {"color": "B", "coord": "lg"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "hr"}, {"color": "W", "coord": "jr"}, {"color": "B", "coord": "lr"}, {"color": "W", "coord": "jq"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "kg"}, {"color": "B", "coord": "jf"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "sr"}, {"color": "W", "coord": "nc"}, {"color": "B", "coord": "pn"}, {"color": "W", "coord": "no"}, {"color": "B", "coord": "op"}, {"color": "W", "coord": "qn"}, {"color": "B", "coord": "pm"}, {"color": "W", "coord": "qm"}, {"color": "B", "coord": "oc"}, {"color": "W", "coord": "ob"}, {"color": "B", "coord": "mc"}, {"color": "W", "coord": "oo"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "nr"}, {"color": "B", "coord": "nq"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "or"}, {"color": "W", "coord": "km"}, {"color": "B", "coord": "kl"}, {"color": "W", "coord": "mn"}, {"color": "B", "coord": "mm"}, {"color": "W", "coord": "on"}, {"color": "B", "coord": "ol"}, {"color": "W", "coord": "om"}, {"color": "B", "coord": "nl"}, {"color": "W", "coord": "pl"}, {"color": "B", "coord": "ok"}, {"color": "W", "coord": "nm"}, {"color": "B", "coord": "oj"}, {"color": "W", "coord": "ab"}, {"color": "B", "coord": "ec"}, {"color": "W", "coord": "ee"}, {"color": "B", "coord": "sp"}, {"color": "W", "coord": "ro"}, {"color": "B", "coord": "pb"}, {"color": "W", "coord": "qb"}, {"color": "B", "coord": "na"}, {"color": "W", "coord": "pa"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ik"}, {"color": "B", "coord": "ij"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "ac"}, {"color": "W", "coord": "ad"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "eb"}, {"color": "B", "coord": "fb"}], "options": [{"coord": "is", "color": "W", "winrate": "85.0%", "comment": "/\"jueyi白85.0% | +1.0目", "moves": [{"color": "W", "coord": "is"}, {"color": "B", "coord": "gr"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "pj"}, {"color": "W", "coord": "po"}, {"color": "B", "coord": "hs"}, {"color": "W", "coord": "ks"}, {"color": "B", "coord": "ls"}, {"color": "W", "coord": "so"}, {"color": "B", "coord": "ma"}], "is_correct": true, "sort_order": 0, "letter": "A"}, {"coord": "qq", "color": "W", "winrate": "53.1%", "comment": "/\"jueyi白53.1% | +0.5目", "moves": [{"color": "W", "coord": "qq"}, {"color": "B", "coord": "pj"}, {"color": "W", "coord": "po"}, {"color": "B", "coord": "is"}, {"color": "W", "coord": "gr"}, {"color": "B", "coord": "fr"}, {"color": "W", "coord": "ls"}, {"color": "B", "coord": "ms"}, {"color": "W", "coord": "kr"}, {"color": "B", "coord": "ks"}], "is_correct": false, "sort_order": 1, "letter": "B"}], "practical_move": {"coord": "qq", "color": "W", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "W", "coord": "qq"}, {"color": "B", "coord": "ma"}, {"color": "W", "coord": "oa"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ea"}, {"color": "B", "coord": "fa"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "al"}, {"color": "W", "coord": "ak"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "gr"}, {"color": "B", "coord": "fr"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "gs"}, {"color": "W", "coord": "ls"}]}}, {"index": 6, "move_num": 280, "phase": "endgame", "difficulty": "easy", "is_blunder": true, "position": [{"color": "B", "coord": "pd"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "dp"}, {"color": "B", "coord": "nd"}, {"color": "W", "coord": "qo"}, {"color": "B", "coord": "np"}, {"color": "W", "coord": "pk"}, {"color": "B", "coord": "cc"}, {"color": "W", "coord": "dc"}, {"color": "B", "coord": "cd"}, {"color": "W", "coord": "cf"}, {"color": "B", "coord": "ce"}, {"color": "W", "coord": "de"}, {"color": "B", "coord": "bf"}, {"color": "W", "coord": "cb"}, {"color": "B", "coord": "bb"}, {"color": "W", "coord": "be"}, {"color": "B", "coord": "db"}, {"color": "W", "coord": "bc"}, {"color": "B", "coord": "ca"}, {"color": "W", "coord": "bd"}, {"color": "B", "coord": "cb"}, {"color": "W", "coord": "bg"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "cg"}, {"color": "B", "coord": "fc"}, {"color": "W", "coord": "ff"}, {"color": "B", "coord": "hd"}, {"color": "W", "coord": "cn"}, {"color": "B", "coord": "fq"}, {"color": "W", "coord": "iq"}, {"color": "B", "coord": "kq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "go"}, {"color": "W", "coord": "io"}, {"color": "B", "coord": "gm"}, {"color": "W", "coord": "fn"}, {"color": "B", "coord": "gn"}, {"color": "W", "coord": "im"}, {"color": "B", "coord": "dm"}, {"color": "W", "coord": "lp"}, {"color": "B", "coord": "kp"}, {"color": "W", "coord": "ko"}, {"color": "B", "coord": "lq"}, {"color": "W", "coord": "dk"}, {"color": "B", "coord": "ek"}, {"color": "W", "coord": "el"}, {"color": "B", "coord": "dl"}, {"color": "W", "coord": "fk"}, {"color": "B", "coord": "ej"}, {"color": "W", "coord": "fl"}, {"color": "B", "coord": "dn"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "co"}, {"color": "W", "coord": "do"}, {"color": "B", "coord": "bn"}, {"color": "W", "coord": "en"}, {"color": "B", "coord": "bp"}, {"color": "W", "coord": "bl"}, {"color": "B", "coord": "bm"}, {"color": "W", "coord": "hl"}, {"color": "B", "coord": "ci"}, {"color": "W", "coord": "di"}, {"color": "B", "coord": "dj"}, {"color": "W", "coord": "cj"}, {"color": "B", "coord": "ei"}, {"color": "W", "coord": "dh"}, {"color": "B", "coord": "gi"}, {"color": "W", "coord": "fi"}, {"color": "B", "coord": "fj"}, {"color": "W", "coord": "gj"}, {"color": "B", "coord": "fh"}, {"color": "W", "coord": "eh"}, {"color": "B", "coord": "fi"}, {"color": "W", "coord": "bi"}, {"color": "B", "coord": "hj"}, {"color": "W", "coord": "gk"}, {"color": "B", "coord": "hg"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "br"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "bo"}, {"color": "W", "coord": "cr"}, {"color": "B", "coord": "aq"}, {"color": "W", "coord": "hf"}, {"color": "B", "coord": "if"}, {"color": "W", "coord": "he"}, {"color": "B", "coord": "ie"}, {"color": "W", "coord": "ig"}, {"color": "B", "coord": "ih"}, {"color": "W", "coord": "jg"}, {"color": "B", "coord": "gg"}, {"color": "W", "coord": "gd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "gc"}, {"color": "W", "coord": "fe"}, {"color": "B", "coord": "id"}, {"color": "W", "coord": "hh"}, {"color": "B", "coord": "hi"}, {"color": "W", "coord": "jh"}, {"color": "B", "coord": "jj"}, {"color": "W", "coord": "lh"}, {"color": "B", "coord": "jl"}, {"color": "W", "coord": "fp"}, {"color": "B", "coord": "lj"}, {"color": "W", "coord": "kk"}, {"color": "B", "coord": "ji"}, {"color": "W", "coord": "ii"}, {"color": "B", "coord": "fg"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "hk"}, {"color": "W", "coord": "me"}, {"color": "B", "coord": "md"}, {"color": "W", "coord": "le"}, {"color": "B", "coord": "jm"}, {"color": "W", "coord": "il"}, {"color": "B", "coord": "jk"}, {"color": "W", "coord": "jn"}, {"color": "B", "coord": "ld"}, {"color": "W", "coord": "oh"}, {"color": "B", "coord": "nj"}, {"color": "W", "coord": "pi"}, {"color": "B", "coord": "ln"}, {"color": "W", "coord": "kn"}, {"color": "B", "coord": "lm"}, {"color": "W", "coord": "lo"}, {"color": "B", "coord": "nn"}, {"color": "W", "coord": "pp"}, {"color": "B", "coord": "oq"}, {"color": "W", "coord": "mq"}, {"color": "B", "coord": "mr"}, {"color": "W", "coord": "re"}, {"color": "B", "coord": "qf"}, {"color": "W", "coord": "qc"}, {"color": "B", "coord": "qe"}, {"color": "W", "coord": "pc"}, {"color": "B", "coord": "nh"}, {"color": "W", "coord": "ng"}, {"color": "B", "coord": "mh"}, {"color": "W", "coord": "qd"}, {"color": "B", "coord": "mg"}, {"color": "W", "coord": "ne"}, {"color": "B", "coord": "oe"}, {"color": "W", "coord": "of"}, {"color": "B", "coord": "pg"}, {"color": "W", "coord": "pf"}, {"color": "B", "coord": "og"}, {"color": "W", "coord": "nf"}, {"color": "B", "coord": "qg"}, {"color": "W", "coord": "pe"}, {"color": "B", "coord": "od"}, {"color": "W", "coord": "ke"}, {"color": "B", "coord": "kd"}, {"color": "W", "coord": "rf"}, {"color": "B", "coord": "rg"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "rh"}, {"color": "W", "coord": "ri"}, {"color": "B", "coord": "ph"}, {"color": "W", "coord": "oi"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "qj"}, {"color": "B", "coord": "rj"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "gp"}, {"color": "W", "coord": "gl"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "si"}, {"color": "B", "coord": "sf"}, {"color": "W", "coord": "rd"}, {"color": "B", "coord": "kf"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "je"}, {"color": "W", "coord": "sg"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "cl"}, {"color": "B", "coord": "cm"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ir"}, {"color": "W", "coord": "hq"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "ap"}, {"color": "B", "coord": "ao"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ip"}, {"color": "W", "coord": "jp"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "am"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "dr"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "em"}, {"color": "W", "coord": "fm"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "sh"}, {"color": "B", "coord": "gq"}, {"color": "W", "coord": "hp"}, {"color": "B", "coord": "eq"}, {"color": "W", "coord": "fo"}, {"color": "B", "coord": "ep"}, {"color": "W", "coord": "eo"}, {"color": "B", "coord": "cs"}, {"color": "W", "coord": "nk"}, {"color": "B", "coord": "mj"}, {"color": "W", "coord": "ni"}, {"color": "B", "coord": "mi"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "qr"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "mb"}, {"color": "W", "coord": "mp"}, {"color": "B", "coord": "hn"}, {"color": "W", "coord": "in"}, {"color": "B", "coord": "rq"}, {"color": "W", "coord": "rp"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "lf"}, {"color": "B", "coord": "lg"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "hr"}, {"color": "W", "coord": "jr"}, {"color": "B", "coord": "lr"}, {"color": "W", "coord": "jq"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "kg"}, {"color": "B", "coord": "jf"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "sr"}, {"color": "W", "coord": "nc"}, {"color": "B", "coord": "pn"}, {"color": "W", "coord": "no"}, {"color": "B", "coord": "op"}, {"color": "W", "coord": "qn"}, {"color": "B", "coord": "pm"}, {"color": "W", "coord": "qm"}, {"color": "B", "coord": "oc"}, {"color": "W", "coord": "ob"}, {"color": "B", "coord": "mc"}, {"color": "W", "coord": "oo"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "nr"}, {"color": "B", "coord": "nq"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "or"}, {"color": "W", "coord": "km"}, {"color": "B", "coord": "kl"}, {"color": "W", "coord": "mn"}, {"color": "B", "coord": "mm"}, {"color": "W", "coord": "on"}, {"color": "B", "coord": "ol"}, {"color": "W", "coord": "om"}, {"color": "B", "coord": "nl"}, {"color": "W", "coord": "pl"}, {"color": "B", "coord": "ok"}, {"color": "W", "coord": "nm"}, {"color": "B", "coord": "oj"}, {"color": "W", "coord": "ab"}, {"color": "B", "coord": "ec"}, {"color": "W", "coord": "ee"}, {"color": "B", "coord": "sp"}, {"color": "W", "coord": "ro"}, {"color": "B", "coord": "pb"}, {"color": "W", "coord": "qb"}, {"color": "B", "coord": "na"}, {"color": "W", "coord": "pa"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ik"}, {"color": "B", "coord": "ij"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "ac"}, {"color": "W", "coord": "ad"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "eb"}, {"color": "B", "coord": "fb"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "ma"}, {"color": "W", "coord": "oa"}], "options": [{"coord": "qp", "color": "B", "winrate": "58.3%", "comment": "/\"jueyi黑58.3% | +0.5目", "moves": [{"color": "B", "coord": "qp"}, {"color": "W", "coord": "is"}, {"color": "B", "coord": "gr"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "al"}, {"color": "W", "coord": "ak"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ea"}, {"color": "B", "coord": "fa"}, {"color": "W", "coord": "qq"}], "is_correct": false, "sort_order": 1, "letter": "A"}, {"coord": "gr", "color": "B", "winrate": "81.6%", "comment": "/\"jueyi黑81.6% | +1.5目", "moves": [{"color": "B", "coord": "gr"}, {"color": "W", "coord": "ks"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ls"}, {"color": "B", "coord": "ms"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "so"}, {"color": "W", "coord": "sn"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ea"}], "is_correct": true, "sort_order": 0, "letter": "B"}, {"coord": "is", "color": "B", "winrate": "34.0%", "comment": "/\"jueyi黑34.0% | -0.5目", "moves": [{"color": "B", "coord": "is"}, {"color": "W", "coord": "gr"}, {"color": "B", "coord": "fr"}, {"color": "W", "coord": "so"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "gs"}, {"color": "B", "coord": "fs"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "pj"}, {"color": "W", "coord": "qp"}], "is_correct": false, "sort_order": 2, "letter": "C"}], "practical_move": {"coord": "qp", "color": "B", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "B", "coord": "qp"}, {"color": "W", "coord": "ea"}, {"color": "B", "coord": "fa"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "al"}, {"color": "W", "coord": "ak"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "gr"}, {"color": "B", "coord": "fr"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "gs"}, {"color": "W", "coord": "ls"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ks"}, {"color": "B", "coord": "ms"}]}}, {"index": 7, "move_num": 281, "phase": "endgame", "difficulty": "easy", "is_blunder": true, "position": [{"color": "B", "coord": "pd"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "dp"}, {"color": "B", "coord": "nd"}, {"color": "W", "coord": "qo"}, {"color": "B", "coord": "np"}, {"color": "W", "coord": "pk"}, {"color": "B", "coord": "cc"}, {"color": "W", "coord": "dc"}, {"color": "B", "coord": "cd"}, {"color": "W", "coord": "cf"}, {"color": "B", "coord": "ce"}, {"color": "W", "coord": "de"}, {"color": "B", "coord": "bf"}, {"color": "W", "coord": "cb"}, {"color": "B", "coord": "bb"}, {"color": "W", "coord": "be"}, {"color": "B", "coord": "db"}, {"color": "W", "coord": "bc"}, {"color": "B", "coord": "ca"}, {"color": "W", "coord": "bd"}, {"color": "B", "coord": "cb"}, {"color": "W", "coord": "bg"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "cg"}, {"color": "B", "coord": "fc"}, {"color": "W", "coord": "ff"}, {"color": "B", "coord": "hd"}, {"color": "W", "coord": "cn"}, {"color": "B", "coord": "fq"}, {"color": "W", "coord": "iq"}, {"color": "B", "coord": "kq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "go"}, {"color": "W", "coord": "io"}, {"color": "B", "coord": "gm"}, {"color": "W", "coord": "fn"}, {"color": "B", "coord": "gn"}, {"color": "W", "coord": "im"}, {"color": "B", "coord": "dm"}, {"color": "W", "coord": "lp"}, {"color": "B", "coord": "kp"}, {"color": "W", "coord": "ko"}, {"color": "B", "coord": "lq"}, {"color": "W", "coord": "dk"}, {"color": "B", "coord": "ek"}, {"color": "W", "coord": "el"}, {"color": "B", "coord": "dl"}, {"color": "W", "coord": "fk"}, {"color": "B", "coord": "ej"}, {"color": "W", "coord": "fl"}, {"color": "B", "coord": "dn"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "co"}, {"color": "W", "coord": "do"}, {"color": "B", "coord": "bn"}, {"color": "W", "coord": "en"}, {"color": "B", "coord": "bp"}, {"color": "W", "coord": "bl"}, {"color": "B", "coord": "bm"}, {"color": "W", "coord": "hl"}, {"color": "B", "coord": "ci"}, {"color": "W", "coord": "di"}, {"color": "B", "coord": "dj"}, {"color": "W", "coord": "cj"}, {"color": "B", "coord": "ei"}, {"color": "W", "coord": "dh"}, {"color": "B", "coord": "gi"}, {"color": "W", "coord": "fi"}, {"color": "B", "coord": "fj"}, {"color": "W", "coord": "gj"}, {"color": "B", "coord": "fh"}, {"color": "W", "coord": "eh"}, {"color": "B", "coord": "fi"}, {"color": "W", "coord": "bi"}, {"color": "B", "coord": "hj"}, {"color": "W", "coord": "gk"}, {"color": "B", "coord": "hg"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "br"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "bo"}, {"color": "W", "coord": "cr"}, {"color": "B", "coord": "aq"}, {"color": "W", "coord": "hf"}, {"color": "B", "coord": "if"}, {"color": "W", "coord": "he"}, {"color": "B", "coord": "ie"}, {"color": "W", "coord": "ig"}, {"color": "B", "coord": "ih"}, {"color": "W", "coord": "jg"}, {"color": "B", "coord": "gg"}, {"color": "W", "coord": "gd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "gc"}, {"color": "W", "coord": "fe"}, {"color": "B", "coord": "id"}, {"color": "W", "coord": "hh"}, {"color": "B", "coord": "hi"}, {"color": "W", "coord": "jh"}, {"color": "B", "coord": "jj"}, {"color": "W", "coord": "lh"}, {"color": "B", "coord": "jl"}, {"color": "W", "coord": "fp"}, {"color": "B", "coord": "lj"}, {"color": "W", "coord": "kk"}, {"color": "B", "coord": "ji"}, {"color": "W", "coord": "ii"}, {"color": "B", "coord": "fg"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "hk"}, {"color": "W", "coord": "me"}, {"color": "B", "coord": "md"}, {"color": "W", "coord": "le"}, {"color": "B", "coord": "jm"}, {"color": "W", "coord": "il"}, {"color": "B", "coord": "jk"}, {"color": "W", "coord": "jn"}, {"color": "B", "coord": "ld"}, {"color": "W", "coord": "oh"}, {"color": "B", "coord": "nj"}, {"color": "W", "coord": "pi"}, {"color": "B", "coord": "ln"}, {"color": "W", "coord": "kn"}, {"color": "B", "coord": "lm"}, {"color": "W", "coord": "lo"}, {"color": "B", "coord": "nn"}, {"color": "W", "coord": "pp"}, {"color": "B", "coord": "oq"}, {"color": "W", "coord": "mq"}, {"color": "B", "coord": "mr"}, {"color": "W", "coord": "re"}, {"color": "B", "coord": "qf"}, {"color": "W", "coord": "qc"}, {"color": "B", "coord": "qe"}, {"color": "W", "coord": "pc"}, {"color": "B", "coord": "nh"}, {"color": "W", "coord": "ng"}, {"color": "B", "coord": "mh"}, {"color": "W", "coord": "qd"}, {"color": "B", "coord": "mg"}, {"color": "W", "coord": "ne"}, {"color": "B", "coord": "oe"}, {"color": "W", "coord": "of"}, {"color": "B", "coord": "pg"}, {"color": "W", "coord": "pf"}, {"color": "B", "coord": "og"}, {"color": "W", "coord": "nf"}, {"color": "B", "coord": "qg"}, {"color": "W", "coord": "pe"}, {"color": "B", "coord": "od"}, {"color": "W", "coord": "ke"}, {"color": "B", "coord": "kd"}, {"color": "W", "coord": "rf"}, {"color": "B", "coord": "rg"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "rh"}, {"color": "W", "coord": "ri"}, {"color": "B", "coord": "ph"}, {"color": "W", "coord": "oi"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "qj"}, {"color": "B", "coord": "rj"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "gp"}, {"color": "W", "coord": "gl"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "si"}, {"color": "B", "coord": "sf"}, {"color": "W", "coord": "rd"}, {"color": "B", "coord": "kf"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "je"}, {"color": "W", "coord": "sg"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "cl"}, {"color": "B", "coord": "cm"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ir"}, {"color": "W", "coord": "hq"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "ap"}, {"color": "B", "coord": "ao"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ip"}, {"color": "W", "coord": "jp"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "am"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "dr"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "em"}, {"color": "W", "coord": "fm"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "sh"}, {"color": "B", "coord": "gq"}, {"color": "W", "coord": "hp"}, {"color": "B", "coord": "eq"}, {"color": "W", "coord": "fo"}, {"color": "B", "coord": "ep"}, {"color": "W", "coord": "eo"}, {"color": "B", "coord": "cs"}, {"color": "W", "coord": "nk"}, {"color": "B", "coord": "mj"}, {"color": "W", "coord": "ni"}, {"color": "B", "coord": "mi"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "qr"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "mb"}, {"color": "W", "coord": "mp"}, {"color": "B", "coord": "hn"}, {"color": "W", "coord": "in"}, {"color": "B", "coord": "rq"}, {"color": "W", "coord": "rp"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "lf"}, {"color": "B", "coord": "lg"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "hr"}, {"color": "W", "coord": "jr"}, {"color": "B", "coord": "lr"}, {"color": "W", "coord": "jq"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "kg"}, {"color": "B", "coord": "jf"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "sr"}, {"color": "W", "coord": "nc"}, {"color": "B", "coord": "pn"}, {"color": "W", "coord": "no"}, {"color": "B", "coord": "op"}, {"color": "W", "coord": "qn"}, {"color": "B", "coord": "pm"}, {"color": "W", "coord": "qm"}, {"color": "B", "coord": "oc"}, {"color": "W", "coord": "ob"}, {"color": "B", "coord": "mc"}, {"color": "W", "coord": "oo"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "nr"}, {"color": "B", "coord": "nq"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "or"}, {"color": "W", "coord": "km"}, {"color": "B", "coord": "kl"}, {"color": "W", "coord": "mn"}, {"color": "B", "coord": "mm"}, {"color": "W", "coord": "on"}, {"color": "B", "coord": "ol"}, {"color": "W", "coord": "om"}, {"color": "B", "coord": "nl"}, {"color": "W", "coord": "pl"}, {"color": "B", "coord": "ok"}, {"color": "W", "coord": "nm"}, {"color": "B", "coord": "oj"}, {"color": "W", "coord": "ab"}, {"color": "B", "coord": "ec"}, {"color": "W", "coord": "ee"}, {"color": "B", "coord": "sp"}, {"color": "W", "coord": "ro"}, {"color": "B", "coord": "pb"}, {"color": "W", "coord": "qb"}, {"color": "B", "coord": "na"}, {"color": "W", "coord": "pa"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ik"}, {"color": "B", "coord": "ij"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "ac"}, {"color": "W", "coord": "ad"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "eb"}, {"color": "B", "coord": "fb"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "ma"}, {"color": "W", "coord": "oa"}, {"color": "B", "coord": "qp"}], "options": [{"coord": "is", "color": "W", "winrate": "73.9%", "comment": "/\"jueyi白73.9% | +0.5目", "moves": [{"color": "W", "coord": "is"}, {"color": "B", "coord": "gr"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "hs"}, {"color": "W", "coord": "ks"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ls"}, {"color": "B", "coord": "ms"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "so"}], "is_correct": true, "sort_order": 0, "letter": "A"}, {"coord": "ea", "color": "W", "winrate": "22.8%", "comment": "/\"jueyi白22.8% | -1.5目", "moves": [{"color": "W", "coord": "ea"}, {"color": "B", "coord": "fa"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "gr"}, {"color": "W", "coord": "ks"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ls"}, {"color": "B", "coord": "ms"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "so"}], "is_correct": false, "sort_order": 1, "letter": "B"}, {"coord": "gr", "color": "W", "winrate": "22.2%", "comment": "/\"jueyi白22.2% | -1.5目", "moves": [{"color": "W", "coord": "gr"}, {"color": "B", "coord": "fr"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "so"}, {"color": "W", "coord": "sn"}, {"color": "B", "coord": "sq"}, {"color": "W", "coord": "ls"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "is"}, {"color": "B", "coord": "gs"}], "is_correct": false, "sort_order": 2, "letter": "C"}], "practical_move": {"coord": "ea", "color": "W", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "W", "coord": "ea"}, {"color": "B", "coord": "fa"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "al"}, {"color": "W", "coord": "ak"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "gr"}, {"color": "B", "coord": "fr"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "gs"}, {"color": "W", "coord": "ls"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ks"}, {"color": "B", "coord": "ms"}, {"color": "W", "coord": "qq"}]}}, {"index": 8, "move_num": 286, "phase": "endgame", "difficulty": "easy", "is_blunder": true, "position": [{"color": "B", "coord": "pd"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "dp"}, {"color": "B", "coord": "nd"}, {"color": "W", "coord": "qo"}, {"color": "B", "coord": "np"}, {"color": "W", "coord": "pk"}, {"color": "B", "coord": "cc"}, {"color": "W", "coord": "dc"}, {"color": "B", "coord": "cd"}, {"color": "W", "coord": "cf"}, {"color": "B", "coord": "ce"}, {"color": "W", "coord": "de"}, {"color": "B", "coord": "bf"}, {"color": "W", "coord": "cb"}, {"color": "B", "coord": "bb"}, {"color": "W", "coord": "be"}, {"color": "B", "coord": "db"}, {"color": "W", "coord": "bc"}, {"color": "B", "coord": "ca"}, {"color": "W", "coord": "bd"}, {"color": "B", "coord": "cb"}, {"color": "W", "coord": "bg"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "cg"}, {"color": "B", "coord": "fc"}, {"color": "W", "coord": "ff"}, {"color": "B", "coord": "hd"}, {"color": "W", "coord": "cn"}, {"color": "B", "coord": "fq"}, {"color": "W", "coord": "iq"}, {"color": "B", "coord": "kq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "go"}, {"color": "W", "coord": "io"}, {"color": "B", "coord": "gm"}, {"color": "W", "coord": "fn"}, {"color": "B", "coord": "gn"}, {"color": "W", "coord": "im"}, {"color": "B", "coord": "dm"}, {"color": "W", "coord": "lp"}, {"color": "B", "coord": "kp"}, {"color": "W", "coord": "ko"}, {"color": "B", "coord": "lq"}, {"color": "W", "coord": "dk"}, {"color": "B", "coord": "ek"}, {"color": "W", "coord": "el"}, {"color": "B", "coord": "dl"}, {"color": "W", "coord": "fk"}, {"color": "B", "coord": "ej"}, {"color": "W", "coord": "fl"}, {"color": "B", "coord": "dn"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "co"}, {"color": "W", "coord": "do"}, {"color": "B", "coord": "bn"}, {"color": "W", "coord": "en"}, {"color": "B", "coord": "bp"}, {"color": "W", "coord": "bl"}, {"color": "B", "coord": "bm"}, {"color": "W", "coord": "hl"}, {"color": "B", "coord": "ci"}, {"color": "W", "coord": "di"}, {"color": "B", "coord": "dj"}, {"color": "W", "coord": "cj"}, {"color": "B", "coord": "ei"}, {"color": "W", "coord": "dh"}, {"color": "B", "coord": "gi"}, {"color": "W", "coord": "fi"}, {"color": "B", "coord": "fj"}, {"color": "W", "coord": "gj"}, {"color": "B", "coord": "fh"}, {"color": "W", "coord": "eh"}, {"color": "B", "coord": "fi"}, {"color": "W", "coord": "bi"}, {"color": "B", "coord": "hj"}, {"color": "W", "coord": "gk"}, {"color": "B", "coord": "hg"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "br"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "bo"}, {"color": "W", "coord": "cr"}, {"color": "B", "coord": "aq"}, {"color": "W", "coord": "hf"}, {"color": "B", "coord": "if"}, {"color": "W", "coord": "he"}, {"color": "B", "coord": "ie"}, {"color": "W", "coord": "ig"}, {"color": "B", "coord": "ih"}, {"color": "W", "coord": "jg"}, {"color": "B", "coord": "gg"}, {"color": "W", "coord": "gd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "gc"}, {"color": "W", "coord": "fe"}, {"color": "B", "coord": "id"}, {"color": "W", "coord": "hh"}, {"color": "B", "coord": "hi"}, {"color": "W", "coord": "jh"}, {"color": "B", "coord": "jj"}, {"color": "W", "coord": "lh"}, {"color": "B", "coord": "jl"}, {"color": "W", "coord": "fp"}, {"color": "B", "coord": "lj"}, {"color": "W", "coord": "kk"}, {"color": "B", "coord": "ji"}, {"color": "W", "coord": "ii"}, {"color": "B", "coord": "fg"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "hk"}, {"color": "W", "coord": "me"}, {"color": "B", "coord": "md"}, {"color": "W", "coord": "le"}, {"color": "B", "coord": "jm"}, {"color": "W", "coord": "il"}, {"color": "B", "coord": "jk"}, {"color": "W", "coord": "jn"}, {"color": "B", "coord": "ld"}, {"color": "W", "coord": "oh"}, {"color": "B", "coord": "nj"}, {"color": "W", "coord": "pi"}, {"color": "B", "coord": "ln"}, {"color": "W", "coord": "kn"}, {"color": "B", "coord": "lm"}, {"color": "W", "coord": "lo"}, {"color": "B", "coord": "nn"}, {"color": "W", "coord": "pp"}, {"color": "B", "coord": "oq"}, {"color": "W", "coord": "mq"}, {"color": "B", "coord": "mr"}, {"color": "W", "coord": "re"}, {"color": "B", "coord": "qf"}, {"color": "W", "coord": "qc"}, {"color": "B", "coord": "qe"}, {"color": "W", "coord": "pc"}, {"color": "B", "coord": "nh"}, {"color": "W", "coord": "ng"}, {"color": "B", "coord": "mh"}, {"color": "W", "coord": "qd"}, {"color": "B", "coord": "mg"}, {"color": "W", "coord": "ne"}, {"color": "B", "coord": "oe"}, {"color": "W", "coord": "of"}, {"color": "B", "coord": "pg"}, {"color": "W", "coord": "pf"}, {"color": "B", "coord": "og"}, {"color": "W", "coord": "nf"}, {"color": "B", "coord": "qg"}, {"color": "W", "coord": "pe"}, {"color": "B", "coord": "od"}, {"color": "W", "coord": "ke"}, {"color": "B", "coord": "kd"}, {"color": "W", "coord": "rf"}, {"color": "B", "coord": "rg"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "rh"}, {"color": "W", "coord": "ri"}, {"color": "B", "coord": "ph"}, {"color": "W", "coord": "oi"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "qj"}, {"color": "B", "coord": "rj"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "gp"}, {"color": "W", "coord": "gl"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "si"}, {"color": "B", "coord": "sf"}, {"color": "W", "coord": "rd"}, {"color": "B", "coord": "kf"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "je"}, {"color": "W", "coord": "sg"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "cl"}, {"color": "B", "coord": "cm"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ir"}, {"color": "W", "coord": "hq"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "ap"}, {"color": "B", "coord": "ao"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ip"}, {"color": "W", "coord": "jp"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "am"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "dr"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "em"}, {"color": "W", "coord": "fm"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "sh"}, {"color": "B", "coord": "gq"}, {"color": "W", "coord": "hp"}, {"color": "B", "coord": "eq"}, {"color": "W", "coord": "fo"}, {"color": "B", "coord": "ep"}, {"color": "W", "coord": "eo"}, {"color": "B", "coord": "cs"}, {"color": "W", "coord": "nk"}, {"color": "B", "coord": "mj"}, {"color": "W", "coord": "ni"}, {"color": "B", "coord": "mi"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "qr"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "mb"}, {"color": "W", "coord": "mp"}, {"color": "B", "coord": "hn"}, {"color": "W", "coord": "in"}, {"color": "B", "coord": "rq"}, {"color": "W", "coord": "rp"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "lf"}, {"color": "B", "coord": "lg"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "hr"}, {"color": "W", "coord": "jr"}, {"color": "B", "coord": "lr"}, {"color": "W", "coord": "jq"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "kg"}, {"color": "B", "coord": "jf"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "sr"}, {"color": "W", "coord": "nc"}, {"color": "B", "coord": "pn"}, {"color": "W", "coord": "no"}, {"color": "B", "coord": "op"}, {"color": "W", "coord": "qn"}, {"color": "B", "coord": "pm"}, {"color": "W", "coord": "qm"}, {"color": "B", "coord": "oc"}, {"color": "W", "coord": "ob"}, {"color": "B", "coord": "mc"}, {"color": "W", "coord": "oo"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "nr"}, {"color": "B", "coord": "nq"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "or"}, {"color": "W", "coord": "km"}, {"color": "B", "coord": "kl"}, {"color": "W", "coord": "mn"}, {"color": "B", "coord": "mm"}, {"color": "W", "coord": "on"}, {"color": "B", "coord": "ol"}, {"color": "W", "coord": "om"}, {"color": "B", "coord": "nl"}, {"color": "W", "coord": "pl"}, {"color": "B", "coord": "ok"}, {"color": "W", "coord": "nm"}, {"color": "B", "coord": "oj"}, {"color": "W", "coord": "ab"}, {"color": "B", "coord": "ec"}, {"color": "W", "coord": "ee"}, {"color": "B", "coord": "sp"}, {"color": "W", "coord": "ro"}, {"color": "B", "coord": "pb"}, {"color": "W", "coord": "qb"}, {"color": "B", "coord": "na"}, {"color": "W", "coord": "pa"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ik"}, {"color": "B", "coord": "ij"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "ac"}, {"color": "W", "coord": "ad"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "eb"}, {"color": "B", "coord": "fb"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "ma"}, {"color": "W", "coord": "oa"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ea"}, {"color": "B", "coord": "fa"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "al"}, {"color": "W", "coord": "ak"}], "options": [{"coord": "gr", "color": "B", "winrate": "80.2%", "comment": "/\"jueyi黑80.2% | +1.5目", "moves": [{"color": "B", "coord": "gr"}, {"color": "W", "coord": "ks"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ls"}, {"color": "B", "coord": "ms"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "so"}, {"color": "W", "coord": "sn"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "os"}], "is_correct": true, "sort_order": 0, "letter": "A"}, {"coord": "qp", "color": "B", "winrate": "50.2%", "comment": "/\"jueyi黑50.2% | +0.5目", "moves": [{"color": "B", "coord": "qp"}, {"color": "W", "coord": "is"}, {"color": "B", "coord": "gr"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "so"}, {"color": "W", "coord": "sn"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "jc"}, {"color": "B", "coord": "jd"}, {"color": "W", "coord": "qq"}], "is_correct": false, "sort_order": 1, "letter": "B"}], "practical_move": {"coord": "qp", "color": "B", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "B", "coord": "qp"}, {"color": "W", "coord": "gr"}, {"color": "B", "coord": "fr"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "gs"}, {"color": "W", "coord": "ls"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ks"}, {"color": "B", "coord": "ms"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "an"}, {"color": "W", "coord": "qp"}, {"color": "B", "coord": "so"}, {"color": "W", "coord": "sn"}, {"color": "B", "coord": "sq"}]}}, {"index": 9, "move_num": 287, "phase": "endgame", "difficulty": "easy", "is_blunder": true, "position": [{"color": "B", "coord": "pd"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "dp"}, {"color": "B", "coord": "nd"}, {"color": "W", "coord": "qo"}, {"color": "B", "coord": "np"}, {"color": "W", "coord": "pk"}, {"color": "B", "coord": "cc"}, {"color": "W", "coord": "dc"}, {"color": "B", "coord": "cd"}, {"color": "W", "coord": "cf"}, {"color": "B", "coord": "ce"}, {"color": "W", "coord": "de"}, {"color": "B", "coord": "bf"}, {"color": "W", "coord": "cb"}, {"color": "B", "coord": "bb"}, {"color": "W", "coord": "be"}, {"color": "B", "coord": "db"}, {"color": "W", "coord": "bc"}, {"color": "B", "coord": "ca"}, {"color": "W", "coord": "bd"}, {"color": "B", "coord": "cb"}, {"color": "W", "coord": "bg"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "cg"}, {"color": "B", "coord": "fc"}, {"color": "W", "coord": "ff"}, {"color": "B", "coord": "hd"}, {"color": "W", "coord": "cn"}, {"color": "B", "coord": "fq"}, {"color": "W", "coord": "iq"}, {"color": "B", "coord": "kq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "go"}, {"color": "W", "coord": "io"}, {"color": "B", "coord": "gm"}, {"color": "W", "coord": "fn"}, {"color": "B", "coord": "gn"}, {"color": "W", "coord": "im"}, {"color": "B", "coord": "dm"}, {"color": "W", "coord": "lp"}, {"color": "B", "coord": "kp"}, {"color": "W", "coord": "ko"}, {"color": "B", "coord": "lq"}, {"color": "W", "coord": "dk"}, {"color": "B", "coord": "ek"}, {"color": "W", "coord": "el"}, {"color": "B", "coord": "dl"}, {"color": "W", "coord": "fk"}, {"color": "B", "coord": "ej"}, {"color": "W", "coord": "fl"}, {"color": "B", "coord": "dn"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "co"}, {"color": "W", "coord": "do"}, {"color": "B", "coord": "bn"}, {"color": "W", "coord": "en"}, {"color": "B", "coord": "bp"}, {"color": "W", "coord": "bl"}, {"color": "B", "coord": "bm"}, {"color": "W", "coord": "hl"}, {"color": "B", "coord": "ci"}, {"color": "W", "coord": "di"}, {"color": "B", "coord": "dj"}, {"color": "W", "coord": "cj"}, {"color": "B", "coord": "ei"}, {"color": "W", "coord": "dh"}, {"color": "B", "coord": "gi"}, {"color": "W", "coord": "fi"}, {"color": "B", "coord": "fj"}, {"color": "W", "coord": "gj"}, {"color": "B", "coord": "fh"}, {"color": "W", "coord": "eh"}, {"color": "B", "coord": "fi"}, {"color": "W", "coord": "bi"}, {"color": "B", "coord": "hj"}, {"color": "W", "coord": "gk"}, {"color": "B", "coord": "hg"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "br"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "bo"}, {"color": "W", "coord": "cr"}, {"color": "B", "coord": "aq"}, {"color": "W", "coord": "hf"}, {"color": "B", "coord": "if"}, {"color": "W", "coord": "he"}, {"color": "B", "coord": "ie"}, {"color": "W", "coord": "ig"}, {"color": "B", "coord": "ih"}, {"color": "W", "coord": "jg"}, {"color": "B", "coord": "gg"}, {"color": "W", "coord": "gd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "gc"}, {"color": "W", "coord": "fe"}, {"color": "B", "coord": "id"}, {"color": "W", "coord": "hh"}, {"color": "B", "coord": "hi"}, {"color": "W", "coord": "jh"}, {"color": "B", "coord": "jj"}, {"color": "W", "coord": "lh"}, {"color": "B", "coord": "jl"}, {"color": "W", "coord": "fp"}, {"color": "B", "coord": "lj"}, {"color": "W", "coord": "kk"}, {"color": "B", "coord": "ji"}, {"color": "W", "coord": "ii"}, {"color": "B", "coord": "fg"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "hk"}, {"color": "W", "coord": "me"}, {"color": "B", "coord": "md"}, {"color": "W", "coord": "le"}, {"color": "B", "coord": "jm"}, {"color": "W", "coord": "il"}, {"color": "B", "coord": "jk"}, {"color": "W", "coord": "jn"}, {"color": "B", "coord": "ld"}, {"color": "W", "coord": "oh"}, {"color": "B", "coord": "nj"}, {"color": "W", "coord": "pi"}, {"color": "B", "coord": "ln"}, {"color": "W", "coord": "kn"}, {"color": "B", "coord": "lm"}, {"color": "W", "coord": "lo"}, {"color": "B", "coord": "nn"}, {"color": "W", "coord": "pp"}, {"color": "B", "coord": "oq"}, {"color": "W", "coord": "mq"}, {"color": "B", "coord": "mr"}, {"color": "W", "coord": "re"}, {"color": "B", "coord": "qf"}, {"color": "W", "coord": "qc"}, {"color": "B", "coord": "qe"}, {"color": "W", "coord": "pc"}, {"color": "B", "coord": "nh"}, {"color": "W", "coord": "ng"}, {"color": "B", "coord": "mh"}, {"color": "W", "coord": "qd"}, {"color": "B", "coord": "mg"}, {"color": "W", "coord": "ne"}, {"color": "B", "coord": "oe"}, {"color": "W", "coord": "of"}, {"color": "B", "coord": "pg"}, {"color": "W", "coord": "pf"}, {"color": "B", "coord": "og"}, {"color": "W", "coord": "nf"}, {"color": "B", "coord": "qg"}, {"color": "W", "coord": "pe"}, {"color": "B", "coord": "od"}, {"color": "W", "coord": "ke"}, {"color": "B", "coord": "kd"}, {"color": "W", "coord": "rf"}, {"color": "B", "coord": "rg"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "rh"}, {"color": "W", "coord": "ri"}, {"color": "B", "coord": "ph"}, {"color": "W", "coord": "oi"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "qj"}, {"color": "B", "coord": "rj"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "gp"}, {"color": "W", "coord": "gl"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "si"}, {"color": "B", "coord": "sf"}, {"color": "W", "coord": "rd"}, {"color": "B", "coord": "kf"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "je"}, {"color": "W", "coord": "sg"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "cl"}, {"color": "B", "coord": "cm"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ir"}, {"color": "W", "coord": "hq"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "ap"}, {"color": "B", "coord": "ao"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "ip"}, {"color": "W", "coord": "jp"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "am"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "dr"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "em"}, {"color": "W", "coord": "fm"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "sh"}, {"color": "B", "coord": "gq"}, {"color": "W", "coord": "hp"}, {"color": "B", "coord": "eq"}, {"color": "W", "coord": "fo"}, {"color": "B", "coord": "ep"}, {"color": "W", "coord": "eo"}, {"color": "B", "coord": "cs"}, {"color": "W", "coord": "nk"}, {"color": "B", "coord": "mj"}, {"color": "W", "coord": "ni"}, {"color": "B", "coord": "mi"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "qr"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "mb"}, {"color": "W", "coord": "mp"}, {"color": "B", "coord": "hn"}, {"color": "W", "coord": "in"}, {"color": "B", "coord": "rq"}, {"color": "W", "coord": "rp"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "lf"}, {"color": "B", "coord": "lg"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "hr"}, {"color": "W", "coord": "jr"}, {"color": "B", "coord": "lr"}, {"color": "W", "coord": "jq"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "kg"}, {"color": "B", "coord": "jf"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "sr"}, {"color": "W", "coord": "nc"}, {"color": "B", "coord": "pn"}, {"color": "W", "coord": "no"}, {"color": "B", "coord": "op"}, {"color": "W", "coord": "qn"}, {"color": "B", "coord": "pm"}, {"color": "W", "coord": "qm"}, {"color": "B", "coord": "oc"}, {"color": "W", "coord": "ob"}, {"color": "B", "coord": "mc"}, {"color": "W", "coord": "oo"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "nr"}, {"color": "B", "coord": "nq"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "or"}, {"color": "W", "coord": "km"}, {"color": "B", "coord": "kl"}, {"color": "W", "coord": "mn"}, {"color": "B", "coord": "mm"}, {"color": "W", "coord": "on"}, {"color": "B", "coord": "ol"}, {"color": "W", "coord": "om"}, {"color": "B", "coord": "nl"}, {"color": "W", "coord": "pl"}, {"color": "B", "coord": "ok"}, {"color": "W", "coord": "nm"}, {"color": "B", "coord": "oj"}, {"color": "W", "coord": "ab"}, {"color": "B", "coord": "ec"}, {"color": "W", "coord": "ee"}, {"color": "B", "coord": "sp"}, {"color": "W", "coord": "ro"}, {"color": "B", "coord": "pb"}, {"color": "W", "coord": "qb"}, {"color": "B", "coord": "na"}, {"color": "W", "coord": "pa"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ik"}, {"color": "B", "coord": "ij"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "ac"}, {"color": "W", "coord": "ad"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "eb"}, {"color": "B", "coord": "fb"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "ma"}, {"color": "W", "coord": "oa"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ea"}, {"color": "B", "coord": "fa"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "al"}, {"color": "W", "coord": "ak"}, {"color": "B", "coord": "qp"}], "options": [{"coord": "gr", "color": "W", "winrate": "34.0%", "comment": "/\"jueyi白34.0% | -1.0目", "moves": [{"color": "W", "coord": "gr"}, {"color": "B", "coord": "fr"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "gs"}, {"color": "W", "coord": "ks"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ls"}, {"color": "B", "coord": "ms"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "so"}], "is_correct": false, "sort_order": 1, "letter": "A"}, {"coord": "is", "color": "W", "winrate": "85.4%", "comment": "/\"jueyi白85.4% | +1.0目", "moves": [{"color": "W", "coord": "is"}, {"color": "B", "coord": "gr"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "hs"}, {"color": "W", "coord": "ks"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ls"}, {"color": "B", "coord": "ms"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "so"}], "is_correct": true, "sort_order": 0, "letter": "B"}, {"coord": "jc", "color": "W", "winrate": "21.6%", "comment": "/\"jueyi白21.6% | -1.0目", "moves": [{"color": "W", "coord": "jc"}, {"color": "B", "coord": "jd"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "gr"}, {"color": "W", "coord": "ks"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ls"}, {"color": "B", "coord": "ms"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "so"}], "is_correct": false, "sort_order": 2, "letter": "C"}], "practical_move": {"coord": "gr", "color": "W", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "W", "coord": "gr"}, {"color": "B", "coord": "fr"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "gs"}, {"color": "W", "coord": "ls"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "ks"}, {"color": "B", "coord": "ms"}, {"color": "W", "coord": "qq"}, {"color": "B", "coord": "an"}, {"color": "W", "coord": "qp"}, {"color": "B", "coord": "so"}, {"color": "W", "coord": "sn"}, {"color": "B", "coord": "sq"}, {"color": "W", "coord": "pj"}]}}];
+        let currentProblemIndex = 0;
+        let currentProblem = problems[0];
+        
+        // 状态管理
+        const STATE_MAIN = 'main';        // 主面板状态
+        const STATE_VARIATION = 'variation';  // 变化图状态
+        const STATE_TRYPLAY = 'tryplay';      // 试下状态
+        let currentState = STATE_MAIN;
+        
+        let answered = false;
+        let selectedOption = null;
+        
+        // 打谱状态
+        let currentMove = 0;
+        
+        // 变化图状态
+        let varMoves = [];
+        let varIndex = 0;
+        let currentVariationOption = null;
+        
+        // 试下状态
+        let tryMoves = [];
+        let tryIndex = 0;
+
+        // ==================== 围棋规则 ====================
+        function createBoard() {
+            const board = Array(BOARD_SIZE).fill(null).map(() => Array(BOARD_SIZE).fill(null));
+            if (handicapStones && handicapStones.length > 0) {
+                for (const stone of handicapStones) {
+                    board[stone.y][stone.x] = 'black';
+                }
+            }
+            return board;
+        }
+
+        function getNeighbors(x, y) {
+            const neighbors = [];
+            const dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]];
+            for (const [dx, dy] of dirs) {
+                const nx = x + dx, ny = y + dy;
+                if (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE) {
+                    neighbors.push([nx, ny]);
+                }
+            }
+            return neighbors;
+        }
+
+        function getGroup(board, x, y, color, group = null) {
+            if (!group) group = new Set();
+            const key = `${x},${y}`;
+            if (group.has(key)) return group;
+            if (board[y][x] !== color) return group;
+            group.add(key);
+            for (const [nx, ny] of getNeighbors(x, y)) {
+                getGroup(board, nx, ny, color, group);
+            }
+            return group;
+        }
+
+        function getLiberties(board, x, y) {
+            const color = board[y][x];
+            const group = getGroup(board, x, y, color);
+            const liberties = new Set();
+            for (const key of group) {
+                const [gx, gy] = key.split(',').map(Number);
+                for (const [nx, ny] of getNeighbors(gx, gy)) {
+                    if (board[ny][nx] === null) {
+                        liberties.add(`${nx},${ny}`);
+                    }
+                }
+            }
+            return liberties;
+        }
+
+        function applyMove(board, move) {
+            if (move.pass) return { captured: 0 };
+            board[move.y][move.x] = move.color;
+            const opponent = move.color === 'black' ? 'white' : 'black';
+            let captured = 0;
+            for (const [nx, ny] of getNeighbors(move.x, move.y)) {
+                if (board[ny][nx] === opponent) {
+                    const liberties = getLiberties(board, nx, ny);
+                    if (liberties.size === 0) {
+                        const group = getGroup(board, nx, ny, opponent);
+                        for (const key of group) {
+                            const [gx, gy] = key.split(',').map(Number);
+                            board[gy][gx] = null;
+                            captured++;
+                        }
+                    }
+                }
+            }
+            return { captured };
+        }
+
+        // ==================== 棋盘渲染 ====================
+        const canvas = document.getElementById('board');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            const container = document.querySelector('.board-container');
+            const isMobile = window.innerWidth < 768;
+            const margin = isMobile ? 4 : 20;
+            const availableWidth = Math.min(container.clientWidth, window.innerWidth) - margin;
+            const availableHeight = window.innerHeight - 350;
+            const maxSize = Math.min(availableWidth, availableHeight, isMobile ? 760 : 600);
+            const size = Math.max(isMobile ? 320 : 400, maxSize);
+            canvas.width = size;
+            canvas.height = size;
+            canvas.style.width = size + 'px';
+            canvas.style.height = size + 'px';
+            updateDisplay();
+        }
+
+        function getGridParams() {
+            const baseMargin = canvas.width * 0.02;
+            const coordMargin = canvas.width * 0.018;
+            const margin = baseMargin + coordMargin;
+            const gridSize = (canvas.width - 2 * margin) / (BOARD_SIZE - 1);
+            return { margin, gridSize, baseMargin, coordMargin };
+        }
+
+        function drawBoard() {
+            const { margin, gridSize, baseMargin, coordMargin } = getGridParams();
+            const size = canvas.width;
+            ctx.fillStyle = '#E3C16F';
+            ctx.fillRect(0, 0, size, size);
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                ctx.beginPath();
+                ctx.moveTo(margin, margin + i * gridSize);
+                ctx.lineTo(size - margin, margin + i * gridSize);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(margin + i * gridSize, margin);
+                ctx.lineTo(margin + i * gridSize, size - margin);
+                ctx.stroke();
+            }
+            ctx.fillStyle = '#333';
+            ctx.font = `bold ${Math.max(8, gridSize * 0.28)}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                const colLabel = String.fromCharCode(65 + i + (i >= 8 ? 1 : 0));
+                ctx.fillText(colLabel, margin + i * gridSize, baseMargin + coordMargin * 0.3);
+                ctx.fillText(colLabel, margin + i * gridSize, size - baseMargin - coordMargin * 0.3);
+                const rowLabel = (BOARD_SIZE - i).toString();
+                ctx.fillText(rowLabel, baseMargin + coordMargin * 0.3, margin + i * gridSize);
+                ctx.fillText(rowLabel, size - baseMargin - coordMargin * 0.3, margin + i * gridSize);
+            }
+            const stars = BOARD_SIZE === 19 ? [3, 9, 15] : [2, 6, 10];
+            ctx.fillStyle = '#333';
+            for (const x of stars) {
+                for (const y of stars) {
+                    ctx.beginPath();
+                    ctx.arc(margin + x * gridSize, margin + y * gridSize, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+        }
+
+        function drawStone(x, y, color, isLast = false, label = null) {
+            const { margin, gridSize } = getGridParams();
+            const cx = margin + x * gridSize;
+            const cy = margin + y * gridSize;
+            const radius = gridSize * 0.48;
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+            const gradient = ctx.createRadialGradient(
+                cx - radius * 0.3, cy - radius * 0.3, radius * 0.1,
+                cx, cy, radius
+            );
+            if (color === 'black') {
+                gradient.addColorStop(0, '#666');
+                gradient.addColorStop(1, '#000');
+            } else {
+                gradient.addColorStop(0, '#fff');
+                gradient.addColorStop(1, '#ccc');
+            }
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            // 优先显示标签（手数），如果没有标签且是最后一手，则显示标记点
+            if (label) {
+                ctx.fillStyle = color === 'black' ? '#fff' : '#000';
+                ctx.font = `bold ${Math.floor(gridSize * 0.55)}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(label, cx, cy);
+            } else if (isLast) {
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius * 0.25, 0, Math.PI * 2);
+                ctx.fillStyle = color === 'black' ? '#fff' : '#000';
+                ctx.fill();
+            }
+        }
+
+        // 绘制ABCD标记 - 透明背景，描边文字
+        function drawOptionMarker(x, y, letter, state = 'default') {
+            const { margin, gridSize } = getGridParams();
+            const cx = margin + x * gridSize;
+            const cy = margin + y * gridSize;
+            
+            const fontSize = Math.floor(gridSize * 0.9);
+            ctx.font = `bold ${fontSize}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // 根据状态设置颜色
+            let textColor, strokeColor;
+            if (state === 'correct') {
+                textColor = '#4CAF50';
+                strokeColor = '#fff';
+            } else if (state === 'wrong') {
+                textColor = '#F44336';
+                strokeColor = '#fff';
+            } else {
+                textColor = '#667eea';
+                strokeColor = '#fff';
+            }
+            
+            // 绘制描边效果（让文字在黑白棋子上都清晰可见）
+            ctx.lineWidth = fontSize * 0.15;
+            ctx.strokeStyle = strokeColor;
+            ctx.strokeText(letter, cx, cy);
+            
+            // 填充文字
+            ctx.fillStyle = textColor;
+            ctx.fillText(letter, cx, cy);
+        }
+
+        function updateDisplay() {
+            drawBoard();
+            const board = createBoard();
+            const position = currentProblem ? currentProblem.position : [];
+            
+            // 确定要显示的步数
+            let displayMove = currentMove;
+            if (currentState === STATE_VARIATION) {
+                displayMove = position.length; // 变化图显示到题目位置
+            } else if (currentState === STATE_TRYPLAY) {
+                displayMove = position.length; // 试下显示到题目位置
+            }
+            
+            // 应用到当前步数的棋子（题目局面）
+            for (let i = 0; i < displayMove && i < position.length; i++) {
+                const move = position[i];
+                const color = move.color === 'B' ? 'black' : 'white';
+                const pos = coordToPos(move.coord);
+                if (pos) {
+                    applyMove(board, { color, x: pos.x, y: pos.y });
+                }
+            }
+            
+            // 找到最后一手的位置
+            let lastStonePos = null;
+            if (displayMove > 0 && displayMove <= position.length) {
+                const lastMove = position[displayMove - 1];
+                if (lastMove && lastMove.coord) {
+                    lastStonePos = coordToPos(lastMove.coord);
+                }
+            }
+            
+            // 如果是变化图状态，先应用所有变化图着法（包含提子逻辑）
+            let varMoveMap = null;
+            if (currentState === STATE_VARIATION && varMoves.length > 0) {
+                // 应用所有变化图着法到棋盘
+                for (let i = 0; i < varIndex && i < varMoves.length; i++) {
+                    const move = varMoves[i];
+                    applyMove(board, move);
+                }
+                // 记录每个变化图位置的状态（用于手数标记）
+                varMoveMap = new Map();
+                for (let i = 0; i < varIndex && i < varMoves.length; i++) {
+                    const move = varMoves[i];
+                    const key = `${move.x},${move.y}`;
+                    varMoveMap.set(key, {
+                        x: move.x,
+                        y: move.y,
+                        color: move.color,
+                        moveNum: i + 1
+                    });
+                }
+            }
+            
+            // 如果是试下状态，先应用所有试下着法（包含提子逻辑）
+            let tryMoveMap = null;
+            if (currentState === STATE_TRYPLAY && tryMoves.length > 0) {
+                // 应用所有试下着法到棋盘
+                for (let i = 0; i < tryIndex && i < tryMoves.length; i++) {
+                    const move = tryMoves[i];
+                    applyMove(board, move);
+                }
+                // 记录每个试下位置的状态（用于手数标记）
+                tryMoveMap = new Map();
+                for (let i = 0; i < tryIndex && i < tryMoves.length; i++) {
+                    const move = tryMoves[i];
+                    const key = `${move.x},${move.y}`;
+                    tryMoveMap.set(key, {
+                        x: move.x,
+                        y: move.y,
+                        color: move.color,
+                        moveNum: i + 1
+                    });
+                }
+            }
+            
+            // 绘制所有棋子（基于应用完所有着法后的 board 状态）
+            for (let y = 0; y < BOARD_SIZE; y++) {
+                for (let x = 0; x < BOARD_SIZE; x++) {
+                    if (board[y][x]) {
+                        const key = `${x},${y}`;
+                        
+                        if (currentState === STATE_VARIATION && varMoveMap) {
+                            // 变化图状态：检查是否是变化图着法
+                            const varMove = varMoveMap.get(key);
+                            if (varMove && varMove.color === board[y][x]) {
+                                drawStone(x, y, board[y][x], varMove.moveNum === varIndex, varMove.moveNum.toString());
+                            } else {
+                                // 题目棋子
+                                const isLast = lastStonePos && lastStonePos.x === x && lastStonePos.y === y;
+                                drawStone(x, y, board[y][x], isLast);
+                            }
+                        } else if (currentState === STATE_TRYPLAY && tryMoveMap) {
+                            // 试下状态：检查是否是试下着法
+                            const tryMove = tryMoveMap.get(key);
+                            if (tryMove && tryMove.color === board[y][x]) {
+                                drawStone(x, y, board[y][x], tryMove.moveNum === tryIndex, tryMove.moveNum.toString());
+                            } else {
+                                // 题目棋子
+                                const isLast = lastStonePos && lastStonePos.x === x && lastStonePos.y === y;
+                                drawStone(x, y, board[y][x], isLast);
+                            }
+                        } else {
+                            // 主面板状态
+                            const isLast = lastStonePos && lastStonePos.x === x && lastStonePos.y === y;
+                            drawStone(x, y, board[y][x], isLast);
+                        }
+                    }
+                }
+            }
+            
+            // 绘制ABCD标记（仅在当前做题局面显示，浏览历史时不显示）
+            if ((currentState === STATE_MAIN || currentState === STATE_TRYPLAY) && currentMove === position.length) {
+                currentProblem.options.forEach((opt, idx) => {
+                    const pos = coordToPos(opt.coord);
+                    if (pos) {
+                        let state = 'default';
+                        if (answered) {
+                            if (opt.is_correct) {
+                                state = 'correct';
+                            } else if (selectedOption === idx) {
+                                state = 'wrong';
+                            }
+                        }
+                        drawOptionMarker(pos.x, pos.y, opt.letter, state);
+                    }
+                });
+            }
+        }
+
+        function coordToPos(coord) {
+            if (!coord || coord.length < 2) return null;
+            return {
+                x: coord.charCodeAt(0) - 97,
+                y: coord.charCodeAt(1) - 97
+            };
+        }
+
+        // ==================== 当前行棋方显示 ====================
+        function updateTurnIndicator() {
+            const indicator = document.getElementById('turnIndicator');
+            if (!indicator) return;
+            
+            const position = currentProblem ? currentProblem.position : [];
+            let nextColor = 'B'; // B=黑, W=白
+            
+            if (currentMove === 0) {
+                // 初始状态，根据让子情况判断
+                if (handicapStones && handicapStones.length > 0) {
+                    nextColor = 'W';
+                } else {
+                    nextColor = 'B';
+                }
+            } else if (currentMove <= position.length) {
+                // 根据最后一手判断下一手
+                const lastMove = position[currentMove - 1];
+                if (lastMove && lastMove.color) {
+                    nextColor = lastMove.color === 'B' ? 'W' : 'B';
+                }
+            }
+            
+            // 简洁显示：棋子图标 + 黑先/白先
+            const stoneIcon = nextColor === 'B' ? '⚫' : '⚪';
+            const turnText = nextColor === 'B' ? '黑下' : '白下';
+            indicator.innerHTML = `${stoneIcon} ${turnText}`;
+        }
+
+        // ==================== 音效开关 ====================
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('soundToggleBtn');
+            if (btn) {
+                btn.textContent = soundEnabled ? '🔊' : '🔇';
+            }
+        }
+
+        // ==================== 打谱控制 ====================
+        function prevMove() {
+            if (currentMove > 0) {
+                currentMove--;
+                document.getElementById('moveSlider').value = currentMove;
+                // 播放落子音效（回退后显示的是上一手的落子）
+                playStoneSound();
+                updateTurnIndicator();
+                updateDisplay();
+            }
+        }
+
+        function nextMove() {
+            const max = currentProblem ? currentProblem.position.length : 0;
+            if (currentMove < max) {
+                currentMove++;
+                document.getElementById('moveSlider').value = currentMove;
+                // 播放落子音效（移动到下一手时）
+                const move = currentProblem.position[currentMove - 1];
+                if (move) {
+                    const pos = coordToPos(move.coord);
+                    if (pos) {
+                        // 模拟落子音效，简化处理
+                        playStoneSound();
+                    }
+                }
+                updateTurnIndicator();
+                updateDisplay();
+            }
+        }
+
+        function goToMove(moveNum) {
+            const max = currentProblem ? currentProblem.position.length : 0;
+            const target = parseInt(moveNum);
+            if (target >= 0 && target <= max && target !== currentMove) {
+                const isForward = target > currentMove;
+                // 无论前进还是后退，只要位置改变就播放音效
+                if (isForward) {
+                    // 前进：播放落子音效
+                    const move = currentProblem.position[target - 1];
+                    if (move) {
+                        playStoneSound();
+                    }
+                } else {
+                    // 后退：播放轻一点的提示音
+                    playBackSound();
+                }
+                currentMove = target;
+                updateTurnIndicator();
+                updateDisplay();
+            }
+        }
+
+        // ==================== 面板切换 ====================
+        function showMainPanel() {
+            currentState = STATE_MAIN;
+            document.getElementById('mainPanel').style.display = 'flex';
+            document.getElementById('variationPanel').classList.remove('active');
+            document.getElementById('tryplayPanel').classList.remove('active');
+            updateDisplay();
+        }
+
+        function showVariationPanel() {
+            currentState = STATE_VARIATION;
+            document.getElementById('mainPanel').style.display = 'none';
+            document.getElementById('variationPanel').classList.add('active');
+            document.getElementById('tryplayPanel').classList.remove('active');
+
+            // 默认显示变化图按钮，隐藏控制按钮
+            document.getElementById('variationOptions').style.display = 'flex';
+            document.getElementById('variationControls').style.display = 'none';
+            if (document.getElementById('variationHeader')) {
+                document.getElementById('variationHeader').style.display = 'flex';
+            }
+
+            updateDisplay();
+        }
+
+        function showTryplayPanel() {
+            currentState = STATE_TRYPLAY;
+            document.getElementById('mainPanel').style.display = 'none';
+            document.getElementById('variationPanel').classList.remove('active');
+            document.getElementById('tryplayPanel').classList.add('active');
+            updateDisplay();
+        }
+
+        // ==================== 答题功能 ====================
+        function selectOption(idx) {
+            if (answered) return;
+            selectedOption = idx;
+            answered = true;
+            // 播放选择音效
+            playSelectSound();
+            // 根据答案是否正确播放不同音效
+            const opt = currentProblem.options[idx];
+            if (opt.is_correct) {
+                setTimeout(() => playCorrectSound(), 150);
+            } else {
+                setTimeout(() => playWrongSound(), 150);
+            }
+            renderVariationButtons();
+            showVariationPanel();
+            // 注意：不再自动调用 loadVariation，而是让用户点击变化按钮选择查看哪个变化
+        }
+
+        function renderVariationButtons() {
+            const container = document.getElementById('variationOptions');
+            container.innerHTML = '';
+            
+            // 先添加实战按钮（如果存在实战落子）
+            if (currentProblem.practical_move && currentProblem.practical_move.coord) {
+                const practicalBtn = document.createElement('button');
+                let practicalClass = 'btn btn-option';
+                
+                // 根据是否是恶手设置样式
+                if (currentProblem.practical_move.is_blunder) {
+                    practicalClass += ' wrong';
+                } else {
+                    practicalClass += ' neutral';
+                }
+                practicalBtn.className = practicalClass;
+                
+                // 构建按钮文字：实战 (胜率%) [✗如果是恶手]
+                let practicalMark = currentProblem.practical_move.is_blunder ? ' ✗' : '';
+                // 检查胜率是否有效（不是N/A、不是空字符串、不是undefined）
+                const winrate = currentProblem.practical_move.winrate;
+                const hasValidWinrate = winrate && winrate !== 'N/A' && winrate !== '';
+                const practicalWinrateText = hasValidWinrate ? ` ${winrate}` : '';
+                practicalBtn.textContent = `实战${practicalWinrateText}${practicalMark}`;
+                practicalBtn.onclick = () => loadPracticalVariation();
+                container.appendChild(practicalBtn);
+            }
+            
+            // 添加A/B/C/D选项按钮
+            currentProblem.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                
+                // 确定样式
+                let btnClass = 'btn btn-option';
+                if (opt.is_correct) {
+                    btnClass += ' correct';
+                } else if (answered && selectedOption === idx) {
+                    btnClass += ' wrong';
+                } else {
+                    btnClass += ' neutral';
+                }
+                btn.className = btnClass;
+                
+                // 构建按钮文字：A (胜率%) [✓/✗]
+                let mark = '';
+                if (opt.is_correct) mark = ' ✓';
+                else if (answered && selectedOption === idx && !opt.is_correct) mark = ' ✗';
+                
+                // 处理胜率：如果opt.winrate已包含%，则不再添加
+                let winrateText;
+                if (opt.winrate !== undefined && opt.winrate !== '') {
+                    winrateText = opt.winrate.endsWith('%') ? opt.winrate : `${opt.winrate}%`;
+                } else {
+                    winrateText = `${opt.is_correct ? 60 : 30}%`;
+                }
+                btn.textContent = `${opt.letter} ${winrateText}${mark}`;
+                btn.onclick = () => loadVariation(idx);
+                container.appendChild(btn);
+            });
+        }
+        
+        // 加载实战变化图
+        function loadPracticalVariation() {
+            if (!currentProblem.practical_move) return;
+            
+            // 计算变化图着法的提子情况
+            const board = createBoard();
+            const position = currentProblem.position;
+            for (let i = 0; i < position.length; i++) {
+                const move = position[i];
+                const color = move.color === 'B' ? 'black' : 'white';
+                const pos = coordToPos(move.coord);
+                if (pos) {
+                    applyMove(board, { color, x: pos.x, y: pos.y });
+                }
+            }
+
+            varMoves = currentProblem.practical_move.moves.map((m, i) => {
+                const color = m.color === 'B' ? 'black' : 'white';
+                const x = m.coord.charCodeAt(0) - 97;
+                const y = m.coord.charCodeAt(1) - 97;
+                const result = applyMove(board, { color, x, y });
+                return {
+                    color: color,
+                    x: x,
+                    y: y,
+                    captured: result.captured
+                };
+            });
+            varIndex = 1;  // 默认只显示第一手
+            document.getElementById('varProgress').textContent = `${varIndex}/${varMoves.length}`;
+
+            // 隐藏变化图按钮，显示控制按钮
+            document.getElementById('variationOptions').style.display = 'none';
+            document.getElementById('variationControls').style.display = 'flex';
+            if (document.getElementById('variationHeader')) {
+                document.getElementById('variationHeader').style.display = 'none';
+            }
+
+            // 播放第一步的音效（默认显示第一手）
+            if (varMoves.length > 0) {
+                const firstMove = varMoves[0];
+                if (firstMove.captured > 0) {
+                    if (firstMove.captured >= 3) playMultiCaptureSound(firstMove.captured);
+                    else playCaptureSound();
+                } else {
+                    playStoneSound();
+                }
+            }
+
+            updateDisplay();
+        }
+
+        function loadVariation(idx) {
+            const opt = currentProblem.options[idx];
+            currentVariationOption = idx;
+
+            // 计算变化图着法的提子情况
+            const board = createBoard();
+            const position = currentProblem.position;
+            for (let i = 0; i < position.length; i++) {
+                const move = position[i];
+                const color = move.color === 'B' ? 'black' : 'white';
+                const pos = coordToPos(move.coord);
+                if (pos) {
+                    applyMove(board, { color, x: pos.x, y: pos.y });
+                }
+            }
+
+            varMoves = opt.moves.map((m, i) => {
+                const color = m.color === 'B' ? 'black' : 'white';
+                const x = m.coord.charCodeAt(0) - 97;
+                const y = m.coord.charCodeAt(1) - 97;
+                const result = applyMove(board, { color, x, y });
+                return {
+                    color: color,
+                    x: x,
+                    y: y,
+                    captured: result.captured
+                };
+            });
+            varIndex = 1;  // 默认只显示第一手
+            document.getElementById('varProgress').textContent = `${varIndex}/${varMoves.length}`;
+
+            // 隐藏变化图按钮，显示控制按钮
+            document.getElementById('variationOptions').style.display = 'none';
+            document.getElementById('variationControls').style.display = 'flex';
+            if (document.getElementById('variationHeader')) {
+                document.getElementById('variationHeader').style.display = 'none';
+            }
+
+            // 播放第一步的音效（默认显示第一手）
+            if (varMoves.length > 0) {
+                const firstMove = varMoves[0];
+                if (firstMove.captured > 0) {
+                    if (firstMove.captured >= 3) playMultiCaptureSound(firstMove.captured);
+                    else playCaptureSound();
+                } else {
+                    playStoneSound();
+                }
+            }
+
+            updateDisplay();
+        }
+        
+        function exitVariationView() {
+            // 显示变化图按钮，隐藏控制按钮
+            document.getElementById('variationOptions').style.display = 'flex';
+            document.getElementById('variationControls').style.display = 'none';
+            if (document.getElementById('variationHeader')) {
+                document.getElementById('variationHeader').style.display = 'flex';
+            }
+
+            varMoves = [];
+            varIndex = 0;
+            updateDisplay();
+        }
+
+        function backToMain() {
+            answered = false;
+            selectedOption = null;
+            varMoves = [];
+            varIndex = 0;
+            currentVariationOption = null;
+            tryMoves = [];
+            tryIndex = 0;
+            showMainPanel();
+        }
+
+        function varPrev() {
+            if (varIndex > 0) {
+                varIndex--;
+                document.getElementById('varProgress').textContent = `${varIndex}/${varMoves.length}`;
+                // 播放落子音效（回退后显示的是上一手的落子）
+                playStoneSound();
+                updateDisplay();
+            }
+        }
+
+        function varNext() {
+            if (varIndex < varMoves.length) {
+                varIndex++;
+                document.getElementById('varProgress').textContent = `${varIndex}/${varMoves.length}`;
+
+                // 播放音效
+                const move = varMoves[varIndex - 1];
+                if (move && move.captured > 0) {
+                    if (move.captured >= 3) playMultiCaptureSound(move.captured);
+                    else playCaptureSound();
+                } else {
+                    playStoneSound();
+                }
+
+                updateDisplay();
+            }
+        }
+
+        // ==================== 试下功能 ====================
+        // 获取当前试下状态的棋盘（包含题目棋子和已试下的棋子）
+        function getTryPlayBoard() {
+            const board = createBoard();
+            const position = currentProblem ? currentProblem.position : [];
+            
+            // 应用题目棋子
+            for (let i = 0; i < position.length; i++) {
+                const move = position[i];
+                const color = move.color === 'B' ? 'black' : 'white';
+                const pos = coordToPos(move.coord);
+                if (pos) {
+                    applyMove(board, { color, x: pos.x, y: pos.y });
+                }
+            }
+            
+            // 应用已试下的棋子
+            for (let i = 0; i < tryIndex && i < tryMoves.length; i++) {
+                const move = tryMoves[i];
+                applyMove(board, move);
+            }
+            
+            return board;
+        }
+        
+        // 检查位置是否为空
+        function isEmptyPosition(board, x, y) {
+            return board[y][x] === null;
+        }
+        
+        function startTryPlay(x, y) {
+            // 检查位置是否已有棋子
+            const board = createBoard();
+            const position = currentProblem.position;
+
+            // 应用题目棋子到棋盘
+            for (let i = 0; i < position.length; i++) {
+                const move = position[i];
+                const color = move.color === 'B' ? 'black' : 'white';
+                const pos = coordToPos(move.coord);
+                if (pos) {
+                    applyMove(board, { color, x: pos.x, y: pos.y });
+                }
+            }
+
+            // 检查目标位置是否为空
+            if (board[y][x] !== null) {
+                return; // 位置已有棋子，不能试下
+            }
+
+            // 获取当前要下的颜色
+            const lastColor = position.length > 0 ? position[position.length - 1].color : 'B';
+            const nextColor = lastColor === 'B' ? 'white' : 'black';
+
+            // 应用第一手并获取提子数量
+            const result = applyMove(board, { color: nextColor, x, y });
+
+            tryMoves = [{
+                color: nextColor,
+                x: x,
+                y: y,
+                captured: result.captured
+            }];
+            tryIndex = 1;
+            document.getElementById('tryProgress').textContent = `${tryIndex}/${tryMoves.length}`;
+
+            // 播放音效
+            if (result.captured > 0) {
+                if (result.captured >= 3) playMultiCaptureSound(result.captured);
+                else playCaptureSound();
+            } else {
+                playStoneSound();
+            }
+
+            showTryplayPanel();
+        }
+        
+        function addTryPlayMove(x, y) {
+            // 获取当前棋盘状态（包含题目棋子和已试下的棋子）
+            const board = getTryPlayBoard();
+
+            // 检查目标位置是否已有棋子
+            if (!isEmptyPosition(board, x, y)) {
+                return; // 位置已有棋子，不能落子
+            }
+
+            // 获取下一手颜色
+            let nextColor;
+            if (tryIndex === 0) {
+                // tryIndex=0 时，根据题目最后一手确定下一手颜色
+                const position = currentProblem.position;
+                const lastColor = position.length > 0 ? position[position.length - 1].color : 'B';
+                nextColor = lastColor === 'B' ? 'white' : 'black';
+            } else {
+                const lastMove = tryMoves[tryIndex - 1];
+                nextColor = lastMove.color === 'black' ? 'white' : 'black';
+            }
+
+            // 如果当前不是在最后一步，则清除后续着法
+            // 当 tryIndex=0 时，清除所有旧着法，开始新的试下序列
+            if (tryIndex < tryMoves.length) {
+                tryMoves = tryMoves.slice(0, tryIndex);
+            }
+
+            // 应用落子并获取提子数量
+            const boardCopy = createBoard();
+            const position = currentProblem.position;
+            for (let i = 0; i < position.length; i++) {
+                const move = position[i];
+                const color = move.color === 'B' ? 'black' : 'white';
+                const pos = coordToPos(move.coord);
+                if (pos) {
+                    applyMove(boardCopy, { color, x: pos.x, y: pos.y });
+                }
+            }
+            // 使用 tryIndex 而不是 tryMoves.length，因为前面可能已经截断了数组
+            for (let i = 0; i < tryIndex && i < tryMoves.length; i++) {
+                applyMove(boardCopy, tryMoves[i]);
+            }
+            const result = applyMove(boardCopy, { color: nextColor, x, y });
+
+            // 添加新着法
+            tryMoves.push({
+                color: nextColor,
+                x: x,
+                y: y,
+                captured: result.captured
+            });
+            tryIndex = tryMoves.length;
+            document.getElementById('tryProgress').textContent = `${tryIndex}/${tryMoves.length}`;
+
+            // 播放音效
+            if (result.captured > 0) {
+                if (result.captured >= 3) playMultiCaptureSound(result.captured);
+                else playCaptureSound();
+            } else {
+                playStoneSound();
+            }
+
+            updateDisplay();
+        }
+
+        function exitTryPlay() {
+            tryMoves = [];
+            tryIndex = 0;
+            showMainPanel();
+        }
+
+        function tryPrev() {
+            if (tryIndex > 0) {
+                tryIndex--;
+                document.getElementById('tryProgress').textContent = `${tryIndex}/${tryMoves.length}`;
+                // 播放落子音效（回退后显示的是上一手的落子）
+                playStoneSound();
+                updateDisplay();
+            }
+        }
+
+        function tryNext() {
+            if (tryIndex < tryMoves.length) {
+                tryIndex++;
+                document.getElementById('tryProgress').textContent = `${tryIndex}/${tryMoves.length}`;
+
+                // 播放音效
+                const move = tryMoves[tryIndex - 1];
+                if (move && move.captured > 0) {
+                    if (move.captured >= 3) playMultiCaptureSound(move.captured);
+                    else playCaptureSound();
+                } else {
+                    playStoneSound();
+                }
+
+                updateDisplay();
+            }
+        }
+
+        // ==================== 保存SGF功能 ====================
+        function saveToSGF() {
+            if (!currentProblem) return;
+
+            // 获取游戏信息
+            const gameTitle = document.getElementById('gameTitle').textContent || '围棋棋谱';
+            const blackName = document.getElementById('blackName').textContent || '黑棋';
+            const whiteName = document.getElementById('whiteName').textContent || '白棋';
+            const date = new Date().toISOString().split('T')[0];
+
+            // 构建SGF内容
+            let sgf = '(;';
+            
+            // 添加文件头信息
+            sgf += `GM[1]FF[4]CA[UTF-8]AP[Weiqi-Move Quiz Generator]SZ[19]`;
+            sgf += `DT[${date}]`;
+            sgf += `PB[${blackName}]PW[${whiteName}]`;
+            sgf += `EV[${gameTitle}]`;
+            
+            // 添加题目信息
+            sgf += `C[第${currentProblemIndex + 1}题 - ${currentProblem.phase || '中盘'} ${currentProblem.difficulty || '中等'}]`;
+
+            // 添加让子（如果有）
+            if (handicapStones && handicapStones.length > 0) {
+                const abCoords = handicapStones.map(s => posToSgfCoord(s.x, s.y)).join('');
+                sgf += `AB[${abCoords}]`;
+            }
+
+            // 添加主分支着法（题目局面到当前手数）
+            const position = currentProblem.position;
+            const displayMove = Math.min(currentMove, position.length);
+            
+            for (let i = 0; i < displayMove; i++) {
+                const move = position[i];
+                const coord = posToSgfCoord(
+                    move.coord.charCodeAt(0) - 97,
+                    move.coord.charCodeAt(1) - 97
+                );
+                const prop = move.color === 'B' ? 'B' : 'W';
+                sgf += `;${prop}[${coord}]`;
+            }
+
+            // 根据当前状态添加额外的着法
+            if (currentState === STATE_VARIATION && varIndex > 0 && varMoves.length > 0) {
+                // 变化图模式：添加变化着法
+                sgf += 'C[变化图]';
+                for (let i = 0; i < varIndex && i < varMoves.length; i++) {
+                    const move = varMoves[i];
+                    const coord = posToSgfCoord(move.x, move.y);
+                    const prop = move.color === 'black' ? 'B' : 'W';
+                    sgf += `;${prop}[${coord}]`;
+                }
+            } else if (currentState === STATE_TRYPLAY && tryIndex > 0 && tryMoves.length > 0) {
+                // 试下模式：添加试下着法
+                sgf += 'C[试下着法]';
+                for (let i = 0; i < tryIndex && i < tryMoves.length; i++) {
+                    const move = tryMoves[i];
+                    const coord = posToSgfCoord(move.x, move.y);
+                    const prop = move.color === 'black' ? 'B' : 'W';
+                    sgf += `;${prop}[${coord}]`;
+                }
+            }
+
+            sgf += ')';
+
+            // 下载文件
+            const blob = new Blob([sgf], { type: 'application/x-go-sgf' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            
+            // 生成文件名
+            const problemNum = currentProblemIndex + 1;
+            const modeSuffix = currentState === STATE_VARIATION ? '_variation' : 
+                              currentState === STATE_TRYPLAY ? '_tryplay' : '';
+            link.download = `problem${problemNum}${modeSuffix}.sgf`;
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        // 将坐标转换为SGF格式（小写字母）
+        function posToSgfCoord(x, y) {
+            return String.fromCharCode(97 + x) + String.fromCharCode(97 + y);
+        }
+
+        // ==================== 题目导航 ====================
+        function loadProblem(index) {
+            if (index < 0 || index >= problems.length) return;
+            currentProblemIndex = index;
+            currentProblem = problems[index];
+            
+            // 重置所有状态
+            currentState = STATE_MAIN;
+            answered = false;
+            selectedOption = null;
+            varMoves = [];
+            varIndex = 0;
+            tryMoves = [];
+            tryIndex = 0;
+            currentVariationOption = null;
+            
+            currentMove = currentProblem.position.length;
+            
+            // 更新UI
+            document.getElementById('progressText').textContent = `${index + 1} / ${problems.length}`;
+            document.getElementById('prevProblemBtn').disabled = index === 0;
+            document.getElementById('nextProblemBtn').disabled = index === problems.length - 1;
+            
+            // 更新标签
+            const phaseTag = document.getElementById('phaseTag');
+            const difficultyTag = document.getElementById('difficultyTag');
+            const phaseNames = { layout: '布局', middle: '中盘', endgame: '官子' };
+            const difficultyNames = { easy: '简单', medium: '中等', hard: '困难' };
+            phaseTag.textContent = phaseNames[currentProblem.phase] || currentProblem.phase;
+            phaseTag.className = `tag tag-phase-${currentProblem.phase}`;
+            difficultyTag.textContent = difficultyNames[currentProblem.difficulty] || currentProblem.difficulty;
+            difficultyTag.className = `tag tag-difficulty-${currentProblem.difficulty}`;
+            
+            // 恶手题标签
+            if (currentProblem.is_blunder) {
+                if (!document.getElementById('blunderTag')) {
+                    const blunderTag = document.createElement('span');
+                    blunderTag.id = 'blunderTag';
+                    blunderTag.className = 'tag tag-blunder';
+                    blunderTag.textContent = '恶手题';
+                    document.getElementById('problemInfo').appendChild(blunderTag);
+                }
+            } else {
+                const blunderTag = document.getElementById('blunderTag');
+                if (blunderTag) blunderTag.remove();
+            }
+            
+            // 更新滑动条
+            const slider = document.getElementById('moveSlider');
+            slider.max = currentProblem.position.length;
+            slider.value = currentProblem.position.length;
+            
+            // 更新行棋方显示
+            updateTurnIndicator();
+            
+            // 重置面板
+            showMainPanel();
+        }
+
+        function prevProblem() {
+            loadProblem(currentProblemIndex - 1);
+        }
+
+        function nextProblem() {
+            loadProblem(currentProblemIndex + 1);
+        }
+
+        // ==================== 棋盘点击 ====================
+        function handleBoardClick(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            // 使用 offsetX/offsetY 获取相对于 canvas 的坐标
+            const x = e.offsetX * scaleX;
+            const y = e.offsetY * scaleY;
+            const { margin, gridSize } = getGridParams();
+            const bx = Math.round((x - margin) / gridSize);
+            const by = Math.round((y - margin) / gridSize);
+            
+            if (bx < 0 || bx >= BOARD_SIZE || by < 0 || by >= BOARD_SIZE) return;
+            
+            // 主面板状态：可以答题或开始试下
+            if (currentState === STATE_MAIN) {
+                // 检查是否点击了某个选项
+                let clickedOption = false;
+                for (let i = 0; i < currentProblem.options.length; i++) {
+                    const opt = currentProblem.options[i];
+                    const pos = coordToPos(opt.coord);
+                    if (pos && pos.x === bx && pos.y === by) {
+                        selectOption(i);
+                        clickedOption = true;
+                        break;
+                    }
+                }
+                
+                // 如果没有点击选项，进入试下模式
+                if (!clickedOption) {
+                    startTryPlay(bx, by);
+                }
+            }
+            // 试下状态：可以继续落子（包括ABCD位置，但不触发答题）
+            else if (currentState === STATE_TRYPLAY) {
+                // 试下模式下，任何空位都可以落子，不触发答题
+                addTryPlayMove(bx, by);
+            }
+        }
+
+        canvas.addEventListener('click', handleBoardClick);
+        window.addEventListener('resize', resizeCanvas);
+
+        // ==================== 初始化 ====================
+        resizeCanvas();
+        loadProblem(0);
+    </script>
+</body>
+</html>
