@@ -13,21 +13,21 @@
             line-height: 1.6;
         }
         .container {
-            max-width: 1200px;
+            max-width: 480px;
             margin: 0 auto;
-            padding: 15px;
+            padding: 12px;
         }
         header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 20px;
-            margin-bottom: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
             border-radius: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        h1 { font-size: 1.5em; }
+        h1 { font-size: 1.3em; }
         .header-actions {
             display: flex;
             gap: 10px;
@@ -53,7 +53,7 @@
         .source-group {
             background: white;
             border-radius: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             overflow: hidden;
         }
@@ -133,11 +133,28 @@
             font-size: 0.85em;
             font-weight: 500;
         }
+        .quiz-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .game-btn {
+            padding: 4px 10px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 12px;
+            font-size: 0.8em;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .game-btn:hover {
+            background: #c8e6c9;
+        }
         footer {
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             color: #999;
-            font-size: 0.85em;
+            font-size: 0.8em;
         }
     </style>
 </head>
@@ -148,9 +165,7 @@
             <div class="header-actions">
                 <select id="dateFilter" onchange="filterByDate()">
                     
-                    <option value="2026-04-13" >2026-04-13</option>
-                    
-                    <option value="2026-04-12" >2026-04-12</option>
+                    <option value="2026-04-14" >2026-04-14</option>
                     
                 </select>
                 <button class="icon-btn" onclick="clearVisited()" title="清除记录">🗑️</button>
@@ -159,172 +174,142 @@
         
         <div id="content">
             
-            <div class="date-section" data-date="2026-04-13">
+            <div class="date-section" data-date="2026-04-14">
                 
                 <div class="source-group">
                     <div class="source-header" onclick="toggleSource(this)">
-                        <span>🏷️ 野狐 (1份, 2题)</span>
+                        <span>🏷️ 野狐 (8份, 29题)</span>
                         <span class="source-toggle">▼</span>
                     </div>
                     <div class="quiz-list">
                         
-                        <a href="/quiz/2026-04-13/野狐/quiz_202604140735210005.html" class="quiz-item" data-quiz-id="202604140735210005">
-                            <div class="quiz-number">1</div>
-                            <div class="quiz-info">
-                                <div class="quiz-title">近藤登志希 vs 上野梨紗</div>
-                                <div class="quiz-meta">
-                                    <span>第51期日本棋圣战预选<绝艺讲解></span>
-                                    <span class="quiz-tag">恶手题</span>
+                        <div class="quiz-item" data-quiz-id="202604150857270004">
+                            <a href="/quiz/2026-04-14/野狐/quiz_202604150857270004.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
+                                <div class="quiz-number">1</div>
+                                <div class="quiz-info">
+                                    <div class="quiz-title">藤沢里菜 vs 上野愛咲美</div>
+                                    <div class="quiz-meta">
+                                        <span>第37期日本女流名人战挑战赛1/3局<绝艺讲解></span>
+                                    </div>
                                 </div>
+                            </a>
+                            <div class="quiz-actions">
+                                <div class="quiz-count">1题</div>
+                                <a href="/games/2026-04-14/野狐/game_202604150857270004.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
                             </div>
-                            <div class="quiz-count">2题</div>
-                        </a>
+                        </div>
                         
-                    </div>
-                </div>
-                
-            </div>
-            
-            <div class="date-section" data-date="2026-04-12">
-                
-                <div class="source-group">
-                    <div class="source-header" onclick="toggleSource(this)">
-                        <span>🏷️ 野狐 (11份, 32题)</span>
-                        <span class="source-toggle">▼</span>
-                    </div>
-                    <div class="quiz-list">
-                        
-                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159180003.html" class="quiz-item" data-quiz-id="202604131159180003">
-                            <div class="quiz-number">1</div>
-                            <div class="quiz-info">
-                                <div class="quiz-title">赖均辅 vs 王舜博</div>
-                                <div class="quiz-meta">
-                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
-                                    <span class="quiz-tag">恶手题</span>
+                        <div class="quiz-item" data-quiz-id="202604150857270005">
+                            <a href="/quiz/2026-04-14/野狐/quiz_202604150857270005.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
+                                <div class="quiz-number">2</div>
+                                <div class="quiz-info">
+                                    <div class="quiz-title">Frejlak vs 张歆宇</div>
+                                    <div class="quiz-meta">
+                                        <span>第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                    </div>
                                 </div>
+                            </a>
+                            <div class="quiz-actions">
+                                <div class="quiz-count">4题</div>
+                                <a href="/games/2026-04-14/野狐/game_202604150857270005.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
                             </div>
-                            <div class="quiz-count">2题</div>
-                        </a>
+                        </div>
                         
-                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190004.html" class="quiz-item" data-quiz-id="202604131159190004">
-                            <div class="quiz-number">2</div>
-                            <div class="quiz-info">
-                                <div class="quiz-title">张紫良 vs 이지현M</div>
-                                <div class="quiz-meta">
-                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
-                                    <span class="quiz-tag">恶手题</span>
+                        <div class="quiz-item" data-quiz-id="202604150857270010">
+                            <a href="/quiz/2026-04-14/野狐/quiz_202604150857270010.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
+                                <div class="quiz-number">3</div>
+                                <div class="quiz-info">
+                                    <div class="quiz-title">李欣宸 vs 심재익</div>
+                                    <div class="quiz-meta">
+                                        <span>第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                    </div>
                                 </div>
+                            </a>
+                            <div class="quiz-actions">
+                                <div class="quiz-count">4题</div>
+                                <a href="/games/2026-04-14/野狐/game_202604150857270010.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
                             </div>
-                            <div class="quiz-count">1题</div>
-                        </a>
+                        </div>
                         
-                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190007.html" class="quiz-item" data-quiz-id="202604131159190007">
-                            <div class="quiz-number">3</div>
-                            <div class="quiz-info">
-                                <div class="quiz-title">傅彧 vs 谢科</div>
-                                <div class="quiz-meta">
-                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
-                                    <span class="quiz-tag">恶手题</span>
+                        <div class="quiz-item" data-quiz-id="202604150857270012">
+                            <a href="/quiz/2026-04-14/野狐/quiz_202604150857270012.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
+                                <div class="quiz-number">4</div>
+                                <div class="quiz-info">
+                                    <div class="quiz-title">江维杰 vs 酒井佑規</div>
+                                    <div class="quiz-meta">
+                                        <span>第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                    </div>
                                 </div>
+                            </a>
+                            <div class="quiz-actions">
+                                <div class="quiz-count">2题</div>
+                                <a href="/games/2026-04-14/野狐/game_202604150857270012.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
                             </div>
-                            <div class="quiz-count">3题</div>
-                        </a>
+                        </div>
                         
-                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190008.html" class="quiz-item" data-quiz-id="202604131159190008">
-                            <div class="quiz-number">4</div>
-                            <div class="quiz-info">
-                                <div class="quiz-title">白宝祥 vs 江维杰</div>
-                                <div class="quiz-meta">
-                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
-                                    <span class="quiz-tag">恶手题</span>
+                        <div class="quiz-item" data-quiz-id="202604150857270013">
+                            <a href="/quiz/2026-04-14/野狐/quiz_202604150857270013.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
+                                <div class="quiz-number">5</div>
+                                <div class="quiz-info">
+                                    <div class="quiz-title">唐嘉雯 vs 이지현M</div>
+                                    <div class="quiz-meta">
+                                        <span>第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                    </div>
                                 </div>
+                            </a>
+                            <div class="quiz-actions">
+                                <div class="quiz-count">1题</div>
+                                <a href="/games/2026-04-14/野狐/game_202604150857270013.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
                             </div>
-                            <div class="quiz-count">4题</div>
-                        </a>
+                        </div>
                         
-                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190009.html" class="quiz-item" data-quiz-id="202604131159190009">
-                            <div class="quiz-number">5</div>
-                            <div class="quiz-info">
-                                <div class="quiz-title">郑载想 vs 杨鼎新</div>
-                                <div class="quiz-meta">
-                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
-                                    <span class="quiz-tag">恶手题</span>
+                        <div class="quiz-item" data-quiz-id="202604150857270014">
+                            <a href="/quiz/2026-04-14/野狐/quiz_202604150857270014.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
+                                <div class="quiz-number">6</div>
+                                <div class="quiz-info">
+                                    <div class="quiz-title">王世一 vs 변상일</div>
+                                    <div class="quiz-meta">
+                                        <span>第4届烂柯杯世界公开赛48进32<张学斌＆夏夏＆绝艺解说></span>
+                                    </div>
                                 </div>
+                            </a>
+                            <div class="quiz-actions">
+                                <div class="quiz-count">6题</div>
+                                <a href="/games/2026-04-14/野狐/game_202604150857270014.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
                             </div>
-                            <div class="quiz-count">2题</div>
-                        </a>
+                        </div>
                         
-                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190010.html" class="quiz-item" data-quiz-id="202604131159190010">
-                            <div class="quiz-number">6</div>
-                            <div class="quiz-info">
-                                <div class="quiz-title">芮乃伟 vs 한종진</div>
-                                <div class="quiz-meta">
-                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
-                                    <span class="quiz-tag">恶手题</span>
+                        <div class="quiz-item" data-quiz-id="202604150857280015">
+                            <a href="/quiz/2026-04-14/野狐/quiz_202604150857280015.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
+                                <div class="quiz-number">7</div>
+                                <div class="quiz-info">
+                                    <div class="quiz-title">邱禹然 vs 三浦太郎</div>
+                                    <div class="quiz-meta">
+                                        <span>第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                    </div>
                                 </div>
+                            </a>
+                            <div class="quiz-actions">
+                                <div class="quiz-count">6题</div>
+                                <a href="/games/2026-04-14/野狐/game_202604150857280015.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
                             </div>
-                            <div class="quiz-count">2题</div>
-                        </a>
+                        </div>
                         
-                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190011.html" class="quiz-item" data-quiz-id="202604131159190011">
-                            <div class="quiz-number">7</div>
-                            <div class="quiz-info">
-                                <div class="quiz-title">桂诗云 vs 唐嘉雯</div>
-                                <div class="quiz-meta">
-                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
-                                    <span class="quiz-tag">恶手题</span>
+                        <div class="quiz-item" data-quiz-id="202604150857280017">
+                            <a href="/quiz/2026-04-14/野狐/quiz_202604150857280017.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
+                                <div class="quiz-number">8</div>
+                                <div class="quiz-info">
+                                    <div class="quiz-title">이원영 vs 段博尧</div>
+                                    <div class="quiz-meta">
+                                        <span>第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                    </div>
                                 </div>
+                            </a>
+                            <div class="quiz-actions">
+                                <div class="quiz-count">5题</div>
+                                <a href="/games/2026-04-14/野狐/game_202604150857280017.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
                             </div>
-                            <div class="quiz-count">3题</div>
-                        </a>
-                        
-                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190012.html" class="quiz-item" data-quiz-id="202604131159190012">
-                            <div class="quiz-number">8</div>
-                            <div class="quiz-info">
-                                <div class="quiz-title">赵奕斐 vs 於之莹</div>
-                                <div class="quiz-meta">
-                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
-                                    <span class="quiz-tag">恶手题</span>
-                                </div>
-                            </div>
-                            <div class="quiz-count">2题</div>
-                        </a>
-                        
-                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190013.html" class="quiz-item" data-quiz-id="202604131159190013">
-                            <div class="quiz-number">9</div>
-                            <div class="quiz-info">
-                                <div class="quiz-title">李赫 vs 周泓余</div>
-                                <div class="quiz-meta">
-                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
-                                    <span class="quiz-tag">恶手题</span>
-                                </div>
-                            </div>
-                            <div class="quiz-count">2题</div>
-                        </a>
-                        
-                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190014.html" class="quiz-item" data-quiz-id="202604131159190014">
-                            <div class="quiz-number">10</div>
-                            <div class="quiz-info">
-                                <div class="quiz-title">屠晓宇 vs 박정환</div>
-                                <div class="quiz-meta">
-                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
-                                    <span class="quiz-tag">恶手题</span>
-                                </div>
-                            </div>
-                            <div class="quiz-count">1题</div>
-                        </a>
-                        
-                        <a href="/quiz/2026-04-12/野狐/quiz_202604131159190015.html" class="quiz-item" data-quiz-id="202604131159190015">
-                            <div class="quiz-number">11</div>
-                            <div class="quiz-info">
-                                <div class="quiz-title">胡耀宇 vs 이원영</div>
-                                <div class="quiz-meta">
-                                    <span>第4届烂柯杯世界公开赛综合预选决赛<绝艺讲解></span>
-                                    <span class="quiz-tag">恶手题</span>
-                                </div>
-                            </div>
-                            <div class="quiz-count">10题</div>
-                        </a>
+                        </div>
                         
                     </div>
                 </div>
