@@ -26,12 +26,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: nowrap;
         }
-        h1 { font-size: 1.3em; }
+        h1 { font-size: 1.3em; margin: 0; flex-shrink: 0; }
+        .header-left { flex-shrink: 0; }
         .header-actions {
             display: flex;
             gap: 10px;
             align-items: center;
+            justify-content: flex-end;
         }
         .icon-btn {
             background: rgba(255,255,255,0.2);
@@ -44,12 +47,16 @@
             font-size: 1em;
         }
         .icon-btn:hover { background: rgba(255,255,255,0.3); }
-        
         .header-actions select {
             padding: 6px 10px;
             border: none;
             border-radius: 5px;
             font-size: 0.85em;
+        }
+        @media (max-width: 600px) {
+            header { padding: 12px; }
+            .header-actions select { font-size: 0.8em; padding: 4px 6px; }
+            .icon-btn { width: 28px; height: 28px; font-size: 0.9em; }
         }
         
         /* 分类切换标签 */
@@ -120,12 +127,12 @@
         }
         .joseki-item {
             display: flex;
-            align-items: center;
             padding: 12px 15px;
             border-bottom: 1px solid #f5f5f5;
             text-decoration: none;
             color: inherit;
             transition: background 0.2s;
+            align-items: flex-start;
         }
         .joseki-item:last-child { border-bottom: none; }
         .joseki-item:hover { background: #fafafa; }
@@ -146,14 +153,23 @@
             align-self: flex-start;
             margin-top: 2px;
         }
-        .joseki-info {
+        .joseki-content {
             flex: 1;
             min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .joseki-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
         }
         .joseki-title {
             font-weight: 500;
             color: #333;
-            margin-bottom: 4px;
+            font-size: 1em;
         }
         .joseki-title-row {
             display: flex;
@@ -161,9 +177,12 @@
             gap: 6px;
         }
         .joseki-moves {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 2px;
+            font-size: 1em;
+            color: #667eea;
+            font-weight: 600;
+            padding: 2px 8px;
+            background: #f0f0ff;
+            border-radius: 10px;
         }
         .joseki-players {
             display: flex;
@@ -192,11 +211,7 @@
         }
         .joseki-meta {
             font-size: 0.85em;
-            color: #666;
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            align-items: center;
+            color: #888;
         }
         .joseki-tag {
             padding: 2px 8px;
@@ -226,29 +241,23 @@
             border-radius: 4px;
         }
         .match-count {
-            padding: 2px 8px;
+            padding: 3px 10px;
             background: #fff3e0;
             color: #e65100;
             border-radius: 10px;
-            font-size: 0.8em;
+            font-size: 0.85em;
             font-weight: 500;
-        }
-        .joseki-event {
-            color: #888;
-        }
-        .joseki-actions {
-            display: flex;
-            gap: 8px;
-            align-items: center;
+            flex-shrink: 0;
         }
         .game-btn {
-            padding: 4px 10px;
+            padding: 5px 12px;
             background: #e8f5e9;
             color: #2e7d32;
             border-radius: 12px;
-            font-size: 0.8em;
+            font-size: 0.85em;
             text-decoration: none;
             white-space: nowrap;
+            flex-shrink: 0;
         }
         .game-btn:hover {
             background: #c8e6c9;
@@ -269,7 +278,9 @@
 <body>
     <div class="container">
         <header>
-            <h1>📚 定式研究</h1>
+            <div class="header-left">
+                <h1>📚 定式研究</h1>
+            </div>
             <div class="header-actions">
                 <select id="dateFilter" onchange="filterByDate()">
                     
@@ -301,10 +312,10 @@
                 <div class="joseki-list">
                     
                     <div class="joseki-item" data-joseki-id="joseki_604">
-                        <a href="/joseki/2026-04-14/joseki_001.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">1</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">1</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_001.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         李赫
@@ -312,26 +323,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         夏晨琨
                                     </div>
-                                    <div class="joseki-moves">13手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">13手</span>
+                                    <span class="match-count">匹配1手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配1手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270011.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270011.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_1166">
-                        <a href="/joseki/2026-04-14/joseki_002.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">2</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">2</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_002.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         林天予
@@ -339,26 +350,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         戎毅
                                     </div>
-                                    <div class="joseki-moves">9手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">9手</span>
+                                    <span class="match-count">匹配2手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配2手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857260001.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857260001.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_098">
-                        <a href="/joseki/2026-04-14/joseki_003.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">3</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">3</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_003.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         Frejlak
@@ -366,26 +377,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         张歆宇
                                     </div>
-                                    <div class="joseki-moves">47手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">47手</span>
+                                    <span class="match-count">匹配2手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配2手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270005.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270005.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_6208">
-                        <a href="/joseki/2026-04-14/joseki_004.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">4</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">4</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_004.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         藤沢里菜
@@ -393,26 +404,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         上野愛咲美
                                     </div>
-                                    <div class="joseki-moves">16手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第37期日本女流名人战挑战赛1/3局<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">16手</span>
+                                    <span class="match-count">匹配3手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配3手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270004.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第37期日本女流名人战挑战赛1/3局<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270004.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_4662">
-                        <a href="/joseki/2026-04-14/joseki_005.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">5</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">5</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_005.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         李欣宸
@@ -420,26 +431,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         심재익
                                     </div>
-                                    <div class="joseki-moves">24手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">24手</span>
+                                    <span class="match-count">匹配3手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配3手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270010.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270010.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_4662">
-                        <a href="/joseki/2026-04-14/joseki_006.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">6</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">6</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_006.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         李欣宸
@@ -447,26 +458,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         심재익
                                     </div>
-                                    <div class="joseki-moves">19手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">19手</span>
+                                    <span class="match-count">匹配3手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配3手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270010.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270010.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_1375">
-                        <a href="/joseki/2026-04-14/joseki_007.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">7</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">7</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_007.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         赖均辅
@@ -474,26 +485,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         陈贤
                                     </div>
-                                    <div class="joseki-moves">44手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">44手</span>
+                                    <span class="match-count">匹配3手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配3手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270006.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270006.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_501">
-                        <a href="/joseki/2026-04-14/joseki_008.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">8</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">8</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_008.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         赖均辅
@@ -501,26 +512,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         陈贤
                                     </div>
-                                    <div class="joseki-moves">11手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">11手</span>
+                                    <span class="match-count">匹配3手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配3手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270006.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270006.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_2067">
-                        <a href="/joseki/2026-04-14/joseki_009.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">9</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">9</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_009.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         신진서
@@ -528,26 +539,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         马靖原
                                     </div>
-                                    <div class="joseki-moves">22手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">22手</span>
+                                    <span class="match-count">匹配4手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配4手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270007.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270007.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_1451">
-                        <a href="/joseki/2026-04-14/joseki_010.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">10</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">10</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_010.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         赖均辅
@@ -555,26 +566,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         陈贤
                                     </div>
-                                    <div class="joseki-moves">9手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">9手</span>
+                                    <span class="match-count">匹配4手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配4手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270006.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270006.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_1098">
-                        <a href="/joseki/2026-04-14/joseki_011.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">11</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">11</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_011.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         唐嘉雯
@@ -582,26 +593,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         이지현M
                                     </div>
-                                    <div class="joseki-moves">26手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">26手</span>
+                                    <span class="match-count">匹配4手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配4手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270013.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270013.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_3072">
-                        <a href="/joseki/2026-04-14/joseki_012.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">12</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">12</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_012.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         陈祈睿
@@ -609,26 +620,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         赵奕斐
                                     </div>
-                                    <div class="joseki-moves">39手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">39手</span>
+                                    <span class="match-count">匹配5手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配5手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857280016.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857280016.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_2769">
-                        <a href="/joseki/2026-04-14/joseki_013.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">13</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">13</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_013.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         邱禹然
@@ -636,26 +647,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         三浦太郎
                                     </div>
-                                    <div class="joseki-moves">22手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">22手</span>
+                                    <span class="match-count">匹配5手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配5手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857280015.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857280015.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_1983">
-                        <a href="/joseki/2026-04-14/joseki_014.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">14</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">14</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_014.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         李崇德
@@ -663,26 +674,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         김명훈
                                     </div>
-                                    <div class="joseki-moves">9手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">9手</span>
+                                    <span class="match-count">匹配5手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配5手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857260002.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857260002.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_1265">
-                        <a href="/joseki/2026-04-14/joseki_015.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">15</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">15</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_015.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         李赫
@@ -690,26 +701,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         夏晨琨
                                     </div>
-                                    <div class="joseki-moves">25手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">25手</span>
+                                    <span class="match-count">匹配5手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配5手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270011.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270011.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_633">
-                        <a href="/joseki/2026-04-14/joseki_016.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">16</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">16</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_016.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         徐晓凡
@@ -717,26 +728,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         陶欣然
                                     </div>
-                                    <div class="joseki-moves">16手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">16手</span>
+                                    <span class="match-count">匹配5手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配5手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270003.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270003.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_528">
-                        <a href="/joseki/2026-04-14/joseki_017.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">17</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">17</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_017.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         藤沢里菜
@@ -744,26 +755,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         上野愛咲美
                                     </div>
-                                    <div class="joseki-moves">8手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第37期日本女流名人战挑战赛1/3局<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">8手</span>
+                                    <span class="match-count">匹配5手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配5手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270004.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第37期日本女流名人战挑战赛1/3局<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270004.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_507">
-                        <a href="/joseki/2026-04-14/joseki_018.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">18</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">18</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_018.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         李崇德
@@ -771,26 +782,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         김명훈
                                     </div>
-                                    <div class="joseki-moves">13手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">13手</span>
+                                    <span class="match-count">匹配5手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配5手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857260002.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857260002.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_055">
-                        <a href="/joseki/2026-04-14/joseki_019.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">19</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">19</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_019.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         Frejlak
@@ -798,18 +809,18 @@
                                         <span class="stone-icon stone-white"></span>
                                         张歆宇
                                     </div>
-                                    <div class="joseki-moves">23手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">23手</span>
+                                    <span class="match-count">匹配5手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配5手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270005.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270005.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
@@ -823,10 +834,10 @@
                 <div class="joseki-list">
                     
                     <div class="joseki-item" data-joseki-id="joseki_8947">
-                        <a href="/joseki/2026-04-14/joseki_020.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">1</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">1</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_020.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         李昊潼
@@ -834,26 +845,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         王元均
                                     </div>
-                                    <div class="joseki-moves">32手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">32手</span>
+                                    <span class="match-count">匹配6手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配6手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270009.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270009.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_7956">
-                        <a href="/joseki/2026-04-14/joseki_021.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">2</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">2</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_021.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         王世一
@@ -861,26 +872,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         변상일
                                     </div>
-                                    <div class="joseki-moves">29手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<张学斌＆夏夏＆绝艺解说></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">29手</span>
+                                    <span class="match-count">匹配6手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配6手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270014.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<张学斌＆夏夏＆绝艺解说></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270014.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_8321">
-                        <a href="/joseki/2026-04-14/joseki_022.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">3</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">3</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_022.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         唐嘉雯
@@ -888,26 +899,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         이지현M
                                     </div>
-                                    <div class="joseki-moves">20手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">20手</span>
+                                    <span class="match-count">匹配6手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配6手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270013.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270013.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_6511">
-                        <a href="/joseki/2026-04-14/joseki_023.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">4</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">4</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_023.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         한종진
@@ -915,26 +926,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         陈玉侬
                                     </div>
-                                    <div class="joseki-moves">39手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">39手</span>
+                                    <span class="match-count">匹配6手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配6手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270008.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270008.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_1157">
-                        <a href="/joseki/2026-04-14/joseki_024.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">5</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">5</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_024.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         邱禹然
@@ -942,26 +953,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         三浦太郎
                                     </div>
-                                    <div class="joseki-moves">13手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">13手</span>
+                                    <span class="match-count">匹配6手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配6手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857280015.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857280015.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_899">
-                        <a href="/joseki/2026-04-14/joseki_025.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">6</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">6</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_025.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         王世一
@@ -969,26 +980,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         변상일
                                     </div>
-                                    <div class="joseki-moves">17手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<张学斌＆夏夏＆绝艺解说></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">17手</span>
+                                    <span class="match-count">匹配6手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配6手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270014.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<张学斌＆夏夏＆绝艺解说></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270014.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_7341">
-                        <a href="/joseki/2026-04-14/joseki_026.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">7</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">7</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_026.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         藤沢里菜
@@ -996,26 +1007,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         上野愛咲美
                                     </div>
-                                    <div class="joseki-moves">40手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第37期日本女流名人战挑战赛1/3局<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">40手</span>
+                                    <span class="match-count">匹配7手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配7手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270004.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第37期日本女流名人战挑战赛1/3局<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270004.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_6921">
-                        <a href="/joseki/2026-04-14/joseki_027.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">8</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">8</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_027.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         李赫
@@ -1023,26 +1034,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         夏晨琨
                                     </div>
-                                    <div class="joseki-moves">22手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">22手</span>
+                                    <span class="match-count">匹配7手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配7手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270011.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270011.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_5053">
-                        <a href="/joseki/2026-04-14/joseki_028.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">9</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">9</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_028.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         徐晓凡
@@ -1050,26 +1061,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         陶欣然
                                     </div>
-                                    <div class="joseki-moves">32手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">32手</span>
+                                    <span class="match-count">匹配7手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配7手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270003.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270003.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_4501">
-                        <a href="/joseki/2026-04-14/joseki_029.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">10</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">10</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_029.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         王世一
@@ -1077,26 +1088,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         변상일
                                     </div>
-                                    <div class="joseki-moves">27手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<张学斌＆夏夏＆绝艺解说></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">27手</span>
+                                    <span class="match-count">匹配7手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配7手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270014.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<张学斌＆夏夏＆绝艺解说></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270014.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_3560">
-                        <a href="/joseki/2026-04-14/joseki_030.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">11</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">11</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_030.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         林天予
@@ -1104,26 +1115,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         戎毅
                                     </div>
-                                    <div class="joseki-moves">19手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">19手</span>
+                                    <span class="match-count">匹配7手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配7手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857260001.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857260001.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_2435">
-                        <a href="/joseki/2026-04-14/joseki_031.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">12</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">12</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_031.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         徐晓凡
@@ -1131,26 +1142,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         陶欣然
                                     </div>
-                                    <div class="joseki-moves">16手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">16手</span>
+                                    <span class="match-count">匹配7手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配7手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270003.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270003.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_1804">
-                        <a href="/joseki/2026-04-14/joseki_032.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">13</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">13</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_032.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         이원영
@@ -1158,26 +1169,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         段博尧
                                     </div>
-                                    <div class="joseki-moves">47手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">47手</span>
+                                    <span class="match-count">匹配7手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配7手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857280017.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857280017.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_144">
-                        <a href="/joseki/2026-04-14/joseki_033.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">14</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">14</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_033.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         李欣宸
@@ -1185,26 +1196,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         심재익
                                     </div>
-                                    <div class="joseki-moves">7手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">7手</span>
+                                    <span class="match-count">匹配7手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配7手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270010.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270010.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_068">
-                        <a href="/joseki/2026-04-14/joseki_034.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">15</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">15</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_034.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         한종진
@@ -1212,26 +1223,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         陈玉侬
                                     </div>
-                                    <div class="joseki-moves">18手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">18手</span>
+                                    <span class="match-count">匹配7手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配7手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270008.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270008.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_7128">
-                        <a href="/joseki/2026-04-14/joseki_035.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">16</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">16</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_035.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         李昊潼
@@ -1239,26 +1250,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         王元均
                                     </div>
-                                    <div class="joseki-moves">16手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">16手</span>
+                                    <span class="match-count">匹配8手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配8手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270009.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270009.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_6195">
-                        <a href="/joseki/2026-04-14/joseki_036.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">17</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">17</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_036.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         이원영
@@ -1266,26 +1277,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         段博尧
                                     </div>
-                                    <div class="joseki-moves">19手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">19手</span>
+                                    <span class="match-count">匹配8手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配8手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857280017.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857280017.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_6195">
-                        <a href="/joseki/2026-04-14/joseki_037.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">18</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">18</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_037.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         赖均辅
@@ -1293,26 +1304,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         陈贤
                                     </div>
-                                    <div class="joseki-moves">19手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">19手</span>
+                                    <span class="match-count">匹配8手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配8手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270006.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270006.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_5387">
-                        <a href="/joseki/2026-04-14/joseki_038.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">19</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">19</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_038.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         唐嘉雯
@@ -1320,26 +1331,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         이지현M
                                     </div>
-                                    <div class="joseki-moves">11手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">11手</span>
+                                    <span class="match-count">匹配8手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配8手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270013.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270013.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_4871">
-                        <a href="/joseki/2026-04-14/joseki_039.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">20</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">20</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_039.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         Frejlak
@@ -1347,26 +1358,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         张歆宇
                                     </div>
-                                    <div class="joseki-moves">8手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">8手</span>
+                                    <span class="match-count">匹配8手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配8手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270005.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270005.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_2044">
-                        <a href="/joseki/2026-04-14/joseki_040.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">21</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">21</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_040.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         邱禹然
@@ -1374,26 +1385,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         三浦太郎
                                     </div>
-                                    <div class="joseki-moves">13手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">13手</span>
+                                    <span class="match-count">匹配8手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配8手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857280015.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857280015.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_8148">
-                        <a href="/joseki/2026-04-14/joseki_041.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">22</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">22</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_041.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         李昊潼
@@ -1401,26 +1412,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         王元均
                                     </div>
-                                    <div class="joseki-moves">18手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">18手</span>
+                                    <span class="match-count">匹配9手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配9手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270009.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270009.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_3948">
-                        <a href="/joseki/2026-04-14/joseki_042.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">23</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">23</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_042.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         신진서
@@ -1428,26 +1439,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         马靖原
                                     </div>
-                                    <div class="joseki-moves">17手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">17手</span>
+                                    <span class="match-count">匹配9手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配9手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270007.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270007.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_3799">
-                        <a href="/joseki/2026-04-14/joseki_043.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">24</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">24</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_043.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         陈祈睿
@@ -1455,26 +1466,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         赵奕斐
                                     </div>
-                                    <div class="joseki-moves">12手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">12手</span>
+                                    <span class="match-count">匹配9手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配9手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857280016.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857280016.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_2413">
-                        <a href="/joseki/2026-04-14/joseki_044.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">25</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">25</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_044.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         林天予
@@ -1482,26 +1493,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         戎毅
                                     </div>
-                                    <div class="joseki-moves">37手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">37手</span>
+                                    <span class="match-count">匹配9手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配9手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857260001.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857260001.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_2074">
-                        <a href="/joseki/2026-04-14/joseki_045.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">26</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">26</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_045.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         李昊潼
@@ -1509,26 +1520,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         王元均
                                     </div>
-                                    <div class="joseki-moves">18手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">18手</span>
+                                    <span class="match-count">匹配9手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配9手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270009.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270009.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_6710">
-                        <a href="/joseki/2026-04-14/joseki_046.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">27</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">27</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_046.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         王世一
@@ -1536,26 +1547,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         변상일
                                     </div>
-                                    <div class="joseki-moves">20手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<张学斌＆夏夏＆绝艺解说></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">20手</span>
+                                    <span class="match-count">匹配10手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配10手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270014.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<张学斌＆夏夏＆绝艺解说></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270014.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_4969">
-                        <a href="/joseki/2026-04-14/joseki_047.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">28</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">28</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_047.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         邱禹然
@@ -1563,26 +1574,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         三浦太郎
                                     </div>
-                                    <div class="joseki-moves">40手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">40手</span>
+                                    <span class="match-count">匹配10手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配10手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857280015.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857280015.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_4995">
-                        <a href="/joseki/2026-04-14/joseki_048.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">29</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">29</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_048.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         李崇德
@@ -1590,26 +1601,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         김명훈
                                     </div>
-                                    <div class="joseki-moves">37手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">37手</span>
+                                    <span class="match-count">匹配10手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配10手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857260002.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857260002.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_3957">
-                        <a href="/joseki/2026-04-14/joseki_049.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">30</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">30</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_049.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         한종진
@@ -1617,26 +1628,26 @@
                                         <span class="stone-icon stone-white"></span>
                                         陈玉侬
                                     </div>
-                                    <div class="joseki-moves">23手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">23手</span>
+                                    <span class="match-count">匹配10手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配10手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270008.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270008.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
                     <div class="joseki-item" data-joseki-id="joseki_5141">
-                        <a href="/joseki/2026-04-14/joseki_050.html" style="display: flex; align-items: center; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="joseki-number">31</div>
-                            <div class="joseki-info">
-                                <div class="joseki-title">
+                        <div class="joseki-number">31</div>
+                        <div class="joseki-content">
+                            <div class="joseki-row">
+                                <a href="/joseki/2026-04-14/joseki_050.html" class="joseki-title" style="text-decoration: none; color: inherit;">
                                     <div class="joseki-title-row">
                                         <span class="stone-icon stone-black"></span>
                                         江维杰
@@ -1644,18 +1655,18 @@
                                         <span class="stone-icon stone-white"></span>
                                         酒井佑規
                                     </div>
-                                    <div class="joseki-moves">11手</div>
-                                </div>
-                                <div class="joseki-meta">
-                                    <span class="joseki-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                </a>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <span class="joseki-moves">11手</span>
+                                    <span class="match-count">匹配11手</span>
                                 </div>
                             </div>
-                        </a>
-                        <div class="joseki-actions">
-                            <span class="match-count">匹配11手</span>
-                            
-                            <a href="/games/2026-04-14/野狐/game_202604150857270012.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                            
+                            <div class="joseki-row">
+                                <div class="joseki-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                                
+                                <a href="/games/2026-04-14/野狐/game_202604150857270012.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                                
+                            </div>
                         </div>
                     </div>
                     
