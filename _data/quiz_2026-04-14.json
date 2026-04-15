@@ -7,8 +7,22 @@
     "black": "藤沢里菜",
     "white": "上野愛咲美",
     "event": "第37期日本女流名人战挑战赛1/3局<绝艺讲解>",
-    "type": "恶手题",
-    "count": 1
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "phase": {
+        "layout": 0,
+        "middle": 0,
+        "endgame": 1
+      },
+      "difficulty": {
+        "easy": 1,
+        "medium": 0,
+        "hard": 0
+      }
+    }
   },
   {
     "id": "202604150857270005",
@@ -18,8 +32,22 @@
     "black": "Frejlak",
     "white": "张歆宇",
     "event": "第4届烂柯杯世界公开赛48进32<绝艺讲解>",
-    "type": "恶手题",
-    "count": 4
+    "result": "白胜1.25目",
+    "count": 4,
+    "stats": {
+      "total": 4,
+      "result": "白胜1.25目",
+      "phase": {
+        "layout": 0,
+        "middle": 4,
+        "endgame": 0
+      },
+      "difficulty": {
+        "easy": 0,
+        "medium": 4,
+        "hard": 0
+      }
+    }
   },
   {
     "id": "202604150857270010",
@@ -29,8 +57,22 @@
     "black": "李欣宸",
     "white": "심재익",
     "event": "第4届烂柯杯世界公开赛48进32<绝艺讲解>",
-    "type": "恶手题",
-    "count": 4
+    "result": "白中盘胜",
+    "count": 4,
+    "stats": {
+      "total": 4,
+      "result": "白中盘胜",
+      "phase": {
+        "layout": 0,
+        "middle": 4,
+        "endgame": 0
+      },
+      "difficulty": {
+        "easy": 2,
+        "medium": 2,
+        "hard": 0
+      }
+    }
   },
   {
     "id": "202604150857270012",
@@ -40,8 +82,22 @@
     "black": "江维杰",
     "white": "酒井佑規",
     "event": "第4届烂柯杯世界公开赛48进32<绝艺讲解>",
-    "type": "恶手题",
-    "count": 2
+    "result": "黑中盘胜",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "黑中盘胜",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 0
+      },
+      "difficulty": {
+        "easy": 0,
+        "medium": 1,
+        "hard": 1
+      }
+    }
   },
   {
     "id": "202604150857270013",
@@ -51,8 +107,22 @@
     "black": "唐嘉雯",
     "white": "이지현M",
     "event": "第4届烂柯杯世界公开赛48进32<绝艺讲解>",
-    "type": "恶手题",
-    "count": 1
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      },
+      "difficulty": {
+        "easy": 1,
+        "medium": 0,
+        "hard": 0
+      }
+    }
   },
   {
     "id": "202604150857270014",
@@ -62,8 +132,22 @@
     "black": "王世一",
     "white": "변상일",
     "event": "第4届烂柯杯世界公开赛48进32<张学斌＆夏夏＆绝艺解说>",
-    "type": "恶手题",
-    "count": 6
+    "result": "白胜1.25目",
+    "count": 6,
+    "stats": {
+      "total": 6,
+      "result": "白胜1.25目",
+      "phase": {
+        "layout": 0,
+        "middle": 6,
+        "endgame": 0
+      },
+      "difficulty": {
+        "easy": 5,
+        "medium": 1,
+        "hard": 0
+      }
+    }
   },
   {
     "id": "202604150857280015",
@@ -73,8 +157,22 @@
     "black": "邱禹然",
     "white": "三浦太郎",
     "event": "第4届烂柯杯世界公开赛48进32<绝艺讲解>",
-    "type": "恶手题",
-    "count": 6
+    "result": "黑胜1.75目",
+    "count": 6,
+    "stats": {
+      "total": 6,
+      "result": "黑胜1.75目",
+      "phase": {
+        "layout": 0,
+        "middle": 5,
+        "endgame": 1
+      },
+      "difficulty": {
+        "easy": 5,
+        "medium": 1,
+        "hard": 0
+      }
+    }
   },
   {
     "id": "202604150857280017",
@@ -84,7 +182,21 @@
     "black": "이원영",
     "white": "段博尧",
     "event": "第4届烂柯杯世界公开赛48进32<绝艺讲解>",
-    "type": "恶手题",
-    "count": 5
+    "result": "黑胜1.75目",
+    "count": 5,
+    "stats": {
+      "total": 5,
+      "result": "黑胜1.75目",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 3
+      },
+      "difficulty": {
+        "easy": 4,
+        "medium": 0,
+        "hard": 1
+      }
+    }
   }
 ]

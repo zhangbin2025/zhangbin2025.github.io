@@ -82,65 +82,68 @@
             color: #999;
         }
         .quiz-list {
-            padding: 0;
-        }
-        .quiz-item-link {
-            display: flex;
-            padding: 12px 15px;
-            border-bottom: 1px solid #f5f5f5;
-            text-decoration: none;
-            color: inherit;
-            transition: background 0.2s;
-            align-items: center;
-            gap: 10px;
-        }
-        .quiz-item-link:last-child { border-bottom: none; }
-        .quiz-item-link:hover { background: #fafafa; }
-        .quiz-item-link:visited { opacity: 0.6; }
-        .quiz-content {
-            flex: 1;
-            min-width: 0;
+            padding: 12px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 10px;
         }
-        .quiz-row {
+        .quiz-card {
+            display: block;
+            padding: 14px;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .quiz-card:hover {
+            background: #fafafa;
+            border-color: #ddd;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+        }
+        .quiz-card:visited { opacity: 0.7; }
+        .quiz-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            margin-bottom: 6px;
         }
-        .quiz-title {
-            font-weight: 500;
+        .players {
+            font-weight: 600;
+            font-size: 1.05em;
             color: #333;
-            font-size: 1em;
-            flex: 1;
         }
-        .quiz-meta {
+        .result {
+            font-size: 0.9em;
+            color: #666;
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .event {
             font-size: 0.85em;
             color: #888;
-        }
-        .quiz-count {
-            padding: 4px 10px;
-            background: #e3f2fd;
-            color: #1976d2;
-            border-radius: 12px;
-            font-size: 0.85em;
-            font-weight: 500;
-            flex-shrink: 0;
-        }
-        .game-btn {
-            padding: 5px 12px;
-            background: #e8f5e9;
-            color: #2e7d32;
-            border-radius: 12px;
-            font-size: 0.85em;
-            text-decoration: none;
+            margin-bottom: 10px;
             white-space: nowrap;
-            flex-shrink: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        .game-btn:hover {
-            background: #c8e6c9;
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 16px;
+            font-size: 0.85em;
+            color: #666;
+        }
+        .stats .count {
+            font-weight: 600;
+            color: #1976d2;
+        }
+        .stats .phase, .stats .difficulty {
+            color: #888;
         }
         footer {
             text-align: center;
@@ -177,83 +180,187 @@
                     </div>
                     <div class="quiz-list">
                         
-                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857270004.html" class="quiz-item-link" data-quiz-id="202604150857270004">
-                            <div class="quiz-content">
-                                <div class="quiz-row">
-                                    <span class="quiz-title">藤沢里菜 vs 上野愛咲美</span>
-                                    <span class="quiz-count">1题</span>
-                                </div>
-                                <div class="quiz-meta">第37期日本女流名人战挑战赛1/3局<绝艺讲解></div>
+                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857270004.html" class="quiz-card" data-quiz-id="202604150857270004">
+                            <div class="quiz-header">
+                                <span class="players">藤沢里菜 vs 上野愛咲美</span>
+                                
+                                <span class="result">白中盘胜</span>
+                                
+                            </div>
+                            <div class="event">第37期日本女流名人战挑战赛1/3局<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">1题</span>
+                                
+                                <span class="phase">
+                                    
+                                    
+                                    官子1
+                                </span>
+                                <span class="difficulty">
+                                    简单1 中等0 困难0
+                                </span>
+                                
                             </div>
                         </a>
                         
-                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857270005.html" class="quiz-item-link" data-quiz-id="202604150857270005">
-                            <div class="quiz-content">
-                                <div class="quiz-row">
-                                    <span class="quiz-title">Frejlak vs 张歆宇</span>
-                                    <span class="quiz-count">4题</span>
-                                </div>
-                                <div class="quiz-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857270005.html" class="quiz-card" data-quiz-id="202604150857270005">
+                            <div class="quiz-header">
+                                <span class="players">Frejlak vs 张歆宇</span>
+                                
+                                <span class="result">白胜1.25目</span>
+                                
+                            </div>
+                            <div class="event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">4题</span>
+                                
+                                <span class="phase">
+                                    
+                                    中盘4
+                                    
+                                </span>
+                                <span class="difficulty">
+                                    简单0 中等4 困难0
+                                </span>
+                                
                             </div>
                         </a>
                         
-                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857270010.html" class="quiz-item-link" data-quiz-id="202604150857270010">
-                            <div class="quiz-content">
-                                <div class="quiz-row">
-                                    <span class="quiz-title">李欣宸 vs 심재익</span>
-                                    <span class="quiz-count">4题</span>
-                                </div>
-                                <div class="quiz-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857270010.html" class="quiz-card" data-quiz-id="202604150857270010">
+                            <div class="quiz-header">
+                                <span class="players">李欣宸 vs 심재익</span>
+                                
+                                <span class="result">白中盘胜</span>
+                                
+                            </div>
+                            <div class="event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">4题</span>
+                                
+                                <span class="phase">
+                                    
+                                    中盘4
+                                    
+                                </span>
+                                <span class="difficulty">
+                                    简单2 中等2 困难0
+                                </span>
+                                
                             </div>
                         </a>
                         
-                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857270012.html" class="quiz-item-link" data-quiz-id="202604150857270012">
-                            <div class="quiz-content">
-                                <div class="quiz-row">
-                                    <span class="quiz-title">江维杰 vs 酒井佑規</span>
-                                    <span class="quiz-count">2题</span>
-                                </div>
-                                <div class="quiz-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857270012.html" class="quiz-card" data-quiz-id="202604150857270012">
+                            <div class="quiz-header">
+                                <span class="players">江维杰 vs 酒井佑規</span>
+                                
+                                <span class="result">黑中盘胜</span>
+                                
+                            </div>
+                            <div class="event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">2题</span>
+                                
+                                <span class="phase">
+                                    
+                                    中盘2
+                                    
+                                </span>
+                                <span class="difficulty">
+                                    简单0 中等1 困难1
+                                </span>
+                                
                             </div>
                         </a>
                         
-                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857270013.html" class="quiz-item-link" data-quiz-id="202604150857270013">
-                            <div class="quiz-content">
-                                <div class="quiz-row">
-                                    <span class="quiz-title">唐嘉雯 vs 이지현M</span>
-                                    <span class="quiz-count">1题</span>
-                                </div>
-                                <div class="quiz-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857270013.html" class="quiz-card" data-quiz-id="202604150857270013">
+                            <div class="quiz-header">
+                                <span class="players">唐嘉雯 vs 이지현M</span>
+                                
+                                <span class="result">白中盘胜</span>
+                                
+                            </div>
+                            <div class="event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">1题</span>
+                                
+                                <span class="phase">
+                                    
+                                    中盘1
+                                    
+                                </span>
+                                <span class="difficulty">
+                                    简单1 中等0 困难0
+                                </span>
+                                
                             </div>
                         </a>
                         
-                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857270014.html" class="quiz-item-link" data-quiz-id="202604150857270014">
-                            <div class="quiz-content">
-                                <div class="quiz-row">
-                                    <span class="quiz-title">王世一 vs 변상일</span>
-                                    <span class="quiz-count">6题</span>
-                                </div>
-                                <div class="quiz-meta">第4届烂柯杯世界公开赛48进32<张学斌＆夏夏＆绝艺解说></div>
+                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857270014.html" class="quiz-card" data-quiz-id="202604150857270014">
+                            <div class="quiz-header">
+                                <span class="players">王世一 vs 변상일</span>
+                                
+                                <span class="result">白胜1.25目</span>
+                                
+                            </div>
+                            <div class="event">第4届烂柯杯世界公开赛48进32<张学斌＆夏夏＆绝艺解说></div>
+                            <div class="stats">
+                                <span class="count">6题</span>
+                                
+                                <span class="phase">
+                                    
+                                    中盘6
+                                    
+                                </span>
+                                <span class="difficulty">
+                                    简单5 中等1 困难0
+                                </span>
+                                
                             </div>
                         </a>
                         
-                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857280015.html" class="quiz-item-link" data-quiz-id="202604150857280015">
-                            <div class="quiz-content">
-                                <div class="quiz-row">
-                                    <span class="quiz-title">邱禹然 vs 三浦太郎</span>
-                                    <span class="quiz-count">6题</span>
-                                </div>
-                                <div class="quiz-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857280015.html" class="quiz-card" data-quiz-id="202604150857280015">
+                            <div class="quiz-header">
+                                <span class="players">邱禹然 vs 三浦太郎</span>
+                                
+                                <span class="result">黑胜1.75目</span>
+                                
+                            </div>
+                            <div class="event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">6题</span>
+                                
+                                <span class="phase">
+                                    
+                                    中盘5
+                                    官子1
+                                </span>
+                                <span class="difficulty">
+                                    简单5 中等1 困难0
+                                </span>
+                                
                             </div>
                         </a>
                         
-                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857280017.html" class="quiz-item-link" data-quiz-id="202604150857280017">
-                            <div class="quiz-content">
-                                <div class="quiz-row">
-                                    <span class="quiz-title">이원영 vs 段博尧</span>
-                                    <span class="quiz-count">5题</span>
-                                </div>
-                                <div class="quiz-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857280017.html" class="quiz-card" data-quiz-id="202604150857280017">
+                            <div class="quiz-header">
+                                <span class="players">이원영 vs 段博尧</span>
+                                
+                                <span class="result">黑胜1.75目</span>
+                                
+                            </div>
+                            <div class="event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">5题</span>
+                                
+                                <span class="phase">
+                                    
+                                    中盘2
+                                    官子3
+                                </span>
+                                <span class="difficulty">
+                                    简单4 中等0 困难1
+                                </span>
+                                
                             </div>
                         </a>
                         
@@ -285,7 +392,7 @@
             const list = header.nextElementSibling;
             const toggle = header.querySelector('.source-toggle');
             if (list.style.display === 'none') {
-                list.style.display = 'block';
+                list.style.display = 'flex';
                 toggle.textContent = '▼';
             } else {
                 list.style.display = 'none';
@@ -293,35 +400,45 @@
             }
         }
         
-        document.querySelectorAll('.quiz-item-link').forEach(item => {
-            item.addEventListener('click', function() {
+        document.querySelectorAll('.quiz-card').forEach(card => {
+            card.addEventListener('click', function() {
                 const quizId = this.dataset.quizId;
                 let visited = JSON.parse(localStorage.getItem('visited_quiz') || '[]');
                 if (!visited.includes(quizId)) {
                     visited.push(quizId);
                     localStorage.setItem('visited_quiz', JSON.stringify(visited));
                 }
+                // 立即应用已访问样式
+                this.style.opacity = '0.6';
             });
         });
         
         function restoreVisited() {
             const visited = JSON.parse(localStorage.getItem('visited_quiz') || '[]');
-            document.querySelectorAll('.quiz-item-link').forEach(item => {
-                if (visited.includes(item.dataset.quizId)) {
-                    item.style.opacity = '0.5';
+            document.querySelectorAll('.quiz-card').forEach(card => {
+                if (visited.includes(card.dataset.quizId)) {
+                    card.style.opacity = '0.6';
                 }
             });
         }
         
         function clearVisited() {
             localStorage.removeItem('visited_quiz');
-            document.querySelectorAll('.quiz-item-link').forEach(item => {
-                item.style.opacity = '1';
+            document.querySelectorAll('.quiz-card').forEach(card => {
+                card.style.opacity = '1';
             });
         }
         
+        // 页面加载时恢复已访问状态
         filterByDate();
         restoreVisited();
+        
+        // 页面从缓存恢复时（返回按钮）重新应用状态
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                restoreVisited();
+            }
+        });
     </script>
 </body>
 </html>
