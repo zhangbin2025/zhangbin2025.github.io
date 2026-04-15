@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>实战选点题 | 围棋智能助手</title>
+    <title>实战选点 | 围棋智能助手</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -84,35 +84,19 @@
         .quiz-list {
             padding: 0;
         }
-        .quiz-item {
+        .quiz-item-link {
             display: flex;
             padding: 12px 15px;
             border-bottom: 1px solid #f5f5f5;
             text-decoration: none;
             color: inherit;
             transition: background 0.2s;
-            align-items: flex-start;
-            padding-left: 15px;
-        }
-        .quiz-item:last-child { border-bottom: none; }
-        .quiz-item:hover { background: #fafafa; }
-        .quiz-item:visited { opacity: 0.6; }
-        .quiz-number {
-            width: 28px;
-            height: 28px;
-            background: #ff6b6b;
-            color: white;
-            border-radius: 50%;
-            display: flex;
             align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 12px;
-            flex-shrink: 0;
-            font-size: 0.9em;
-            align-self: flex-start;
-            margin-top: 2px;
+            gap: 10px;
         }
+        .quiz-item-link:last-child { border-bottom: none; }
+        .quiz-item-link:hover { background: #fafafa; }
+        .quiz-item-link:visited { opacity: 0.6; }
         .quiz-content {
             flex: 1;
             min-width: 0;
@@ -130,6 +114,7 @@
             font-weight: 500;
             color: #333;
             font-size: 1em;
+            flex: 1;
         }
         .quiz-meta {
             font-size: 0.85em;
@@ -169,7 +154,7 @@
     <div class="container">
         <header>
             <div class="header-left">
-                <h1>🎯 实战选点题</h1>
+                <h1>🎯 实战选点</h1>
             </div>
             <div class="header-actions">
                 <select id="dateFilter" onchange="filterByDate()">
@@ -192,109 +177,93 @@
                     </div>
                     <div class="quiz-list">
                         
-                        <div class="quiz-item" data-quiz-id="202604150857270004">
+                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857270004.html" class="quiz-item-link" data-quiz-id="202604150857270004">
                             <div class="quiz-content">
                                 <div class="quiz-row">
-                                    <a href="/quiz/2026-04-14/野狐/quiz_202604150857270004.html" class="quiz-title" style="text-decoration: none; color: inherit;">藤沢里菜 vs 上野愛咲美</a>
-                                    <div style="display: flex; gap: 8px; align-items: center;">
-                                        <span class="quiz-count">1题</span>
-                                        <a href="/games/2026-04-14/野狐/game_202604150857270004.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                                    </div>
+                                    <span class="quiz-title">藤沢里菜 vs 上野愛咲美</span>
+                                    <span class="quiz-count">1题</span>
                                 </div>
                                 <div class="quiz-meta">第37期日本女流名人战挑战赛1/3局<绝艺讲解></div>
                             </div>
-                        </div>
+                            <a href="/games/2026-04-14/野狐/game_202604150857270004.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                        </a>
                         
-                        <div class="quiz-item" data-quiz-id="202604150857270005">
+                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857270005.html" class="quiz-item-link" data-quiz-id="202604150857270005">
                             <div class="quiz-content">
                                 <div class="quiz-row">
-                                    <a href="/quiz/2026-04-14/野狐/quiz_202604150857270005.html" class="quiz-title" style="text-decoration: none; color: inherit;">Frejlak vs 张歆宇</a>
-                                    <div style="display: flex; gap: 8px; align-items: center;">
-                                        <span class="quiz-count">4题</span>
-                                        <a href="/games/2026-04-14/野狐/game_202604150857270005.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                                    </div>
+                                    <span class="quiz-title">Frejlak vs 张歆宇</span>
+                                    <span class="quiz-count">4题</span>
                                 </div>
                                 <div class="quiz-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                             </div>
-                        </div>
+                            <a href="/games/2026-04-14/野狐/game_202604150857270005.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                        </a>
                         
-                        <div class="quiz-item" data-quiz-id="202604150857270010">
+                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857270010.html" class="quiz-item-link" data-quiz-id="202604150857270010">
                             <div class="quiz-content">
                                 <div class="quiz-row">
-                                    <a href="/quiz/2026-04-14/野狐/quiz_202604150857270010.html" class="quiz-title" style="text-decoration: none; color: inherit;">李欣宸 vs 심재익</a>
-                                    <div style="display: flex; gap: 8px; align-items: center;">
-                                        <span class="quiz-count">4题</span>
-                                        <a href="/games/2026-04-14/野狐/game_202604150857270010.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                                    </div>
+                                    <span class="quiz-title">李欣宸 vs 심재익</span>
+                                    <span class="quiz-count">4题</span>
                                 </div>
                                 <div class="quiz-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                             </div>
-                        </div>
+                            <a href="/games/2026-04-14/野狐/game_202604150857270010.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                        </a>
                         
-                        <div class="quiz-item" data-quiz-id="202604150857270012">
+                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857270012.html" class="quiz-item-link" data-quiz-id="202604150857270012">
                             <div class="quiz-content">
                                 <div class="quiz-row">
-                                    <a href="/quiz/2026-04-14/野狐/quiz_202604150857270012.html" class="quiz-title" style="text-decoration: none; color: inherit;">江维杰 vs 酒井佑規</a>
-                                    <div style="display: flex; gap: 8px; align-items: center;">
-                                        <span class="quiz-count">2题</span>
-                                        <a href="/games/2026-04-14/野狐/game_202604150857270012.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                                    </div>
+                                    <span class="quiz-title">江维杰 vs 酒井佑規</span>
+                                    <span class="quiz-count">2题</span>
                                 </div>
                                 <div class="quiz-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                             </div>
-                        </div>
+                            <a href="/games/2026-04-14/野狐/game_202604150857270012.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                        </a>
                         
-                        <div class="quiz-item" data-quiz-id="202604150857270013">
+                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857270013.html" class="quiz-item-link" data-quiz-id="202604150857270013">
                             <div class="quiz-content">
                                 <div class="quiz-row">
-                                    <a href="/quiz/2026-04-14/野狐/quiz_202604150857270013.html" class="quiz-title" style="text-decoration: none; color: inherit;">唐嘉雯 vs 이지현M</a>
-                                    <div style="display: flex; gap: 8px; align-items: center;">
-                                        <span class="quiz-count">1题</span>
-                                        <a href="/games/2026-04-14/野狐/game_202604150857270013.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                                    </div>
+                                    <span class="quiz-title">唐嘉雯 vs 이지현M</span>
+                                    <span class="quiz-count">1题</span>
                                 </div>
                                 <div class="quiz-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                             </div>
-                        </div>
+                            <a href="/games/2026-04-14/野狐/game_202604150857270013.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                        </a>
                         
-                        <div class="quiz-item" data-quiz-id="202604150857270014">
+                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857270014.html" class="quiz-item-link" data-quiz-id="202604150857270014">
                             <div class="quiz-content">
                                 <div class="quiz-row">
-                                    <a href="/quiz/2026-04-14/野狐/quiz_202604150857270014.html" class="quiz-title" style="text-decoration: none; color: inherit;">王世一 vs 변상일</a>
-                                    <div style="display: flex; gap: 8px; align-items: center;">
-                                        <span class="quiz-count">6题</span>
-                                        <a href="/games/2026-04-14/野狐/game_202604150857270014.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                                    </div>
+                                    <span class="quiz-title">王世一 vs 변상일</span>
+                                    <span class="quiz-count">6题</span>
                                 </div>
                                 <div class="quiz-meta">第4届烂柯杯世界公开赛48进32<张学斌＆夏夏＆绝艺解说></div>
                             </div>
-                        </div>
+                            <a href="/games/2026-04-14/野狐/game_202604150857270014.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                        </a>
                         
-                        <div class="quiz-item" data-quiz-id="202604150857280015">
+                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857280015.html" class="quiz-item-link" data-quiz-id="202604150857280015">
                             <div class="quiz-content">
                                 <div class="quiz-row">
-                                    <a href="/quiz/2026-04-14/野狐/quiz_202604150857280015.html" class="quiz-title" style="text-decoration: none; color: inherit;">邱禹然 vs 三浦太郎</a>
-                                    <div style="display: flex; gap: 8px; align-items: center;">
-                                        <span class="quiz-count">6题</span>
-                                        <a href="/games/2026-04-14/野狐/game_202604150857280015.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                                    </div>
+                                    <span class="quiz-title">邱禹然 vs 三浦太郎</span>
+                                    <span class="quiz-count">6题</span>
                                 </div>
                                 <div class="quiz-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                             </div>
-                        </div>
+                            <a href="/games/2026-04-14/野狐/game_202604150857280015.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                        </a>
                         
-                        <div class="quiz-item" data-quiz-id="202604150857280017">
+                        <a href="/quiz/2026-04-14/野狐/quiz_202604150857280017.html" class="quiz-item-link" data-quiz-id="202604150857280017">
                             <div class="quiz-content">
                                 <div class="quiz-row">
-                                    <a href="/quiz/2026-04-14/野狐/quiz_202604150857280017.html" class="quiz-title" style="text-decoration: none; color: inherit;">이원영 vs 段博尧</a>
-                                    <div style="display: flex; gap: 8px; align-items: center;">
-                                        <span class="quiz-count">5题</span>
-                                        <a href="/games/2026-04-14/野狐/game_202604150857280017.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
-                                    </div>
+                                    <span class="quiz-title">이원영 vs 段博尧</span>
+                                    <span class="quiz-count">5题</span>
                                 </div>
                                 <div class="quiz-meta">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                             </div>
-                        </div>
+                            <a href="/games/2026-04-14/野狐/game_202604150857280017.html" class="game-btn" onclick="event.stopPropagation();">📖 棋谱</a>
+                        </a>
                         
                     </div>
                 </div>
@@ -332,7 +301,7 @@
             }
         }
         
-        document.querySelectorAll('.quiz-item').forEach(item => {
+        document.querySelectorAll('.quiz-item-link').forEach(item => {
             item.addEventListener('click', function() {
                 const quizId = this.dataset.quizId;
                 let visited = JSON.parse(localStorage.getItem('visited_quiz') || '[]');
@@ -345,7 +314,7 @@
         
         function restoreVisited() {
             const visited = JSON.parse(localStorage.getItem('visited_quiz') || '[]');
-            document.querySelectorAll('.quiz-item').forEach(item => {
+            document.querySelectorAll('.quiz-item-link').forEach(item => {
                 if (visited.includes(item.dataset.quizId)) {
                     item.style.opacity = '0.5';
                 }
@@ -354,7 +323,7 @@
         
         function clearVisited() {
             localStorage.removeItem('visited_quiz');
-            document.querySelectorAll('.quiz-item').forEach(item => {
+            document.querySelectorAll('.quiz-item-link').forEach(item => {
                 item.style.opacity = '1';
             });
         }
