@@ -13,7 +13,7 @@
             color: #333;
         }
         .container {
-            max-width: 480px;
+            max-width: 400px;
             margin: 0 auto;
             padding: 12px;
             min-height: 100vh;
@@ -47,7 +47,7 @@
         .card {
             background: white;
             border-radius: 12px;
-            padding: 14px;
+            padding: 10px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             transition: transform 0.3s, box-shadow 0.3s;
         }
@@ -63,8 +63,8 @@
         .card-header {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 10px;
+            gap: 6px;
+            margin-bottom: 8px;
         }
         .card-icon {
             font-size: 1.5em;
@@ -80,25 +80,26 @@
         /* 统一三列统计区 */
         .triple-stats {
             display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
+            gap: 6px;
+            margin-bottom: 8px;
         }
         .stat-item {
             flex: 1;
             text-align: center;
-            padding: 10px 4px;
+            padding: 14px 4px;
             border-radius: 8px;
         }
         .stat-item .emoji { 
-            font-size: 1.4em; 
+            font-size: 1.6em; 
             display: block; 
-            margin-bottom: 2px; 
+            margin-bottom: 4px; 
         }
         .stat-item .count { 
-            font-size: 1.5em; 
+            font-size: 1.8em; 
             font-weight: 700; 
             color: #333; 
             line-height: 1;
+            margin: 4px 0;
         }
         .stat-item .name { 
             font-size: 0.75em; 
@@ -121,7 +122,7 @@
             display: flex;
             justify-content: center;
             gap: 12px;
-            margin-bottom: 10px;
+            margin-bottom: 0;
             font-size: 0.8em;
         }
         .diff-tag {
@@ -143,22 +144,6 @@
         .stat-item.hit { background: #e8f5e9; }
         .stat-item.complex { background: #e3f2fd; }
         
-        /* 按钮 */
-        .card-actions {
-            text-align: center;
-        }
-        .btn {
-            display: inline-block;
-            padding: 8px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 16px;
-            transition: opacity 0.3s;
-            font-size: 0.9em;
-            font-weight: 500;
-        }
-        .btn:hover { opacity: 0.9; }
         
         footer {
             text-align: center;
@@ -201,9 +186,6 @@
                             <span class="name">个来源</span>
                         </div>
                     </div>
-                    <div class="card-actions">
-                        <span class="btn">查看棋谱</span>
-                    </div>
                 </div>
             </a>
             
@@ -245,9 +227,6 @@
                             困难2
                         </span>
                     </div>
-                    <div class="card-actions">
-                        <span class="btn">开始做题</span>
-                    </div>
                 </div>
             </a>
             
@@ -274,9 +253,6 @@
                             <span class="count">12</span>
                             <span class="name">复杂</span>
                         </div>
-                    </div>
-                    <div class="card-actions">
-                        <span class="btn">查看定式</span>
                     </div>
                 </div>
             </a>
