@@ -115,6 +115,24 @@
             font-weight: 600;
             font-size: 1.05em;
             color: #333;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .stone-icon {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .stone-black {
+            background: radial-gradient(circle at 30% 30%, #666, #000);
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        .stone-white {
+            background: radial-gradient(circle at 30% 30%, #fff, #ddd);
+            border: 1px solid #ccc;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
         }
         .result {
             font-size: 0.9em;
@@ -187,7 +205,7 @@
                     <option value="2026-04-14" >2026-04-14</option>
                     
                 </select>
-                <button class="icon-btn" onclick="clearVisited()" title="清除记录">🗑️</button>
+                <button class="icon-btn" onclick="clearVisited()" title="清除本日访问记录">👁️</button>
             </div>
         </header>
         
@@ -204,7 +222,13 @@
                         
                         <a href="/quiz/2026-04-14/野狐/quiz_202604150857270004.html" class="quiz-card" data-quiz-id="202604150857270004">
                             <div class="quiz-header">
-                                <span class="players">藤沢里菜 vs 上野愛咲美</span>
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    藤沢里菜
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    上野愛咲美
+                                </span>
                                 
                                 <span class="result">白中盘胜</span>
                                 
@@ -232,7 +256,13 @@
                         
                         <a href="/quiz/2026-04-14/野狐/quiz_202604150857270005.html" class="quiz-card" data-quiz-id="202604150857270005">
                             <div class="quiz-header">
-                                <span class="players">Frejlak vs 张歆宇</span>
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    Frejlak
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    张歆宇
+                                </span>
                                 
                                 <span class="result">白胜1.25目</span>
                                 
@@ -260,7 +290,13 @@
                         
                         <a href="/quiz/2026-04-14/野狐/quiz_202604150857270010.html" class="quiz-card" data-quiz-id="202604150857270010">
                             <div class="quiz-header">
-                                <span class="players">李欣宸 vs 심재익</span>
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    李欣宸
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    심재익
+                                </span>
                                 
                                 <span class="result">白中盘胜</span>
                                 
@@ -288,7 +324,13 @@
                         
                         <a href="/quiz/2026-04-14/野狐/quiz_202604150857270012.html" class="quiz-card" data-quiz-id="202604150857270012">
                             <div class="quiz-header">
-                                <span class="players">江维杰 vs 酒井佑規</span>
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    江维杰
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    酒井佑規
+                                </span>
                                 
                                 <span class="result">黑中盘胜</span>
                                 
@@ -316,7 +358,13 @@
                         
                         <a href="/quiz/2026-04-14/野狐/quiz_202604150857270013.html" class="quiz-card" data-quiz-id="202604150857270013">
                             <div class="quiz-header">
-                                <span class="players">唐嘉雯 vs 이지현M</span>
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    唐嘉雯
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    이지현M
+                                </span>
                                 
                                 <span class="result">白中盘胜</span>
                                 
@@ -344,7 +392,13 @@
                         
                         <a href="/quiz/2026-04-14/野狐/quiz_202604150857270014.html" class="quiz-card" data-quiz-id="202604150857270014">
                             <div class="quiz-header">
-                                <span class="players">王世一 vs 변상일</span>
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    王世一
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    변상일
+                                </span>
                                 
                                 <span class="result">白胜1.25目</span>
                                 
@@ -372,7 +426,13 @@
                         
                         <a href="/quiz/2026-04-14/野狐/quiz_202604150857280015.html" class="quiz-card" data-quiz-id="202604150857280015">
                             <div class="quiz-header">
-                                <span class="players">邱禹然 vs 三浦太郎</span>
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    邱禹然
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    三浦太郎
+                                </span>
                                 
                                 <span class="result">黑胜1.75目</span>
                                 
@@ -400,7 +460,13 @@
                         
                         <a href="/quiz/2026-04-14/野狐/quiz_202604150857280017.html" class="quiz-card" data-quiz-id="202604150857280017">
                             <div class="quiz-header">
-                                <span class="players">이원영 vs 段博尧</span>
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    이원영
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    段博尧
+                                </span>
                                 
                                 <span class="result">黑胜1.75目</span>
                                 
@@ -442,7 +508,13 @@
                         
                         <a href="/quiz/2026-04-15/野狐/quiz_202604160851170005.html" class="quiz-card" data-quiz-id="202604160851170005">
                             <div class="quiz-header">
-                                <span class="players">王元均 vs 戎毅</span>
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    王元均
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    戎毅
+                                </span>
                                 
                                 <span class="result">黑中盘胜</span>
                                 
@@ -470,7 +542,13 @@
                         
                         <a href="/quiz/2026-04-15/野狐/quiz_202604160851170006.html" class="quiz-card" data-quiz-id="202604160851170006">
                             <div class="quiz-header">
-                                <span class="players">上野愛咲美 vs 藤沢里菜</span>
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    上野愛咲美
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    藤沢里菜
+                                </span>
                                 
                                 <span class="result">黑胜2.50目</span>
                                 
@@ -498,7 +576,13 @@
                         
                         <a href="/quiz/2026-04-15/野狐/quiz_202604160851170009.html" class="quiz-card" data-quiz-id="202604160851170009">
                             <div class="quiz-header">
-                                <span class="players">谢尔豪 vs 陈祈睿</span>
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    谢尔豪
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    陈祈睿
+                                </span>
                                 
                                 <span class="result">白胜0.25目</span>
                                 
@@ -526,7 +610,13 @@
                         
                         <a href="/quiz/2026-04-15/野狐/quiz_202604160851170010.html" class="quiz-card" data-quiz-id="202604160851170010">
                             <div class="quiz-header">
-                                <span class="players">신진서 vs 谢科</span>
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    신진서
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    谢科
+                                </span>
                                 
                                 <span class="result">黑中盘胜</span>
                                 
@@ -554,7 +644,13 @@
                         
                         <a href="/quiz/2026-04-15/野狐/quiz_202604160851170011.html" class="quiz-card" data-quiz-id="202604160851170011">
                             <div class="quiz-header">
-                                <span class="players">박정환 vs 陶欣然</span>
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    박정환
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    陶欣然
+                                </span>
                                 
                                 <span class="result">黑中盘胜</span>
                                 
@@ -582,7 +678,13 @@
                         
                         <a href="/quiz/2026-04-15/野狐/quiz_202604160851180014.html" class="quiz-card" data-quiz-id="202604160851180014">
                             <div class="quiz-header">
-                                <span class="players">신민준 vs 夏晨琨</span>
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    신민준
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    夏晨琨
+                                </span>
                                 
                                 <span class="result">黑中盘胜</span>
                                 
@@ -610,7 +712,13 @@
                         
                         <a href="/quiz/2026-04-15/野狐/quiz_202604160851180015.html" class="quiz-card" data-quiz-id="202604160851180015">
                             <div class="quiz-header">
-                                <span class="players">王星昊 vs 廖元赫</span>
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    王星昊
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    廖元赫
+                                </span>
                                 
                                 <span class="result">白胜0.25目</span>
                                 
@@ -638,7 +746,13 @@
                         
                         <a href="/quiz/2026-04-15/野狐/quiz_202604160851180016.html" class="quiz-card" data-quiz-id="202604160851180016">
                             <div class="quiz-header">
-                                <span class="players">이원영 vs 江维杰</span>
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    이원영
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    江维杰
+                                </span>
                                 
                                 <span class="result">白中盘胜</span>
                                 
@@ -666,7 +780,13 @@
                         
                         <a href="/quiz/2026-04-15/野狐/quiz_202604160851180017.html" class="quiz-card" data-quiz-id="202604160851180017">
                             <div class="quiz-header">
-                                <span class="players">陈玉侬 vs 连笑</span>
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    陈玉侬
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    连笑
+                                </span>
                                 
                                 <span class="result">黑中盘胜</span>
                                 
@@ -694,7 +814,13 @@
                         
                         <a href="/quiz/2026-04-15/野狐/quiz_202604160851180018.html" class="quiz-card" data-quiz-id="202604160851180018">
                             <div class="quiz-header">
-                                <span class="players">변상일 vs 许嘉阳</span>
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    변상일
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    许嘉阳
+                                </span>
                                 
                                 <span class="result">黑中盘胜</span>
                                 
@@ -742,6 +868,8 @@
                     section.style.display = 'none';
                 }
             });
+            // 切换日期后重新加载访问记录
+            restoreVisited();
         }
         
         function toggleSource(header) {
@@ -756,13 +884,19 @@
             }
         }
         
+        function getStorageKey() {
+            const date = document.getElementById('dateFilter').value;
+            return 'visited_quiz_' + date;
+        }
+        
         document.querySelectorAll('.quiz-card').forEach(card => {
             card.addEventListener('click', function() {
                 const quizId = this.dataset.quizId;
-                let visited = JSON.parse(localStorage.getItem('visited_quiz') || '[]');
+                const key = getStorageKey();
+                let visited = JSON.parse(localStorage.getItem(key) || '[]');
                 if (!visited.includes(quizId)) {
                     visited.push(quizId);
-                    localStorage.setItem('visited_quiz', JSON.stringify(visited));
+                    localStorage.setItem(key, JSON.stringify(visited));
                 }
                 // 立即应用已访问样式
                 this.style.opacity = '0.6';
@@ -770,7 +904,8 @@
         });
         
         function restoreVisited() {
-            const visited = JSON.parse(localStorage.getItem('visited_quiz') || '[]');
+            const key = getStorageKey();
+            const visited = JSON.parse(localStorage.getItem(key) || '[]');
             document.querySelectorAll('.quiz-card').forEach(card => {
                 if (visited.includes(card.dataset.quizId)) {
                     card.style.opacity = '0.6';
@@ -779,7 +914,8 @@
         }
         
         function clearVisited() {
-            localStorage.removeItem('visited_quiz');
+            const key = getStorageKey();
+            localStorage.removeItem(key);
             document.querySelectorAll('.quiz-card').forEach(card => {
                 card.style.opacity = '1';
             });

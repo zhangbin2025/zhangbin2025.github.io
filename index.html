@@ -15,48 +15,45 @@
         .container {
             max-width: 480px;
             margin: 0 auto;
-            padding: 15px;
+            padding: 12px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
         header {
             text-align: center;
-            padding: 20px 15px 15px;
+            padding: 12px 10px 8px;
             color: white;
         }
         h1 { 
-            font-size: 2.5em; 
-            margin-bottom: 8px;
+            font-size: 1.8em; 
+            margin-bottom: 4px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
         .date-display {
-            font-size: 0.8em;
-            padding: 3px 12px;
+            font-size: 0.75em;
+            padding: 2px 10px;
             background: rgba(255,255,255,0.15);
-            border-radius: 12px;
+            border-radius: 10px;
             display: inline-block;
         }
         .cards {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-top: 10px;
+            gap: 10px;
+            margin-top: 8px;
             flex: 1;
-            min-height: 0;
         }
         .card {
             background: white;
             border-radius: 12px;
-            padding: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
         }
         .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
         .card-link {
             text-decoration: none;
@@ -66,92 +63,108 @@
         .card-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
+            gap: 8px;
+            margin-bottom: 10px;
         }
         .card-icon {
-            font-size: 1.8em;
+            font-size: 1.5em;
             flex-shrink: 0;
         }
         .card h2 {
             color: #333;
-            font-size: 1.3em;
+            font-size: 1.2em;
             margin: 0;
             font-weight: 600;
         }
         
-        /* 主统计区 */
-        .main-stats {
-            background: linear-gradient(135deg, #667eea08 0%, #764ba208 100%);
-            border-radius: 10px;
-            padding: 16px;
-            text-align: center;
-            margin-bottom: 12px;
+        /* 统一三列统计区 */
+        .triple-stats {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
         }
-        .main-number {
-            font-size: 2.4em;
-            font-weight: 700;
-            color: #667eea;
+        .stat-item {
+            flex: 1;
+            text-align: center;
+            padding: 10px 4px;
+            border-radius: 8px;
+        }
+        .stat-item .emoji { 
+            font-size: 1.4em; 
+            display: block; 
+            margin-bottom: 2px; 
+        }
+        .stat-item .count { 
+            font-size: 1.5em; 
+            font-weight: 700; 
+            color: #333; 
             line-height: 1;
         }
-        .main-label {
-            font-size: 0.9em;
-            color: #888;
-            margin-top: 4px;
+        .stat-item .name { 
+            font-size: 0.75em; 
+            color: #666; 
+            margin-top: 2px;
         }
         
-        /* 分隔线 */
-        .divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #e0e0e0, transparent);
-            margin: 12px 0;
-        }
+        /* 棋谱卡片配色 */
+        .stat-item.games { background: #e3f2fd; }
+        .stat-item.events { background: #f3e5f5; }
+        .stat-item.sources { background: #e8f5e9; }
         
-        /* 分类标签区 */
-        .categories {
+        /* 选点卡片配色 */
+        .stat-item.layout { background: #e3f2fd; }
+        .stat-item.middle { background: #e8f5e9; }
+        .stat-item.endgame { background: #fff3e0; }
+        
+        /* 难度小标签 */
+        .difficulty-row {
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
             justify-content: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            font-size: 0.8em;
         }
-        .tag {
-            display: inline-flex;
+        .diff-tag {
+            display: flex;
             align-items: center;
             gap: 4px;
-            padding: 5px 10px;
-            border-radius: 8px;
-            font-size: 0.8em;
-            font-weight: 500;
         }
-        .tag-blue { background: #e3f2fd; color: #1565c0; }
-        .tag-green { background: #e8f5e9; color: #2e7d32; }
-        .tag-orange { background: #fff3e0; color: #e65100; }
-        .tag-purple { background: #f3e5f5; color: #7b1fa2; }
-        .tag-red { background: #ffebee; color: #c62828; }
+        .diff-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        .dot-easy { background: #4caf50; }
+        .dot-medium { background: #ff9800; }
+        .dot-hard { background: #f44336; }
+        
+        /* 定式卡片配色 */
+        .stat-item.hot { background: #ffebee; }
+        .stat-item.hit { background: #e8f5e9; }
+        .stat-item.complex { background: #e3f2fd; }
         
         /* 按钮 */
         .card-actions {
-            margin-top: 12px;
             text-align: center;
         }
         .btn {
             display: inline-block;
-            padding: 10px 28px;
+            padding: 8px 24px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             text-decoration: none;
-            border-radius: 20px;
+            border-radius: 16px;
             transition: opacity 0.3s;
-            font-size: 0.95em;
+            font-size: 0.9em;
             font-weight: 500;
         }
         .btn:hover { opacity: 0.9; }
         
         footer {
             text-align: center;
-            padding: 12px;
+            padding: 10px;
             color: rgba(255,255,255,0.7);
-            font-size: 0.75em;
+            font-size: 0.7em;
             margin-top: auto;
         }
     </style>
@@ -160,7 +173,7 @@
     <div class="container">
         <header>
             <h1>围棋智能助手</h1>
-            <div class="date-display">最后更新: 2026-04-15</div>
+            <div class="date-display">2026-04-15</div>
         </header>
         
         <div class="cards">
@@ -169,14 +182,24 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-icon">📥</div>
-                        <h2>最新棋谱</h2>
+                        <h2>实战棋谱</h2>
                     </div>
-                    <div class="main-stats">
-                        <div class="main-number">18局</div>
-                        <div class="main-label">今日新谱</div>
-                    </div>
-                    <div class="categories">
-                        <span class="tag tag-purple">3个赛事</span>
+                    <div class="triple-stats">
+                        <div class="stat-item games">
+                            <span class="emoji">📋</span>
+                            <span class="count">18</span>
+                            <span class="name">最近新增</span>
+                        </div>
+                        <div class="stat-item events">
+                            <span class="emoji">🏆</span>
+                            <span class="count">3</span>
+                            <span class="name">个赛事</span>
+                        </div>
+                        <div class="stat-item sources">
+                            <span class="emoji">🌐</span>
+                            <span class="count">1</span>
+                            <span class="name">个来源</span>
+                        </div>
                     </div>
                     <div class="card-actions">
                         <span class="btn">查看棋谱</span>
@@ -191,20 +214,36 @@
                         <div class="card-icon">🎯</div>
                         <h2>实战选点</h2>
                     </div>
-                    <div class="main-stats">
-                        <div class="main-number">31题</div>
-                        <div class="main-label">恶手练习题</div>
+                    <div class="triple-stats">
+                        <div class="stat-item layout">
+                            <span class="emoji">🌅</span>
+                            <span class="count">5</span>
+                            <span class="name">布局</span>
+                        </div>
+                        <div class="stat-item middle">
+                            <span class="emoji">⚔️</span>
+                            <span class="count">16</span>
+                            <span class="name">中盘</span>
+                        </div>
+                        <div class="stat-item endgame">
+                            <span class="emoji">🔚</span>
+                            <span class="count">10</span>
+                            <span class="name">官子</span>
+                        </div>
                     </div>
-                    <div class="divider"></div>
-                    <div class="categories">
-                        <span class="tag tag-blue">布局5</span>
-                        <span class="tag tag-green">中盘16</span>
-                        <span class="tag tag-orange">官子10</span>
-                    </div>
-                    <div class="categories" style="margin-top:8px;">
-                        <span class="tag tag-blue">简17</span>
-                        <span class="tag tag-green">中12</span>
-                        <span class="tag tag-orange">难2</span>
+                    <div class="difficulty-row">
+                        <span class="diff-tag">
+                            <span class="diff-dot dot-easy"></span>
+                            简单17
+                        </span>
+                        <span class="diff-tag">
+                            <span class="diff-dot dot-medium"></span>
+                            中等12
+                        </span>
+                        <span class="diff-tag">
+                            <span class="diff-dot dot-hard"></span>
+                            困难2
+                        </span>
                     </div>
                     <div class="card-actions">
                         <span class="btn">开始做题</span>
@@ -219,15 +258,22 @@
                         <div class="card-icon">📚</div>
                         <h2>定式发现</h2>
                     </div>
-                    <div class="main-stats">
-                        <div class="main-number">69个</div>
-                        <div class="main-label">值得研究的定式</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="categories">
-                        <span class="tag tag-red">🔥 热门 1</span>
-                        <span class="tag tag-green">🎯 命中 5</span>
-                        <span class="tag tag-blue">💎 罕见 4</span>
+                    <div class="triple-stats">
+                        <div class="stat-item hot">
+                            <span class="emoji">🔥</span>
+                            <span class="count">3</span>
+                            <span class="name">热门</span>
+                        </div>
+                        <div class="stat-item hit">
+                            <span class="emoji">🎯</span>
+                            <span class="count">5</span>
+                            <span class="name">命中</span>
+                        </div>
+                        <div class="stat-item complex">
+                            <span class="emoji">🧩</span>
+                            <span class="count">12</span>
+                            <span class="name">复杂</span>
+                        </div>
                     </div>
                     <div class="card-actions">
                         <span class="btn">查看定式</span>
@@ -237,7 +283,7 @@
         </div>
         
         <footer>
-            <p>围棋智能助手 &copy; 2026 | AI驱动 · 每日更新 · 精进棋艺</p>
+            <p>围棋智能助手 &copy; 2026 | AI驱动 · 每日更新</p>
         </footer>
     </div>
     </body>
