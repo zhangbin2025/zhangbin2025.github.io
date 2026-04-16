@@ -40,14 +40,15 @@
         .cards {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-top: 8px;
+            gap: 16px;
+            margin-top: 12px;
             flex: 1;
+            justify-content: flex-start;
         }
         .card {
             background: white;
             border-radius: 12px;
-            padding: 10px;
+            padding: 16px 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             transition: transform 0.3s, box-shadow 0.3s;
         }
@@ -63,8 +64,8 @@
         .card-header {
             display: flex;
             align-items: center;
-            gap: 6px;
-            margin-bottom: 8px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
         .card-icon {
             font-size: 1.5em;
@@ -80,31 +81,31 @@
         /* 统一三列统计区 */
         .triple-stats {
             display: flex;
-            gap: 6px;
-            margin-bottom: 8px;
+            gap: 8px;
+            margin-bottom: 10px;
         }
         .stat-item {
             flex: 1;
             text-align: center;
-            padding: 14px 4px;
-            border-radius: 8px;
+            padding: 20px 4px;
+            border-radius: 10px;
         }
         .stat-item .emoji { 
-            font-size: 1.6em; 
+            font-size: 1.8em; 
             display: block; 
-            margin-bottom: 4px; 
+            margin-bottom: 6px; 
         }
         .stat-item .count { 
-            font-size: 1.8em; 
+            font-size: 2em; 
             font-weight: 700; 
             color: #333; 
             line-height: 1;
-            margin: 4px 0;
+            margin: 6px 0;
         }
         .stat-item .name { 
-            font-size: 0.75em; 
+            font-size: 0.8em; 
             color: #666; 
-            margin-top: 2px;
+            margin-top: 4px;
         }
         
         /* 棋谱卡片配色 */
@@ -121,9 +122,9 @@
         .difficulty-row {
             display: flex;
             justify-content: center;
-            gap: 12px;
+            gap: 16px;
             margin-bottom: 0;
-            font-size: 0.8em;
+            font-size: 0.85em;
         }
         .diff-tag {
             display: flex;
