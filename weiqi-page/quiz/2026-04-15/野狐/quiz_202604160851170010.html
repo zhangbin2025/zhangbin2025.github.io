@@ -18,19 +18,20 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding: 8px;
+            padding: 0;
         }
         .container {
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            padding: 16px;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 4px;
             max-width: 100%;
             width: 100%;
+            min-height: 100vh;
         }
         .header {
             text-align: center;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
         }
         .header h1 {
             font-size: 18px;
@@ -46,6 +47,39 @@
             font-size: 12px;
             line-height: 1.4;
             margin-bottom: 8px;
+        }
+        .player-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #555;
+        }
+        .player-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .player-stone {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .player-stone.black {
+            background: radial-gradient(circle at 30% 30%, #666, #000);
+        }
+        .player-stone.white {
+            background: radial-gradient(circle at 30% 30%, #fff, #ccc);
+            border: 1px solid #ddd;
+        }
+        .player-name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 120px;
         }
         .problem-info {
             display: flex;
@@ -99,7 +133,7 @@
         .board-container {
             display: flex;
             justify-content: center;
-            margin: 16px 0;
+            margin: 8px 0;
             position: relative;
             width: 100%;
             padding: 0;
@@ -183,8 +217,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
-            margin: 16px 0;
+            gap: 8px;
+            margin: 8px 0;
             flex-wrap: nowrap;
             overflow-x: auto;
         }
@@ -221,7 +255,7 @@
         /* 变化图面板 */
         .variation-panel {
             display: none;
-            margin: 12px 0;
+            margin: 8px 0;
         }
         .variation-panel.active {
             display: block;
@@ -249,7 +283,7 @@
         /* 试下模式面板 */
         .tryplay-panel {
             display: none;
-            margin: 12px 0;
+            margin: 8px 0;
         }
         .tryplay-panel.active {
             display: block;
@@ -269,11 +303,10 @@
         
         .legend {
             display: flex;
-            justify-content: flex-start;
+            justify-content: center;
             align-items: center;
-            gap: 16px;
-            margin-top: 16px;
-            padding-top: 16px;
+            margin-top: 8px;
+            padding-top: 8px;
             border-top: 1px solid #eee;
         }
         .legend-item {
@@ -332,6 +365,7 @@
                 max-width: 500px;
                 padding: 20px;
                 border-radius: 12px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.3);
             }
             .header {
                 margin-bottom: 20px;
@@ -344,6 +378,18 @@
                 font-size: 13px;
                 line-height: 1.5;
                 margin-bottom: 10px;
+            }
+            .player-info {
+                gap: 24px;
+                margin-bottom: 10px;
+                font-size: 14px;
+            }
+            .player-stone {
+                width: 16px;
+                height: 16px;
+            }
+            .player-name {
+                max-width: 180px;
             }
             .problem-info {
                 gap: 10px;
@@ -418,6 +464,16 @@
         <div class="header">
             <h1 id="gameTitle">第4届烂柯杯世界公开赛32强<张学斌＆夏夏＆绝艺解说></h1>
             <div class="info" id="gameInfo"> </div>
+            <div class="player-info" id="playerInfo">
+                <div class="player-item">
+                    <div class="player-stone black"></div>
+                    <span class="player-name" id="blackName">신진서</span>
+                </div>
+                <div class="player-item">
+                    <div class="player-stone white"></div>
+                    <span class="player-name" id="whiteName">谢科</span>
+                </div>
+            </div>
             <div class="problem-info" id="problemInfo">
                 <span class="tag tag-phase-middle" id="phaseTag">中盘</span>
                 <span class="tag tag-difficulty-medium" id="difficultyTag">中等</span>
@@ -475,14 +531,6 @@
         </div>
 
         <div class="legend">
-            <div class="legend-item">
-                <div class="stone-black"></div>
-                <span id="blackName">신진서</span>
-            </div>
-            <div class="legend-item">
-                <div class="stone-white"></div>
-                <span id="whiteName">谢科</span>
-            </div>
             <div class="problem-nav">
                 <span class="progress-text" id="progressText">1 / 5</span>
                 <button class="btn-text" onclick="prevProblem()" id="prevProblemBtn">上一题</button>
@@ -782,8 +830,8 @@
             const availableWidth = Math.min(containerWidth, windowWidth) - sideMargin;
             
             // 计算高度空间：减去头部、控制面板、图例等预估高度
-            // 头部约 60px，主面板约 50px，图例约 40px，其他间距约 30px
-            const reservedHeight = isMobile ? 180 : 220;
+            // 小屏幕：头部约 50px，主面板约 40px，图例约 30px，其他间距约 20px
+            const reservedHeight = isMobile ? 140 : 220;
             const availableHeight = window.innerHeight - reservedHeight;
             
             // 取宽高中较小值，确保棋盘完整显示
@@ -982,7 +1030,13 @@
                 // 应用所有试下着法到棋盘
                 for (let i = 0; i < tryIndex && i < tryMoves.length; i++) {
                     const move = tryMoves[i];
-                    applyMove(board, move);
+                    board[move.y][move.x] = move.color;
+                    // 使用记录的提子位置移除被提棋子
+                    if (move.capturedPositions) {
+                        for (const cap of move.capturedPositions) {
+                            board[cap.y][cap.x] = null;
+                        }
+                    }
                 }
                 // 记录每个试下位置的状态（用于手数标记）
                 tryMoveMap = new Map();
@@ -1412,6 +1466,7 @@
             currentVariationOption = null;
             tryMoves = [];
             tryIndex = 0;
+            tryKoPosition = null;
             showMainPanel();
         }
 
@@ -1444,8 +1499,105 @@
         }
 
         // ==================== 试下功能 ====================
-        // 获取当前试下状态的棋盘（包含题目棋子和已试下的棋子）
-        function getTryPlayBoard() {
+        // 试下状态变量
+        let tryKoPosition = null;  // 记录打劫位置
+        
+        // 在棋盘上查找棋子组
+        function findGroupOnBoard(board, startX, startY, color) {
+            const group = [];
+            const visited = new Set();
+            const stack = [{x: startX, y: startY}];
+            while (stack.length > 0) {
+                const {x, y} = stack.pop();
+                const key = `${x},${y}`;
+                if (visited.has(key)) continue;
+                visited.add(key);
+                if (board[y][x] === color) {
+                    group.push({x, y});
+                    for (const [nx, ny] of getNeighbors(x, y)) {
+                        stack.push({x: nx, y: ny});
+                    }
+                }
+            }
+            return group;
+        }
+        
+        // 计算棋子组的气数
+        function countLibertiesOnBoard(board, group) {
+            const liberties = new Set();
+            for (const stone of group) {
+                const neighbors = getNeighbors(stone.x, stone.y);
+                for (const [nx, ny] of neighbors) {
+                    if (ny >= 0 && ny < BOARD_SIZE && nx >= 0 && nx < BOARD_SIZE) {
+                        if (board[ny][nx] === null) {
+                            liberties.add(`${nx},${ny}`);
+                        }
+                    }
+                }
+            }
+            return liberties.size;
+        }
+        
+        // 在棋盘上移除死棋
+        function removeDeadStonesOnBoard(board, x, y, color) {
+            const opponent = color === 'black' ? 'white' : 'black';
+            const captured = [];
+            const checked = new Set();
+            for (const [nx, ny] of getNeighbors(x, y)) {
+                if (board[ny][nx] === opponent) {
+                    const key = `${nx},${ny}`;
+                    if (checked.has(key)) continue;
+                    const group = findGroupOnBoard(board, nx, ny, opponent);
+                    for (const s of group) checked.add(`${s.x},${s.y}`);
+                    if (countLibertiesOnBoard(board, group) === 0) {
+                        for (const s of group) {
+                            captured.push({x: s.x, y: s.y});
+                            board[s.y][s.x] = null;
+                        }
+                    }
+                }
+            }
+            return captured;
+        }
+        
+        // 检查是否是禁入点（自杀）
+        function isSuicideOnBoard(board, x, y, color) {
+            const opponent = color === 'black' ? 'white' : 'black';
+            board[y][x] = color;
+            let canCapture = false;
+            const checked = new Set();
+            for (const [nx, ny] of getNeighbors(x, y)) {
+                if (board[ny][nx] === opponent) {
+                    const key = `${nx},${ny}`;
+                    if (!checked.has(key)) {
+                        const group = findGroupOnBoard(board, nx, ny, opponent);
+                        for (const s of group) checked.add(`${s.x},${s.y}`);
+                        if (countLibertiesOnBoard(board, group) === 0) canCapture = true;
+                    }
+                }
+            }
+            const myGroup = findGroupOnBoard(board, x, y, color);
+            const myLiberties = countLibertiesOnBoard(board, myGroup);
+            board[y][x] = null;
+            return myLiberties === 0 && !canCapture;
+        }
+        
+        // 检查打劫
+        function checkKoOnBoard(board, x, y, color, captured) {
+            if (captured.length !== 1) return null;
+            const opponent = color === 'black' ? 'white' : 'black';
+            const capturedPos = captured[0];
+            board[capturedPos.y][capturedPos.x] = opponent;
+            const myGroup = findGroupOnBoard(board, x, y, color);
+            const myLiberties = countLibertiesOnBoard(board, myGroup);
+            const canBeCaptured = myLiberties === 0 && myGroup.length === 1;
+            board[capturedPos.y][capturedPos.x] = null;
+            if (canBeCaptured) return {x: capturedPos.x, y: capturedPos.y};
+            return null;
+        }
+        
+        // 从题目着法和试下着法构建完整棋盘
+        function buildBoardFromMoves() {
             const board = createBoard();
             const position = currentProblem ? currentProblem.position : [];
             
@@ -1455,14 +1607,27 @@
                 const color = move.color === 'B' ? 'black' : 'white';
                 const pos = coordToPos(move.coord);
                 if (pos) {
-                    applyMove(board, { color, x: pos.x, y: pos.y });
+                    board[pos.y][pos.x] = color;
+                    removeDeadStonesOnBoard(board, pos.x, pos.y, color);
                 }
             }
+            
+            return board;
+        }
+        
+        // 获取当前试下状态的棋盘（包含题目棋子和已试下的棋子）
+        function getTryPlayBoard() {
+            const board = buildBoardFromMoves();
             
             // 应用已试下的棋子
             for (let i = 0; i < tryIndex && i < tryMoves.length; i++) {
                 const move = tryMoves[i];
-                applyMove(board, move);
+                board[move.y][move.x] = move.color;
+                if (move.capturedPositions) {
+                    for (const cap of move.capturedPositions) {
+                        board[cap.y][cap.x] = null;
+                    }
+                }
             }
             
             return board;
@@ -1474,44 +1639,47 @@
         }
         
         function startTryPlay(x, y) {
-            // 检查位置是否已有棋子
-            const board = createBoard();
-            const position = currentProblem.position;
-
-            // 应用题目棋子到棋盘
-            for (let i = 0; i < position.length; i++) {
-                const move = position[i];
-                const color = move.color === 'B' ? 'black' : 'white';
-                const pos = coordToPos(move.coord);
-                if (pos) {
-                    applyMove(board, { color, x: pos.x, y: pos.y });
-                }
-            }
-
+            // 使用完整棋盘状态检查
+            const board = buildBoardFromMoves();
+            
             // 检查目标位置是否为空
             if (board[y][x] !== null) {
                 return; // 位置已有棋子，不能试下
             }
-
+            
             // 获取当前要下的颜色
+            const position = currentProblem.position;
             const lastColor = position.length > 0 ? position[position.length - 1].color : 'B';
             const nextColor = lastColor === 'B' ? 'white' : 'black';
-
-            // 应用第一手并获取提子数量
-            const result = applyMove(board, { color: nextColor, x, y });
-
+            
+            // 检查禁入点（自杀）
+            if (isSuicideOnBoard(board, x, y, nextColor)) {
+                return; // 禁入点，不能落子
+            }
+            
+            // 落子并获取提子
+            board[y][x] = nextColor;
+            const captured = removeDeadStonesOnBoard(board, x, y, nextColor);
+            
+            // 检查打劫
+            const koPos = checkKoOnBoard(board, x, y, nextColor, captured);
+            if (koPos) {
+                tryKoPosition = koPos;
+            }
+            
             tryMoves = [{
                 color: nextColor,
                 x: x,
                 y: y,
-                captured: result.captured
+                captured: captured.length,
+                capturedPositions: captured.map(c => ({x: c.x, y: c.y}))
             }];
             tryIndex = 1;
             document.getElementById('tryProgress').textContent = `${tryIndex}/${tryMoves.length}`;
 
             // 播放音效
-            if (result.captured > 0) {
-                if (result.captured >= 3) playMultiCaptureSound(result.captured);
+            if (captured.length > 0) {
+                if (captured.length >= 3) playMultiCaptureSound(captured.length);
                 else playCaptureSound();
             } else {
                 playStoneSound();
@@ -1528,6 +1696,11 @@
             if (!isEmptyPosition(board, x, y)) {
                 return; // 位置已有棋子，不能落子
             }
+            
+            // 检查打劫
+            if (tryKoPosition && tryKoPosition.x === x && tryKoPosition.y === y) {
+                return; // 打劫位置，不能立即回提
+            }
 
             // 获取下一手颜色
             let nextColor;
@@ -1540,43 +1713,41 @@
                 const lastMove = tryMoves[tryIndex - 1];
                 nextColor = lastMove.color === 'black' ? 'white' : 'black';
             }
+            
+            // 检查禁入点（自杀）
+            if (isSuicideOnBoard(board, x, y, nextColor)) {
+                return; // 禁入点，不能落子
+            }
 
             // 如果当前不是在最后一步，则清除后续着法
-            // 当 tryIndex=0 时，清除所有旧着法，开始新的试下序列
             if (tryIndex < tryMoves.length) {
                 tryMoves = tryMoves.slice(0, tryIndex);
+                tryKoPosition = null; // 清除打劫记录，因为分支改变了
             }
 
-            // 应用落子并获取提子数量
-            const boardCopy = createBoard();
-            const position = currentProblem.position;
-            for (let i = 0; i < position.length; i++) {
-                const move = position[i];
-                const color = move.color === 'B' ? 'black' : 'white';
-                const pos = coordToPos(move.coord);
-                if (pos) {
-                    applyMove(boardCopy, { color, x: pos.x, y: pos.y });
-                }
-            }
-            // 使用 tryIndex 而不是 tryMoves.length，因为前面可能已经截断了数组
-            for (let i = 0; i < tryIndex && i < tryMoves.length; i++) {
-                applyMove(boardCopy, tryMoves[i]);
-            }
-            const result = applyMove(boardCopy, { color: nextColor, x, y });
+            // 落子并获取提子（使用board的副本，因为函数会修改board）
+            const boardCopy = getTryPlayBoard();
+            boardCopy[y][x] = nextColor;
+            const captured = removeDeadStonesOnBoard(boardCopy, x, y, nextColor);
+            
+            // 检查打劫
+            const koPos = checkKoOnBoard(boardCopy, x, y, nextColor, captured);
+            tryKoPosition = koPos || null;
 
             // 添加新着法
             tryMoves.push({
                 color: nextColor,
                 x: x,
                 y: y,
-                captured: result.captured
+                captured: captured.length,
+                capturedPositions: captured.map(c => ({x: c.x, y: c.y}))
             });
             tryIndex = tryMoves.length;
             document.getElementById('tryProgress').textContent = `${tryIndex}/${tryMoves.length}`;
 
             // 播放音效
-            if (result.captured > 0) {
-                if (result.captured >= 3) playMultiCaptureSound(result.captured);
+            if (captured.length > 0) {
+                if (captured.length >= 3) playMultiCaptureSound(captured.length);
                 else playCaptureSound();
             } else {
                 playStoneSound();
@@ -1588,6 +1759,7 @@
         function exitTryPlay() {
             tryMoves = [];
             tryIndex = 0;
+            tryKoPosition = null;  // 重置打劫记录
             showMainPanel();
         }
 
