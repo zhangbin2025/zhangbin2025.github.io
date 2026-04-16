@@ -82,25 +82,44 @@
             color: #999;
         }
         .game-list {
-            padding: 0;
-        }
-        .game-item {
+            padding: 12px;
             display: flex;
-            align-items: center;
-            padding: 12px 15px;
-            border-bottom: 1px solid #f5f5f5;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .game-card {
+            display: block;
+            padding: 14px;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 10px;
             text-decoration: none;
             color: inherit;
-            transition: background 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
-        .game-item:last-child { border-bottom: none; }
-        .game-item:hover { background: #fafafa; }
-        .game-item:visited { opacity: 0.6; }
+        .game-card:hover {
+            background: #fafafa;
+            border-color: #ddd;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+        }
+        .game-card:visited { opacity: 0.7; }
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .game-players-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
         .stone-icon {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
-            margin-right: 8px;
             flex-shrink: 0;
         }
         .stone-black {
@@ -112,42 +131,32 @@
             border: 1px solid #ccc;
             box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
         }
-        .game-info {
-            flex: 1;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .game-players-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
         .game-players {
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 1.05em;
             color: #333;
-            white-space: nowrap;
-        }
-        .game-event {
-            font-size: 0.85em;
-            color: #888;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
         }
         .game-result {
-            padding: 4px 10px;
+            font-size: 0.9em;
+            color: #666;
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .game-result.black-win {
             background: #e8f5e9;
             color: #2e7d32;
-            border-radius: 12px;
-            font-size: 0.85em;
-            font-weight: 500;
-            flex-shrink: 0;
         }
         .game-result.white-win {
             background: #fff3e0;
             color: #e65100;
+        }
+        .game-event {
+            font-size: 0.85em;
+            color: #888;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .pagination {
             display: flex;
@@ -216,242 +225,242 @@
                     </div>
                     <div class="game-list">
                         
-                        <a href="/games/2026-04-14/野狐/game_202604150857260001.html" class="game-item" data-game-id="202604150857260001">
-                            <div class="game-info">
+                        <a href="/games/2026-04-14/野狐/game_202604150857260001.html" class="game-card" data-game-id="202604150857260001">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">林天予</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">戎毅</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                <span class="game-result white-win">白中盘胜</span>
                             </div>
-                            <div class="game-result white-win">白中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-14/野狐/game_202604150857260002.html" class="game-item" data-game-id="202604150857260002">
-                            <div class="game-info">
+                        <a href="/games/2026-04-14/野狐/game_202604150857260002.html" class="game-card" data-game-id="202604150857260002">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">李崇德</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">김명훈</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                <span class="game-result white-win">白中盘胜</span>
                             </div>
-                            <div class="game-result white-win">白中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-14/野狐/game_202604150857270003.html" class="game-item" data-game-id="202604150857270003">
-                            <div class="game-info">
+                        <a href="/games/2026-04-14/野狐/game_202604150857270003.html" class="game-card" data-game-id="202604150857270003">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">徐晓凡</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">陶欣然</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                <span class="game-result white-win">白中盘胜</span>
                             </div>
-                            <div class="game-result white-win">白中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-14/野狐/game_202604150857270004.html" class="game-item" data-game-id="202604150857270004">
-                            <div class="game-info">
+                        <a href="/games/2026-04-14/野狐/game_202604150857270004.html" class="game-card" data-game-id="202604150857270004">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">藤沢里菜</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">上野愛咲美</span>
                                 </div>
-                                <span class="game-event">第37期日本女流名人战挑战赛1/3局<绝艺讲解></span>
+                                <span class="game-result white-win">白中盘胜</span>
                             </div>
-                            <div class="game-result white-win">白中盘胜</div>
+                            <div class="game-event">第37期日本女流名人战挑战赛1/3局<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-14/野狐/game_202604150857270005.html" class="game-item" data-game-id="202604150857270005">
-                            <div class="game-info">
+                        <a href="/games/2026-04-14/野狐/game_202604150857270005.html" class="game-card" data-game-id="202604150857270005">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">Frejlak</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">张歆宇</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                <span class="game-result white-win">白胜1.25目</span>
                             </div>
-                            <div class="game-result white-win">白胜1.25目</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-14/野狐/game_202604150857270006.html" class="game-item" data-game-id="202604150857270006">
-                            <div class="game-info">
+                        <a href="/games/2026-04-14/野狐/game_202604150857270006.html" class="game-card" data-game-id="202604150857270006">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">赖均辅</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">陈贤</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                <span class="game-result black-win">黑中盘胜</span>
                             </div>
-                            <div class="game-result ">黑中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-14/野狐/game_202604150857270007.html" class="game-item" data-game-id="202604150857270007">
-                            <div class="game-info">
+                        <a href="/games/2026-04-14/野狐/game_202604150857270007.html" class="game-card" data-game-id="202604150857270007">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">신진서</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">马靖原</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                <span class="game-result black-win">黑中盘胜</span>
                             </div>
-                            <div class="game-result ">黑中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-14/野狐/game_202604150857270008.html" class="game-item" data-game-id="202604150857270008">
-                            <div class="game-info">
+                        <a href="/games/2026-04-14/野狐/game_202604150857270008.html" class="game-card" data-game-id="202604150857270008">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">한종진</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">陈玉侬</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                <span class="game-result white-win">白中盘胜</span>
                             </div>
-                            <div class="game-result white-win">白中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-14/野狐/game_202604150857270009.html" class="game-item" data-game-id="202604150857270009">
-                            <div class="game-info">
+                        <a href="/games/2026-04-14/野狐/game_202604150857270009.html" class="game-card" data-game-id="202604150857270009">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">李昊潼</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">王元均</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                <span class="game-result white-win">白中盘胜</span>
                             </div>
-                            <div class="game-result white-win">白中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-14/野狐/game_202604150857270010.html" class="game-item" data-game-id="202604150857270010">
-                            <div class="game-info">
+                        <a href="/games/2026-04-14/野狐/game_202604150857270010.html" class="game-card" data-game-id="202604150857270010">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">李欣宸</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">심재익</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                <span class="game-result white-win">白中盘胜</span>
                             </div>
-                            <div class="game-result white-win">白中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-14/野狐/game_202604150857270011.html" class="game-item" data-game-id="202604150857270011">
-                            <div class="game-info">
+                        <a href="/games/2026-04-14/野狐/game_202604150857270011.html" class="game-card" data-game-id="202604150857270011">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">李赫</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">夏晨琨</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                <span class="game-result white-win">白中盘胜</span>
                             </div>
-                            <div class="game-result white-win">白中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-14/野狐/game_202604150857270012.html" class="game-item" data-game-id="202604150857270012">
-                            <div class="game-info">
+                        <a href="/games/2026-04-14/野狐/game_202604150857270012.html" class="game-card" data-game-id="202604150857270012">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">江维杰</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">酒井佑規</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                <span class="game-result black-win">黑中盘胜</span>
                             </div>
-                            <div class="game-result ">黑中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-14/野狐/game_202604150857270013.html" class="game-item" data-game-id="202604150857270013">
-                            <div class="game-info">
+                        <a href="/games/2026-04-14/野狐/game_202604150857270013.html" class="game-card" data-game-id="202604150857270013">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">唐嘉雯</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">이지현M</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                <span class="game-result white-win">白中盘胜</span>
                             </div>
-                            <div class="game-result white-win">白中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-14/野狐/game_202604150857270014.html" class="game-item" data-game-id="202604150857270014">
-                            <div class="game-info">
+                        <a href="/games/2026-04-14/野狐/game_202604150857270014.html" class="game-card" data-game-id="202604150857270014">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">王世一</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">변상일</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛48进32<张学斌＆夏夏＆绝艺解说></span>
+                                <span class="game-result white-win">白胜1.25目</span>
                             </div>
-                            <div class="game-result white-win">白胜1.25目</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛48进32<张学斌＆夏夏＆绝艺解说></div>
                         </a>
                         
-                        <a href="/games/2026-04-14/野狐/game_202604150857280015.html" class="game-item" data-game-id="202604150857280015">
-                            <div class="game-info">
+                        <a href="/games/2026-04-14/野狐/game_202604150857280015.html" class="game-card" data-game-id="202604150857280015">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">邱禹然</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">三浦太郎</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                <span class="game-result black-win">黑胜1.75目</span>
                             </div>
-                            <div class="game-result ">黑胜1.75目</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-14/野狐/game_202604150857280016.html" class="game-item" data-game-id="202604150857280016">
-                            <div class="game-info">
+                        <a href="/games/2026-04-14/野狐/game_202604150857280016.html" class="game-card" data-game-id="202604150857280016">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">陈祈睿</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">赵奕斐</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                <span class="game-result black-win">黑中盘胜</span>
                             </div>
-                            <div class="game-result ">黑中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-14/野狐/game_202604150857280017.html" class="game-item" data-game-id="202604150857280017">
-                            <div class="game-info">
+                        <a href="/games/2026-04-14/野狐/game_202604150857280017.html" class="game-card" data-game-id="202604150857280017">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">이원영</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">段博尧</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></span>
+                                <span class="game-result black-win">黑胜1.75目</span>
                             </div>
-                            <div class="game-result ">黑胜1.75目</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛48进32<绝艺讲解></div>
                         </a>
                         
                     </div>
@@ -468,256 +477,256 @@
                     </div>
                     <div class="game-list">
                         
-                        <a href="/games/2026-04-15/野狐/game_202604160851170001.html" class="game-item" data-game-id="202604160851170001">
-                            <div class="game-info">
+                        <a href="/games/2026-04-15/野狐/game_202604160851170001.html" class="game-card" data-game-id="202604160851170001">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">孙一格</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">王楚轩</span>
                                 </div>
-                                <span class="game-event">衢州葛道职业训练赛<绝艺讲解></span>
+                                <span class="game-result white-win">白中盘胜</span>
                             </div>
-                            <div class="game-result white-win">白中盘胜</div>
+                            <div class="game-event">衢州葛道职业训练赛<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-15/野狐/game_202604160851170002.html" class="game-item" data-game-id="202604160851170002">
-                            <div class="game-info">
+                        <a href="/games/2026-04-15/野狐/game_202604160851170002.html" class="game-card" data-game-id="202604160851170002">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">金禹丞</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">심재익</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></span>
+                                <span class="game-result black-win">黑中盘胜</span>
                             </div>
-                            <div class="game-result ">黑中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-15/野狐/game_202604160851170003.html" class="game-item" data-game-id="202604160851170003">
-                            <div class="game-info">
+                        <a href="/games/2026-04-15/野狐/game_202604160851170003.html" class="game-card" data-game-id="202604160851170003">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">党毅飞</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">范廷钰</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></span>
+                                <span class="game-result black-win">黑中盘胜</span>
                             </div>
-                            <div class="game-result ">黑中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-15/野狐/game_202604160851170004.html" class="game-item" data-game-id="202604160851170004">
-                            <div class="game-info">
+                        <a href="/games/2026-04-15/野狐/game_202604160851170004.html" class="game-card" data-game-id="202604160851170004">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">张歆宇</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">김명훈</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></span>
+                                <span class="game-result white-win">白中盘胜</span>
                             </div>
-                            <div class="game-result white-win">白中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-15/野狐/game_202604160851170005.html" class="game-item" data-game-id="202604160851170005">
-                            <div class="game-info">
+                        <a href="/games/2026-04-15/野狐/game_202604160851170005.html" class="game-card" data-game-id="202604160851170005">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">王元均</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">戎毅</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></span>
+                                <span class="game-result black-win">黑中盘胜</span>
                             </div>
-                            <div class="game-result ">黑中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-15/野狐/game_202604160851170006.html" class="game-item" data-game-id="202604160851170006">
-                            <div class="game-info">
+                        <a href="/games/2026-04-15/野狐/game_202604160851170006.html" class="game-card" data-game-id="202604160851170006">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">上野愛咲美</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">藤沢里菜</span>
                                 </div>
-                                <span class="game-event">第37期日本女流名人战挑战赛2/3局<绝艺讲解></span>
+                                <span class="game-result black-win">黑胜2.50目</span>
                             </div>
-                            <div class="game-result ">黑胜2.50目</div>
+                            <div class="game-event">第37期日本女流名人战挑战赛2/3局<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-15/野狐/game_202604160851170007.html" class="game-item" data-game-id="202604160851170007">
-                            <div class="game-info">
+                        <a href="/games/2026-04-15/野狐/game_202604160851170007.html" class="game-card" data-game-id="202604160851170007">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">丁浩</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">李维清</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></span>
+                                <span class="game-result black-win">黑中盘胜</span>
                             </div>
-                            <div class="game-result ">黑中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-15/野狐/game_202604160851170008.html" class="game-item" data-game-id="202604160851170008">
-                            <div class="game-info">
+                        <a href="/games/2026-04-15/野狐/game_202604160851170008.html" class="game-card" data-game-id="202604160851170008">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">邱禹然</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">赖均辅</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></span>
+                                <span class="game-result white-win">白中盘胜</span>
                             </div>
-                            <div class="game-result white-win">白中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-15/野狐/game_202604160851170009.html" class="game-item" data-game-id="202604160851170009">
-                            <div class="game-info">
+                        <a href="/games/2026-04-15/野狐/game_202604160851170009.html" class="game-card" data-game-id="202604160851170009">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">谢尔豪</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">陈祈睿</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></span>
+                                <span class="game-result white-win">白胜0.25目</span>
                             </div>
-                            <div class="game-result white-win">白胜0.25目</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-15/野狐/game_202604160851170010.html" class="game-item" data-game-id="202604160851170010">
-                            <div class="game-info">
+                        <a href="/games/2026-04-15/野狐/game_202604160851170010.html" class="game-card" data-game-id="202604160851170010">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">신진서</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">谢科</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛32强<张学斌＆夏夏＆绝艺解说></span>
+                                <span class="game-result black-win">黑中盘胜</span>
                             </div>
-                            <div class="game-result ">黑中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛32强<张学斌＆夏夏＆绝艺解说></div>
                         </a>
                         
-                        <a href="/games/2026-04-15/野狐/game_202604160851170011.html" class="game-item" data-game-id="202604160851170011">
-                            <div class="game-info">
+                        <a href="/games/2026-04-15/野狐/game_202604160851170011.html" class="game-card" data-game-id="202604160851170011">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">박정환</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">陶欣然</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></span>
+                                <span class="game-result black-win">黑中盘胜</span>
                             </div>
-                            <div class="game-result ">黑中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-15/野狐/game_202604160851180012.html" class="game-item" data-game-id="202604160851180012">
-                            <div class="game-info">
+                        <a href="/games/2026-04-15/野狐/game_202604160851180012.html" class="game-card" data-game-id="202604160851180012">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">范胤</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">이지현M</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></span>
+                                <span class="game-result white-win">白中盘胜</span>
                             </div>
-                            <div class="game-result white-win">白中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-15/野狐/game_202604160851180013.html" class="game-item" data-game-id="202604160851180013">
-                            <div class="game-info">
+                        <a href="/games/2026-04-15/野狐/game_202604160851180013.html" class="game-card" data-game-id="202604160851180013">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">杨鼎新</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">杨楷文</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></span>
+                                <span class="game-result white-win">白中盘胜</span>
                             </div>
-                            <div class="game-result white-win">白中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-15/野狐/game_202604160851180014.html" class="game-item" data-game-id="202604160851180014">
-                            <div class="game-info">
+                        <a href="/games/2026-04-15/野狐/game_202604160851180014.html" class="game-card" data-game-id="202604160851180014">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">신민준</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">夏晨琨</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></span>
+                                <span class="game-result black-win">黑中盘胜</span>
                             </div>
-                            <div class="game-result ">黑中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-15/野狐/game_202604160851180015.html" class="game-item" data-game-id="202604160851180015">
-                            <div class="game-info">
+                        <a href="/games/2026-04-15/野狐/game_202604160851180015.html" class="game-card" data-game-id="202604160851180015">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">王星昊</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">廖元赫</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></span>
+                                <span class="game-result white-win">白胜0.25目</span>
                             </div>
-                            <div class="game-result white-win">白胜0.25目</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-15/野狐/game_202604160851180016.html" class="game-item" data-game-id="202604160851180016">
-                            <div class="game-info">
+                        <a href="/games/2026-04-15/野狐/game_202604160851180016.html" class="game-card" data-game-id="202604160851180016">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">이원영</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">江维杰</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></span>
+                                <span class="game-result white-win">白中盘胜</span>
                             </div>
-                            <div class="game-result white-win">白中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-15/野狐/game_202604160851180017.html" class="game-item" data-game-id="202604160851180017">
-                            <div class="game-info">
+                        <a href="/games/2026-04-15/野狐/game_202604160851180017.html" class="game-card" data-game-id="202604160851180017">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">陈玉侬</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">连笑</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></span>
+                                <span class="game-result black-win">黑中盘胜</span>
                             </div>
-                            <div class="game-result ">黑中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
                         </a>
                         
-                        <a href="/games/2026-04-15/野狐/game_202604160851180018.html" class="game-item" data-game-id="202604160851180018">
-                            <div class="game-info">
+                        <a href="/games/2026-04-15/野狐/game_202604160851180018.html" class="game-card" data-game-id="202604160851180018">
+                            <div class="game-header">
                                 <div class="game-players-row">
                                     <div class="stone-icon stone-black"></div>
                                     <span class="game-players">변상일</span>
-                                    <span>vs</span>
+                                    <span style="color:#999;">vs</span>
                                     <div class="stone-icon stone-white"></div>
                                     <span class="game-players">许嘉阳</span>
                                 </div>
-                                <span class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></span>
+                                <span class="game-result black-win">黑中盘胜</span>
                             </div>
-                            <div class="game-result ">黑中盘胜</div>
+                            <div class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
                         </a>
                         
                     </div>
@@ -756,7 +765,7 @@
             }
         }
         
-        document.querySelectorAll('.game-item').forEach(item => {
+        document.querySelectorAll('.game-card').forEach(item => {
             item.addEventListener('click', function() {
                 const gameId = this.dataset.gameId;
                 let visited = JSON.parse(localStorage.getItem('visited_games') || '[]');
@@ -765,22 +774,22 @@
                     localStorage.setItem('visited_games', JSON.stringify(visited));
                 }
                 // 立即应用已访问样式
-                this.style.opacity = '0.5';
+                this.style.opacity = '0.6';
             });
         });
         
         function restoreVisited() {
             const visited = JSON.parse(localStorage.getItem('visited_games') || '[]');
-            document.querySelectorAll('.game-item').forEach(item => {
+            document.querySelectorAll('.game-card').forEach(item => {
                 if (visited.includes(item.dataset.gameId)) {
-                    item.style.opacity = '0.5';
+                    item.style.opacity = '0.6';
                 }
             });
         }
         
         function clearVisited() {
             localStorage.removeItem('visited_games');
-            document.querySelectorAll('.game-item').forEach(item => {
+            document.querySelectorAll('.game-card').forEach(item => {
                 item.style.opacity = '1';
             });
         }
