@@ -110,9 +110,10 @@
         .quiz-card:visited { opacity: 0.7; }
         .quiz-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
             margin-bottom: 6px;
+            width: 100%;
+            overflow: hidden;
         }
         .players {
             font-weight: 600;
@@ -121,6 +122,9 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .stone-icon {
             width: 14px;
@@ -141,7 +145,7 @@
             font-size: 0.9em;
             color: #666;
             background: #f0f0f0;
-            padding: 2px 8px;
+            padding: 3px 10px;
             border-radius: 4px;
         }
         .event {
@@ -157,6 +161,8 @@
             justify-content: space-between;
             align-items: center;
             margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #f0f0f0;
         }
         .stats {
             display: flex;
@@ -179,7 +185,6 @@
             border-radius: 12px;
             font-size: 0.85em;
             white-space: nowrap;
-            flex-shrink: 0;
             cursor: pointer;
             transition: background 0.2s;
         }
@@ -202,6 +207,8 @@
             </div>
             <div class="header-actions">
                 <select id="dateFilter" onchange="filterByDate()">
+                    
+                    <option value="2026-04-16" >2026-04-16</option>
                     
                     <option value="2026-04-15" >2026-04-15</option>
                     
@@ -230,25 +237,25 @@
                                     <span class="stone-icon stone-white"></span>
                                     戎毅
                                 </span>
+                            </div>
+                            <div class="event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">5题</span>
+                                
+                                <span class="phase">
+                                    布局1
+                                    中盘4
+                                    
+                                </span>
+                                <span class="difficulty">
+                                    简单2 中等3 困难0
+                                </span>
+                                
+                            </div>
+                            <div class="quiz-footer">
                                 
                                 <span class="result">黑中盘胜</span>
                                 
-                            </div>
-                            <div class="event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
-                            <div class="quiz-footer">
-                                <div class="stats">
-                                    <span class="count">5题</span>
-                                    
-                                    <span class="phase">
-                                        布局1
-                                        中盘4
-                                        
-                                    </span>
-                                    <span class="difficulty">
-                                        简单2 中等3 困难0
-                                    </span>
-                                    
-                                </div>
                                 
                                 <span class="game-btn" data-game-path="/weiqi-page/games/2026-04-15/野狐/game_202604160851170005.html" onclick="openGame(event, this);">📖 棋谱</span>
                                 
@@ -264,25 +271,25 @@
                                     <span class="stone-icon stone-white"></span>
                                     藤沢里菜
                                 </span>
+                            </div>
+                            <div class="event">第37期日本女流名人战挑战赛2/3局<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">5题</span>
+                                
+                                <span class="phase">
+                                    
+                                    中盘3
+                                    官子2
+                                </span>
+                                <span class="difficulty">
+                                    简单2 中等3 困难0
+                                </span>
+                                
+                            </div>
+                            <div class="quiz-footer">
                                 
                                 <span class="result">黑胜2.50目</span>
                                 
-                            </div>
-                            <div class="event">第37期日本女流名人战挑战赛2/3局<绝艺讲解></div>
-                            <div class="quiz-footer">
-                                <div class="stats">
-                                    <span class="count">5题</span>
-                                    
-                                    <span class="phase">
-                                        
-                                        中盘3
-                                        官子2
-                                    </span>
-                                    <span class="difficulty">
-                                        简单2 中等3 困难0
-                                    </span>
-                                    
-                                </div>
                                 
                                 <span class="game-btn" data-game-path="/weiqi-page/games/2026-04-15/野狐/game_202604160851170006.html" onclick="openGame(event, this);">📖 棋谱</span>
                                 
@@ -298,25 +305,25 @@
                                     <span class="stone-icon stone-white"></span>
                                     陈祈睿
                                 </span>
+                            </div>
+                            <div class="event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">1题</span>
+                                
+                                <span class="phase">
+                                    
+                                    中盘1
+                                    
+                                </span>
+                                <span class="difficulty">
+                                    简单1 中等0 困难0
+                                </span>
+                                
+                            </div>
+                            <div class="quiz-footer">
                                 
                                 <span class="result">白胜0.25目</span>
                                 
-                            </div>
-                            <div class="event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
-                            <div class="quiz-footer">
-                                <div class="stats">
-                                    <span class="count">1题</span>
-                                    
-                                    <span class="phase">
-                                        
-                                        中盘1
-                                        
-                                    </span>
-                                    <span class="difficulty">
-                                        简单1 中等0 困难0
-                                    </span>
-                                    
-                                </div>
                                 
                                 <span class="game-btn" data-game-path="/weiqi-page/games/2026-04-15/野狐/game_202604160851170009.html" onclick="openGame(event, this);">📖 棋谱</span>
                                 
@@ -332,25 +339,25 @@
                                     <span class="stone-icon stone-white"></span>
                                     谢科
                                 </span>
+                            </div>
+                            <div class="event">第4届烂柯杯世界公开赛32强<张学斌＆夏夏＆绝艺解说></div>
+                            <div class="stats">
+                                <span class="count">5题</span>
+                                
+                                <span class="phase">
+                                    布局2
+                                    中盘3
+                                    
+                                </span>
+                                <span class="difficulty">
+                                    简单0 中等5 困难0
+                                </span>
+                                
+                            </div>
+                            <div class="quiz-footer">
                                 
                                 <span class="result">黑中盘胜</span>
                                 
-                            </div>
-                            <div class="event">第4届烂柯杯世界公开赛32强<张学斌＆夏夏＆绝艺解说></div>
-                            <div class="quiz-footer">
-                                <div class="stats">
-                                    <span class="count">5题</span>
-                                    
-                                    <span class="phase">
-                                        布局2
-                                        中盘3
-                                        
-                                    </span>
-                                    <span class="difficulty">
-                                        简单0 中等5 困难0
-                                    </span>
-                                    
-                                </div>
                                 
                                 <span class="game-btn" data-game-path="/weiqi-page/games/2026-04-15/野狐/game_202604160851170010.html" onclick="openGame(event, this);">📖 棋谱</span>
                                 
@@ -366,25 +373,25 @@
                                     <span class="stone-icon stone-white"></span>
                                     陶欣然
                                 </span>
+                            </div>
+                            <div class="event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">1题</span>
+                                
+                                <span class="phase">
+                                    布局1
+                                    
+                                    
+                                </span>
+                                <span class="difficulty">
+                                    简单1 中等0 困难0
+                                </span>
+                                
+                            </div>
+                            <div class="quiz-footer">
                                 
                                 <span class="result">黑中盘胜</span>
                                 
-                            </div>
-                            <div class="event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
-                            <div class="quiz-footer">
-                                <div class="stats">
-                                    <span class="count">1题</span>
-                                    
-                                    <span class="phase">
-                                        布局1
-                                        
-                                        
-                                    </span>
-                                    <span class="difficulty">
-                                        简单1 中等0 困难0
-                                    </span>
-                                    
-                                </div>
                                 
                                 <span class="game-btn" data-game-path="/weiqi-page/games/2026-04-15/野狐/game_202604160851170011.html" onclick="openGame(event, this);">📖 棋谱</span>
                                 
@@ -400,25 +407,25 @@
                                     <span class="stone-icon stone-white"></span>
                                     夏晨琨
                                 </span>
+                            </div>
+                            <div class="event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">2题</span>
+                                
+                                <span class="phase">
+                                    
+                                    中盘1
+                                    官子1
+                                </span>
+                                <span class="difficulty">
+                                    简单2 中等0 困难0
+                                </span>
+                                
+                            </div>
+                            <div class="quiz-footer">
                                 
                                 <span class="result">黑中盘胜</span>
                                 
-                            </div>
-                            <div class="event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
-                            <div class="quiz-footer">
-                                <div class="stats">
-                                    <span class="count">2题</span>
-                                    
-                                    <span class="phase">
-                                        
-                                        中盘1
-                                        官子1
-                                    </span>
-                                    <span class="difficulty">
-                                        简单2 中等0 困难0
-                                    </span>
-                                    
-                                </div>
                                 
                                 <span class="game-btn" data-game-path="/weiqi-page/games/2026-04-15/野狐/game_202604160851180014.html" onclick="openGame(event, this);">📖 棋谱</span>
                                 
@@ -434,25 +441,25 @@
                                     <span class="stone-icon stone-white"></span>
                                     廖元赫
                                 </span>
+                            </div>
+                            <div class="event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">3题</span>
+                                
+                                <span class="phase">
+                                    
+                                    中盘1
+                                    官子2
+                                </span>
+                                <span class="difficulty">
+                                    简单2 中等1 困难0
+                                </span>
+                                
+                            </div>
+                            <div class="quiz-footer">
                                 
                                 <span class="result">白胜0.25目</span>
                                 
-                            </div>
-                            <div class="event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
-                            <div class="quiz-footer">
-                                <div class="stats">
-                                    <span class="count">3题</span>
-                                    
-                                    <span class="phase">
-                                        
-                                        中盘1
-                                        官子2
-                                    </span>
-                                    <span class="difficulty">
-                                        简单2 中等1 困难0
-                                    </span>
-                                    
-                                </div>
                                 
                                 <span class="game-btn" data-game-path="/weiqi-page/games/2026-04-15/野狐/game_202604160851180015.html" onclick="openGame(event, this);">📖 棋谱</span>
                                 
@@ -468,25 +475,25 @@
                                     <span class="stone-icon stone-white"></span>
                                     江维杰
                                 </span>
+                            </div>
+                            <div class="event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">4题</span>
+                                
+                                <span class="phase">
+                                    
+                                    
+                                    官子4
+                                </span>
+                                <span class="difficulty">
+                                    简单3 中等0 困难1
+                                </span>
+                                
+                            </div>
+                            <div class="quiz-footer">
                                 
                                 <span class="result">白中盘胜</span>
                                 
-                            </div>
-                            <div class="event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
-                            <div class="quiz-footer">
-                                <div class="stats">
-                                    <span class="count">4题</span>
-                                    
-                                    <span class="phase">
-                                        
-                                        
-                                        官子4
-                                    </span>
-                                    <span class="difficulty">
-                                        简单3 中等0 困难1
-                                    </span>
-                                    
-                                </div>
                                 
                                 <span class="game-btn" data-game-path="/weiqi-page/games/2026-04-15/野狐/game_202604160851180016.html" onclick="openGame(event, this);">📖 棋谱</span>
                                 
@@ -502,25 +509,25 @@
                                     <span class="stone-icon stone-white"></span>
                                     连笑
                                 </span>
+                            </div>
+                            <div class="event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">1题</span>
+                                
+                                <span class="phase">
+                                    
+                                    
+                                    官子1
+                                </span>
+                                <span class="difficulty">
+                                    简单0 中等0 困难1
+                                </span>
+                                
+                            </div>
+                            <div class="quiz-footer">
                                 
                                 <span class="result">黑中盘胜</span>
                                 
-                            </div>
-                            <div class="event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
-                            <div class="quiz-footer">
-                                <div class="stats">
-                                    <span class="count">1题</span>
-                                    
-                                    <span class="phase">
-                                        
-                                        
-                                        官子1
-                                    </span>
-                                    <span class="difficulty">
-                                        简单0 中等0 困难1
-                                    </span>
-                                    
-                                </div>
                                 
                                 <span class="game-btn" data-game-path="/weiqi-page/games/2026-04-15/野狐/game_202604160851180017.html" onclick="openGame(event, this);">📖 棋谱</span>
                                 
@@ -536,27 +543,143 @@
                                     <span class="stone-icon stone-white"></span>
                                     许嘉阳
                                 </span>
+                            </div>
+                            <div class="event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">4题</span>
+                                
+                                <span class="phase">
+                                    布局1
+                                    中盘3
+                                    
+                                </span>
+                                <span class="difficulty">
+                                    简单4 中等0 困难0
+                                </span>
+                                
+                            </div>
+                            <div class="quiz-footer">
                                 
                                 <span class="result">黑中盘胜</span>
                                 
-                            </div>
-                            <div class="event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
-                            <div class="quiz-footer">
-                                <div class="stats">
-                                    <span class="count">4题</span>
-                                    
-                                    <span class="phase">
-                                        布局1
-                                        中盘3
-                                        
-                                    </span>
-                                    <span class="difficulty">
-                                        简单4 中等0 困难0
-                                    </span>
-                                    
-                                </div>
                                 
                                 <span class="game-btn" data-game-path="/weiqi-page/games/2026-04-15/野狐/game_202604160851180018.html" onclick="openGame(event, this);">📖 棋谱</span>
+                                
+                            </div>
+                        </a>
+                        
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="date-section" data-date="2026-04-16">
+                
+                <div class="source-group">
+                    <div class="source-header" onclick="toggleSource(this)">
+                        <span>🏷️ 野狐 (3份, 10题)</span>
+                        <span class="source-toggle">▼</span>
+                    </div>
+                    <div class="quiz-list">
+                        
+                        <a href="/weiqi-page/quiz/2026-04-16/野狐/quiz_202604170839400002.html" class="quiz-card" data-quiz-id="202604170839400002">
+                            <div class="quiz-header">
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    陈一纯
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    刘云程
+                                </span>
+                            </div>
+                            <div class="event">衢州葛道职业训练赛<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">2题</span>
+                                
+                                <span class="phase">
+                                    
+                                    中盘2
+                                    
+                                </span>
+                                <span class="difficulty">
+                                    简单1 中等0 困难1
+                                </span>
+                                
+                            </div>
+                            <div class="quiz-footer">
+                                
+                                <span class="result">黑中盘胜</span>
+                                
+                                
+                                <span class="game-btn" data-game-path="/weiqi-page/games/2026-04-16/野狐/game_202604170839400002.html" onclick="openGame(event, this);">📖 棋谱</span>
+                                
+                            </div>
+                        </a>
+                        
+                        <a href="/weiqi-page/quiz/2026-04-16/野狐/quiz_202604170839400004.html" class="quiz-card" data-quiz-id="202604170839400004">
+                            <div class="quiz-header">
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    梁钟灿
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    金贤硕
+                                </span>
+                            </div>
+                            <div class="event">韩国冲岩循环赛<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">5题</span>
+                                
+                                <span class="phase">
+                                    
+                                    中盘5
+                                    
+                                </span>
+                                <span class="difficulty">
+                                    简单1 中等2 困难2
+                                </span>
+                                
+                            </div>
+                            <div class="quiz-footer">
+                                
+                                <span class="result">白中盘胜</span>
+                                
+                                
+                                <span class="game-btn" data-game-path="/weiqi-page/games/2026-04-16/野狐/game_202604170839400004.html" onclick="openGame(event, this);">📖 棋谱</span>
+                                
+                            </div>
+                        </a>
+                        
+                        <a href="/weiqi-page/quiz/2026-04-16/野狐/quiz_202604170839400006.html" class="quiz-card" data-quiz-id="202604170839400006">
+                            <div class="quiz-header">
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>
+                                    許家元
+                                    <span style="color:#999;font-weight:normal;">vs</span>
+                                    <span class="stone-icon stone-white"></span>
+                                    佐田篤史
+                                </span>
+                            </div>
+                            <div class="event">第51期日本碁圣战本赛半决赛<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">3题</span>
+                                
+                                <span class="phase">
+                                    布局2
+                                    中盘1
+                                    
+                                </span>
+                                <span class="difficulty">
+                                    简单3 中等0 困难0
+                                </span>
+                                
+                            </div>
+                            <div class="quiz-footer">
+                                
+                                <span class="result">白胜0.50目</span>
+                                
+                                
+                                <span class="game-btn" data-game-path="/weiqi-page/games/2026-04-16/野狐/game_202604170839400006.html" onclick="openGame(event, this);">📖 棋谱</span>
                                 
                             </div>
                         </a>

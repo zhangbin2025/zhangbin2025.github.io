@@ -110,14 +110,16 @@
         .game-card:visited { opacity: 0.7; }
         .game-header {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 8px;
             margin-bottom: 6px;
         }
         .game-players-row {
             display: flex;
             align-items: center;
             gap: 6px;
+            width: 100%;
+            overflow: hidden;
         }
         .stone-icon {
             width: 16px;
@@ -138,6 +140,9 @@
             font-weight: 600;
             font-size: 1.05em;
             color: #333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .game-result {
             font-size: 0.9em;
@@ -145,6 +150,7 @@
             background: #f0f0f0;
             padding: 2px 8px;
             border-radius: 4px;
+            align-self: flex-start;
         }
         .game-result.black-win {
             background: #e8f5e9;
@@ -207,6 +213,8 @@
             </div>
             <div class="header-actions">
                 <select id="dateFilter" onchange="filterByDate()">
+                    
+                    <option value="2026-04-16" >2026-04-16</option>
                     
                     <option value="2026-04-15" >2026-04-15</option>
                     
@@ -476,6 +484,118 @@
                                 <span class="game-result black-win">黑中盘胜</span>
                             </div>
                             <div class="game-event">第4届烂柯杯世界公开赛32强<绝艺讲解></div>
+                        </a>
+                        
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="date-section" data-date="2026-04-16">
+                
+                <div class="source-group">
+                    <div class="source-header" onclick="toggleSource(this)">
+                        <span>🏷️ 野狐 (7局)</span>
+                        <span class="source-toggle">▼</span>
+                    </div>
+                    <div class="game-list">
+                        
+                        <a href="/weiqi-page/games/2026-04-16/野狐/game_202604170839400001.html" class="game-card" data-game-id="202604170839400001">
+                            <div class="game-header">
+                                <div class="game-players-row">
+                                    <div class="stone-icon stone-black"></div>
+                                    <span class="game-players">朝日悠俊</span>
+                                    <span style="color:#999;">vs</span>
+                                    <div class="stone-icon stone-white"></div>
+                                    <span class="game-players">栁原咲輝</span>
+                                </div>
+                                <span class="game-result black-win">黑胜8.50目</span>
+                            </div>
+                            <div class="game-event">第11期世界u22新锐战日本预选1轮<绝艺讲解></div>
+                        </a>
+                        
+                        <a href="/weiqi-page/games/2026-04-16/野狐/game_202604170839400002.html" class="game-card" data-game-id="202604170839400002">
+                            <div class="game-header">
+                                <div class="game-players-row">
+                                    <div class="stone-icon stone-black"></div>
+                                    <span class="game-players">陈一纯</span>
+                                    <span style="color:#999;">vs</span>
+                                    <div class="stone-icon stone-white"></div>
+                                    <span class="game-players">刘云程</span>
+                                </div>
+                                <span class="game-result black-win">黑中盘胜</span>
+                            </div>
+                            <div class="game-event">衢州葛道职业训练赛<绝艺讲解></div>
+                        </a>
+                        
+                        <a href="/weiqi-page/games/2026-04-16/野狐/game_202604170839400003.html" class="game-card" data-game-id="202604170839400003">
+                            <div class="game-header">
+                                <div class="game-players-row">
+                                    <div class="stone-icon stone-black"></div>
+                                    <span class="game-players">依田纪基</span>
+                                    <span style="color:#999;">vs</span>
+                                    <div class="stone-icon stone-white"></div>
+                                    <span class="game-players">梅泽由香里</span>
+                                </div>
+                                <span class="game-result black-win">黑中盘胜</span>
+                            </div>
+                            <div class="game-event">第53期日本天元战预选<绝艺讲解></div>
+                        </a>
+                        
+                        <a href="/weiqi-page/games/2026-04-16/野狐/game_202604170839400004.html" class="game-card" data-game-id="202604170839400004">
+                            <div class="game-header">
+                                <div class="game-players-row">
+                                    <div class="stone-icon stone-black"></div>
+                                    <span class="game-players">梁钟灿</span>
+                                    <span style="color:#999;">vs</span>
+                                    <div class="stone-icon stone-white"></div>
+                                    <span class="game-players">金贤硕</span>
+                                </div>
+                                <span class="game-result white-win">白中盘胜</span>
+                            </div>
+                            <div class="game-event">韩国冲岩循环赛<绝艺讲解></div>
+                        </a>
+                        
+                        <a href="/weiqi-page/games/2026-04-16/野狐/game_202604170839400005.html" class="game-card" data-game-id="202604170839400005">
+                            <div class="game-header">
+                                <div class="game-players-row">
+                                    <div class="stone-icon stone-black"></div>
+                                    <span class="game-players">河野臨</span>
+                                    <span style="color:#999;">vs</span>
+                                    <div class="stone-icon stone-white"></div>
+                                    <span class="game-players">本木克弥</span>
+                                </div>
+                                <span class="game-result black-win">黑中盘胜</span>
+                            </div>
+                            <div class="game-event">第52期日本天元战本赛<绝艺讲解></div>
+                        </a>
+                        
+                        <a href="/weiqi-page/games/2026-04-16/野狐/game_202604170839400006.html" class="game-card" data-game-id="202604170839400006">
+                            <div class="game-header">
+                                <div class="game-players-row">
+                                    <div class="stone-icon stone-black"></div>
+                                    <span class="game-players">許家元</span>
+                                    <span style="color:#999;">vs</span>
+                                    <div class="stone-icon stone-white"></div>
+                                    <span class="game-players">佐田篤史</span>
+                                </div>
+                                <span class="game-result white-win">白胜0.50目</span>
+                            </div>
+                            <div class="game-event">第51期日本碁圣战本赛半决赛<绝艺讲解></div>
+                        </a>
+                        
+                        <a href="/weiqi-page/games/2026-04-16/野狐/game_202604170839400007.html" class="game-card" data-game-id="202604170839400007">
+                            <div class="game-header">
+                                <div class="game-players-row">
+                                    <div class="stone-icon stone-black"></div>
+                                    <span class="game-players">余正麒</span>
+                                    <span style="color:#999;">vs</span>
+                                    <div class="stone-icon stone-white"></div>
+                                    <span class="game-players">芝野虎丸</span>
+                                </div>
+                                <span class="game-result white-win">白中盘胜</span>
+                            </div>
+                            <div class="game-event">第51期日本名人战循环圈<绝艺讲解></div>
                         </a>
                         
                     </div>
