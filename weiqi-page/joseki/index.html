@@ -950,6 +950,17 @@
                 restoreScrollPosition();
             }
         });
+        
+        // 页面隐藏前保存
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'hidden') {
+                saveScrollPosition();
+            }
+        });
+        
+        // 页面卸载前保存
+        window.addEventListener('beforeunload', saveScrollPosition);
+        window.addEventListener('pagehide', saveScrollPosition);
     </script>
 </body>
 </html>
