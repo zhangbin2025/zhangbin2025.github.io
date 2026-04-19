@@ -300,6 +300,54 @@
             gap: 10px;
         }
         
+        /* 变化图提示 */
+        .variation-hint {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            animation: slideDown 0.3s ease;
+        }
+        .variation-hint.hidden {
+            display: none;
+        }
+        .variation-hint-text {
+            flex: 1;
+        }
+        .variation-hint-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .variation-hint-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         /* 试下模式面板 */
         .tryplay-panel {
             display: none;
@@ -534,6 +582,11 @@
                 <div class="variation-options" id="variationOptions" style="flex: 1; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start;"></div>
                 <button class="btn btn-icon btn-danger" onclick="backToMain()" title="返回主面板" style="flex-shrink: 0;">↩</button>
             </div>
+            <!-- 变化图提示 -->
+            <div class="variation-hint" id="variationHint">
+                <span class="variation-hint-text">👆 点击上方按钮查看 AI 推荐变化图</span>
+                <button class="variation-hint-close" onclick="hideVariationHint()" title="知道了">✕</button>
+            </div>
             <div class="variation-controls" id="variationControls" style="display: none; justify-content: center; align-items: center; gap: 8px;">
                 <button class="btn btn-icon" onclick="varPrev()" title="上一步">◀</button>
                 <span id="varProgress">0 / 0</span>
@@ -743,6 +796,10 @@
         const problems = [{"index": 0, "move_num": 29, "phase": "layout", "difficulty": "easy", "is_blunder": true, "position": [{"color": "B", "coord": "pd"}, {"color": "W", "coord": "dp"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "dc"}, {"color": "B", "coord": "cn"}, {"color": "W", "coord": "fp"}, {"color": "B", "coord": "de"}, {"color": "W", "coord": "ce"}, {"color": "B", "coord": "cf"}, {"color": "W", "coord": "cd"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "fc"}, {"color": "B", "coord": "eo"}, {"color": "W", "coord": "ep"}, {"color": "B", "coord": "bp"}, {"color": "W", "coord": "bl"}, {"color": "B", "coord": "dm"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "bo"}, {"color": "B", "coord": "bn"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "bq"}, {"color": "W", "coord": "co"}, {"color": "B", "coord": "ao"}, {"color": "W", "coord": "ek"}, {"color": "B", "coord": "dj"}, {"color": "W", "coord": "em"}, {"color": "B", "coord": "fm"}], "options": [{"coord": "el", "color": "W", "winrate": "57.5%", "comment": "/\"jueyi白57.5%", "moves": [{"color": "W", "coord": "el"}, {"color": "B", "coord": "en"}, {"color": "W", "coord": "ch"}, {"color": "B", "coord": "gn"}, {"color": "W", "coord": "hp"}, {"color": "B", "coord": "er"}, {"color": "W", "coord": "fr"}, {"color": "B", "coord": "gr"}, {"color": "W", "coord": "gk"}, {"color": "B", "coord": "ed"}], "is_correct": false, "sort_order": 1, "letter": "A"}, {"coord": "en", "color": "W", "winrate": "79.2%", "comment": "/\"jueyi白79.2%", "moves": [{"color": "W", "coord": "en"}, {"color": "B", "coord": "dl"}, {"color": "W", "coord": "dk"}, {"color": "B", "coord": "el"}, {"color": "W", "coord": "fn"}, {"color": "B", "coord": "dn"}, {"color": "W", "coord": "gn"}, {"color": "B", "coord": "ch"}, {"color": "W", "coord": "fk"}, {"color": "B", "coord": "fl"}], "is_correct": true, "sort_order": 0, "letter": "B"}, {"coord": "ap", "color": "W", "winrate": "48.9%", "comment": "/\"jueyi白48.9%", "moves": [{"color": "W", "coord": "ap"}, {"color": "B", "coord": "el"}, {"color": "W", "coord": "an"}, {"color": "B", "coord": "dk"}, {"color": "W", "coord": "er"}, {"color": "B", "coord": "nc"}, {"color": "W", "coord": "qo"}, {"color": "B", "coord": "qk"}, {"color": "W", "coord": "op"}, {"color": "B", "coord": "oq"}], "is_correct": false, "sort_order": 2, "letter": "C"}], "practical_move": {"coord": "el", "color": "W", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "W", "coord": "el"}, {"color": "B", "coord": "en"}, {"color": "W", "coord": "ip"}, {"color": "B", "coord": "cj"}, {"color": "W", "coord": "bj"}, {"color": "B", "coord": "bi"}, {"color": "W", "coord": "gk"}, {"color": "B", "coord": "aj"}, {"color": "W", "coord": "bk"}, {"color": "B", "coord": "er"}, {"color": "W", "coord": "fr"}, {"color": "B", "coord": "eq"}, {"color": "W", "coord": "fq"}, {"color": "B", "coord": "gn"}, {"color": "W", "coord": "gf"}]}}];
         let currentProblemIndex = 0;
         let currentProblem = problems[0];
+        
+        // 变化图提示状态
+        const VARIATION_HINT_KEY = 'weiqi_move_variation_hint_seen';
+        let variationHintShown = localStorage.getItem(VARIATION_HINT_KEY) === 'true';
         
         // 状态管理
         const STATE_MAIN = 'main';        // 主面板状态
@@ -1270,8 +1327,33 @@
             if (document.getElementById('variationHeader')) {
                 document.getElementById('variationHeader').style.display = 'flex';
             }
+            
+            // 显示或隐藏变化图提示
+            updateVariationHint();
 
             updateDisplay();
+        }
+        
+        // 更新变化图提示显示
+        function updateVariationHint() {
+            const hint = document.getElementById('variationHint');
+            if (hint) {
+                if (variationHintShown) {
+                    hint.classList.add('hidden');
+                } else {
+                    hint.classList.remove('hidden');
+                }
+            }
+        }
+        
+        // 隐藏变化图提示
+        function hideVariationHint() {
+            const hint = document.getElementById('variationHint');
+            if (hint) {
+                hint.classList.add('hidden');
+            }
+            variationHintShown = true;
+            localStorage.setItem(VARIATION_HINT_KEY, 'true');
         }
 
         function showTryplayPanel() {
@@ -1378,6 +1460,7 @@
         // 加载实战变化图
         function loadPracticalVariation() {
             if (!currentProblem.practical_move) return;
+            hideVariationHint();  // 用户点击后隐藏提示
             
             // 计算变化图着法的提子情况
             const board = createBoard();
@@ -1428,6 +1511,7 @@
         }
 
         function loadVariation(idx) {
+            hideVariationHint();  // 用户点击后隐藏提示
             const opt = currentProblem.options[idx];
             currentVariationOption = idx;
 
