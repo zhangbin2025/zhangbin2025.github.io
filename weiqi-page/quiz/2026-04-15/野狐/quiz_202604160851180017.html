@@ -249,7 +249,27 @@
         .nav-buttons {
             display: flex;
             align-items: center;
+            gap: 24px;
+            transition: gap 0.2s ease;
+        }
+        .nav-buttons.expanded {
             gap: 8px;
+        }
+        .extra-buttons {
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+        .extra-buttons.visible {
+            display: flex;
+        }
+        #moreBtn {
+            background: #f0f0f0;
+            transition: all 0.2s ease;
+        }
+        #moreBtn.active {
+            background: #667eea;
+            color: white;
         }
         
         /* 变化图面板 */
@@ -278,6 +298,54 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+        }
+        
+        /* 变化图提示 */
+        .variation-hint {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            animation: slideDown 0.3s ease;
+        }
+        .variation-hint.hidden {
+            display: none;
+        }
+        .variation-hint-text {
+            flex: 1;
+        }
+        .variation-hint-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .variation-hint-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         /* 试下模式面板 */
@@ -496,14 +564,15 @@
         <div class="main-panel" id="mainPanel">
             <div class="main-panel-center" style="flex: 1;">
                 <input type="range" id="moveSlider" min="0" max="0" value="0" oninput="goToMove(this.value)">
-                <div class="nav-buttons">
+                <div class="nav-buttons" id="navButtons">
                     <button class="btn btn-icon" onclick="prevMove()" title="上一手">◀</button>
                     <button class="btn btn-icon" onclick="nextMove()" title="下一手">▶</button>
+                    <div class="extra-buttons" id="extraButtons">
+                        <button class="btn btn-icon" id="soundToggleBtn" onclick="toggleSound()" title="音效开关">🔊</button>
+                        <button class="btn btn-icon" onclick="saveToSGF()" title="保存SGF">💾</button>
+                    </div>
+                    <button class="btn btn-icon" id="moreBtn" onclick="toggleMorePanel()" title="更多">⋮</button>
                 </div>
-            </div>
-            <div class="main-panel-right">
-                <button class="btn btn-icon" id="soundToggleBtn" onclick="toggleSound()" title="音效开关" style="background: #f0f0f0; width: 32px; height: 32px; min-width: 32px; font-size: 14px;">🔊</button>
-                <button class="btn btn-icon" onclick="saveToSGF()" title="保存SGF" style="background: #f0f0f0; width: 32px; height: 32px; min-width: 32px; font-size: 14px;">💾</button>
             </div>
         </div>
 
@@ -512,6 +581,11 @@
             <div class="variation-header" id="variationHeader" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px;">
                 <div class="variation-options" id="variationOptions" style="flex: 1; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start;"></div>
                 <button class="btn btn-icon btn-danger" onclick="backToMain()" title="返回主面板" style="flex-shrink: 0;">↩</button>
+            </div>
+            <!-- 变化图提示 -->
+            <div class="variation-hint" id="variationHint">
+                <span class="variation-hint-text">👆 点击上方按钮查看 AI 推荐变化图</span>
+                <button class="variation-hint-close" onclick="hideVariationHint()" title="知道了">✕</button>
             </div>
             <div class="variation-controls" id="variationControls" style="display: none; justify-content: center; align-items: center; gap: 8px;">
                 <button class="btn btn-icon" onclick="varPrev()" title="上一步">◀</button>
@@ -722,6 +796,10 @@
         const problems = [{"index": 0, "move_num": 192, "phase": "endgame", "difficulty": "hard", "is_blunder": true, "position": [{"color": "B", "coord": "pd"}, {"color": "W", "coord": "dc"}, {"color": "B", "coord": "qp"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "op"}, {"color": "W", "coord": "de"}, {"color": "B", "coord": "co"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "cf"}, {"color": "B", "coord": "cg"}, {"color": "W", "coord": "dg"}, {"color": "B", "coord": "ef"}, {"color": "W", "coord": "ch"}, {"color": "B", "coord": "bg"}, {"color": "W", "coord": "bf"}, {"color": "B", "coord": "ce"}, {"color": "W", "coord": "be"}, {"color": "B", "coord": "cd"}, {"color": "W", "coord": "bd"}, {"color": "B", "coord": "dk"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "fg"}, {"color": "W", "coord": "ff"}, {"color": "B", "coord": "ee"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "cj"}, {"color": "W", "coord": "fe"}, {"color": "B", "coord": "gq"}, {"color": "W", "coord": "fp"}, {"color": "B", "coord": "gp"}, {"color": "W", "coord": "cl"}, {"color": "B", "coord": "dl"}, {"color": "W", "coord": "dj"}, {"color": "B", "coord": "ej"}, {"color": "W", "coord": "di"}, {"color": "B", "coord": "cm"}, {"color": "W", "coord": "bj"}, {"color": "B", "coord": "bq"}, {"color": "W", "coord": "go"}, {"color": "B", "coord": "bk"}, {"color": "W", "coord": "ho"}, {"color": "B", "coord": "jq"}, {"color": "W", "coord": "fq"}, {"color": "B", "coord": "gr"}, {"color": "W", "coord": "ci"}, {"color": "B", "coord": "fo"}, {"color": "W", "coord": "dn"}, {"color": "B", "coord": "fn"}, {"color": "W", "coord": "do"}, {"color": "B", "coord": "bl"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "bo"}, {"color": "W", "coord": "em"}, {"color": "B", "coord": "hn"}, {"color": "W", "coord": "io"}, {"color": "B", "coord": "gn"}, {"color": "W", "coord": "ko"}, {"color": "B", "coord": "gl"}, {"color": "W", "coord": "br"}, {"color": "B", "coord": "bp"}, {"color": "W", "coord": "fr"}, {"color": "B", "coord": "cr"}, {"color": "W", "coord": "lq"}, {"color": "B", "coord": "ep"}, {"color": "W", "coord": "dr"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "ir"}, {"color": "B", "coord": "iq"}, {"color": "W", "coord": "jr"}, {"color": "B", "coord": "hq"}, {"color": "W", "coord": "kq"}, {"color": "B", "coord": "jp"}, {"color": "W", "coord": "jo"}, {"color": "B", "coord": "eq"}, {"color": "W", "coord": "or"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "nc"}, {"color": "B", "coord": "mr"}, {"color": "W", "coord": "mq"}, {"color": "B", "coord": "nr"}, {"color": "W", "coord": "nq"}, {"color": "B", "coord": "oq"}, {"color": "W", "coord": "lr"}, {"color": "B", "coord": "qf"}, {"color": "W", "coord": "kd"}, {"color": "B", "coord": "ic"}, {"color": "W", "coord": "ie"}, {"color": "B", "coord": "kb"}, {"color": "W", "coord": "lc"}, {"color": "B", "coord": "gc"}, {"color": "W", "coord": "fb"}, {"color": "B", "coord": "he"}, {"color": "W", "coord": "qc"}, {"color": "B", "coord": "pc"}, {"color": "W", "coord": "pb"}, {"color": "B", "coord": "qd"}, {"color": "W", "coord": "rb"}, {"color": "B", "coord": "rc"}, {"color": "W", "coord": "qb"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "ms"}, {"color": "B", "coord": "gb"}, {"color": "W", "coord": "qk"}, {"color": "B", "coord": "qm"}, {"color": "W", "coord": "hd"}, {"color": "B", "coord": "je"}, {"color": "W", "coord": "hf"}, {"color": "B", "coord": "jd"}, {"color": "W", "coord": "kc"}, {"color": "B", "coord": "jc"}, {"color": "W", "coord": "lb"}, {"color": "B", "coord": "ig"}, {"color": "W", "coord": "cj"}, {"color": "B", "coord": "dm"}, {"color": "W", "coord": "fh"}, {"color": "B", "coord": "if"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "lf"}, {"color": "W", "coord": "ok"}, {"color": "B", "coord": "om"}, {"color": "W", "coord": "oi"}, {"color": "B", "coord": "nf"}, {"color": "W", "coord": "rm"}, {"color": "B", "coord": "rn"}, {"color": "W", "coord": "ql"}, {"color": "B", "coord": "pm"}, {"color": "W", "coord": "li"}, {"color": "B", "coord": "pj"}, {"color": "W", "coord": "oj"}, {"color": "B", "coord": "pk"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "qj"}, {"color": "W", "coord": "ph"}, {"color": "B", "coord": "oc"}, {"color": "W", "coord": "ob"}, {"color": "B", "coord": "rh"}, {"color": "W", "coord": "rg"}, {"color": "B", "coord": "ri"}, {"color": "W", "coord": "qg"}, {"color": "B", "coord": "nd"}, {"color": "W", "coord": "md"}, {"color": "B", "coord": "me"}, {"color": "W", "coord": "fk"}, {"color": "B", "coord": "ek"}, {"color": "W", "coord": "fl"}, {"color": "B", "coord": "en"}, {"color": "W", "coord": "jb"}, {"color": "B", "coord": "ib"}, {"color": "W", "coord": "ka"}, {"color": "B", "coord": "eb"}, {"color": "W", "coord": "fc"}, {"color": "B", "coord": "fa"}, {"color": "W", "coord": "kf"}, {"color": "B", "coord": "ke"}, {"color": "W", "coord": "kg"}, {"color": "B", "coord": "lg"}, {"color": "W", "coord": "kh"}, {"color": "B", "coord": "nh"}, {"color": "W", "coord": "jf"}, {"color": "B", "coord": "mj"}, {"color": "W", "coord": "rd"}, {"color": "B", "coord": "re"}, {"color": "W", "coord": "sc"}, {"color": "B", "coord": "ii"}, {"color": "W", "coord": "kk"}, {"color": "B", "coord": "mi"}, {"color": "W", "coord": "lh"}, {"color": "B", "coord": "mh"}, {"color": "W", "coord": "hj"}, {"color": "B", "coord": "se"}, {"color": "W", "coord": "nl"}, {"color": "B", "coord": "lk"}, {"color": "W", "coord": "lj"}, {"color": "B", "coord": "ml"}, {"color": "W", "coord": "nm"}, {"color": "B", "coord": "kl"}, {"color": "W", "coord": "jk"}, {"color": "B", "coord": "mn"}, {"color": "W", "coord": "oe"}, {"color": "B", "coord": "ne"}, {"color": "W", "coord": "pf"}, {"color": "B", "coord": "qe"}, {"color": "W", "coord": "pl"}, {"color": "B", "coord": "sg"}, {"color": "W", "coord": "le"}, {"color": "B", "coord": "ld"}, {"color": "W", "coord": "er"}, {"color": "B", "coord": "mc"}, {"color": "W", "coord": "eo"}, {"color": "B", "coord": "ds"}, {"color": "W", "coord": "gs"}], "options": [{"coord": "km", "color": "B", "winrate": "55.9%", "comment": "/\"jueyi黑55.9% | +1.0目", "moves": [{"color": "B", "coord": "km"}, {"color": "W", "coord": "mm"}, {"color": "B", "coord": "lm"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "il"}, {"color": "W", "coord": "ik"}, {"color": "B", "coord": "eh"}, {"color": "W", "coord": "gg"}, {"color": "B", "coord": "ei"}, {"color": "W", "coord": "bm"}], "is_correct": false, "sort_order": 1, "letter": "A"}, {"coord": "dp", "color": "B", "winrate": "36.7%", "comment": "/\"jueyi黑36.7% | -1.0目", "moves": [{"color": "B", "coord": "dp"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "km"}, {"color": "W", "coord": "jm"}, {"color": "B", "coord": "jl"}, {"color": "W", "coord": "il"}, {"color": "B", "coord": "im"}, {"color": "W", "coord": "hl"}, {"color": "B", "coord": "jn"}, {"color": "W", "coord": "nb"}], "is_correct": false, "sort_order": 2, "letter": "B"}, {"coord": "hs", "color": "B", "winrate": "60.4%", "comment": "/\"jueyi黑60.4% | +1.5目", "moves": [{"color": "B", "coord": "hs"}, {"color": "W", "coord": "cs"}, {"color": "B", "coord": "bs"}, {"color": "W", "coord": "fs"}, {"color": "B", "coord": "km"}, {"color": "W", "coord": "mm"}, {"color": "B", "coord": "lm"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "il"}, {"color": "W", "coord": "ik"}], "is_correct": true, "sort_order": 0, "letter": "C"}], "practical_move": {"coord": "dp", "color": "B", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "B", "coord": "dp"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "fj"}, {"color": "W", "coord": "gk"}, {"color": "B", "coord": "dp"}, {"color": "W", "coord": "ep"}, {"color": "B", "coord": "ma"}, {"color": "W", "coord": "km"}, {"color": "B", "coord": "mm"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "mb"}, {"color": "W", "coord": "gj"}, {"color": "B", "coord": "gi"}, {"color": "W", "coord": "fi"}, {"color": "B", "coord": "fm"}]}}];
         let currentProblemIndex = 0;
         let currentProblem = problems[0];
+        
+        // 变化图提示状态
+        const VARIATION_HINT_KEY = 'weiqi_move_variation_hint_seen';
+        let variationHintShown = localStorage.getItem(VARIATION_HINT_KEY) === 'true';
         
         // 状态管理
         const STATE_MAIN = 'main';        // 主面板状态
@@ -1165,6 +1243,16 @@
             }
         }
 
+        // ==================== 更多按钮面板 ====================
+        function toggleMorePanel() {
+            const panel = document.getElementById('extraButtons');
+            const btn = document.getElementById('moreBtn');
+            const navButtons = document.getElementById('navButtons');
+            panel.classList.toggle('visible');
+            btn.classList.toggle('active');
+            navButtons.classList.toggle('expanded');
+        }
+
         // ==================== 打谱控制 ====================
         function prevMove() {
             if (currentMove > 0) {
@@ -1239,8 +1327,33 @@
             if (document.getElementById('variationHeader')) {
                 document.getElementById('variationHeader').style.display = 'flex';
             }
+            
+            // 显示或隐藏变化图提示
+            updateVariationHint();
 
             updateDisplay();
+        }
+        
+        // 更新变化图提示显示
+        function updateVariationHint() {
+            const hint = document.getElementById('variationHint');
+            if (hint) {
+                if (variationHintShown) {
+                    hint.classList.add('hidden');
+                } else {
+                    hint.classList.remove('hidden');
+                }
+            }
+        }
+        
+        // 隐藏变化图提示
+        function hideVariationHint() {
+            const hint = document.getElementById('variationHint');
+            if (hint) {
+                hint.classList.add('hidden');
+            }
+            variationHintShown = true;
+            localStorage.setItem(VARIATION_HINT_KEY, 'true');
         }
 
         function showTryplayPanel() {
@@ -1347,6 +1460,7 @@
         // 加载实战变化图
         function loadPracticalVariation() {
             if (!currentProblem.practical_move) return;
+            hideVariationHint();  // 用户点击后隐藏提示
             
             // 计算变化图着法的提子情况
             const board = createBoard();
@@ -1397,6 +1511,7 @@
         }
 
         function loadVariation(idx) {
+            hideVariationHint();  // 用户点击后隐藏提示
             const opt = currentProblem.options[idx];
             currentVariationOption = idx;
 

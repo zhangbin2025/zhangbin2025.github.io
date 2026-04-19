@@ -249,7 +249,27 @@
         .nav-buttons {
             display: flex;
             align-items: center;
+            gap: 24px;
+            transition: gap 0.2s ease;
+        }
+        .nav-buttons.expanded {
             gap: 8px;
+        }
+        .extra-buttons {
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+        .extra-buttons.visible {
+            display: flex;
+        }
+        #moreBtn {
+            background: #f0f0f0;
+            transition: all 0.2s ease;
+        }
+        #moreBtn.active {
+            background: #667eea;
+            color: white;
         }
         
         /* 变化图面板 */
@@ -278,6 +298,54 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+        }
+        
+        /* 变化图提示 */
+        .variation-hint {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            animation: slideDown 0.3s ease;
+        }
+        .variation-hint.hidden {
+            display: none;
+        }
+        .variation-hint-text {
+            flex: 1;
+        }
+        .variation-hint-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .variation-hint-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         /* 试下模式面板 */
@@ -496,14 +564,15 @@
         <div class="main-panel" id="mainPanel">
             <div class="main-panel-center" style="flex: 1;">
                 <input type="range" id="moveSlider" min="0" max="0" value="0" oninput="goToMove(this.value)">
-                <div class="nav-buttons">
+                <div class="nav-buttons" id="navButtons">
                     <button class="btn btn-icon" onclick="prevMove()" title="上一手">◀</button>
                     <button class="btn btn-icon" onclick="nextMove()" title="下一手">▶</button>
+                    <div class="extra-buttons" id="extraButtons">
+                        <button class="btn btn-icon" id="soundToggleBtn" onclick="toggleSound()" title="音效开关">🔊</button>
+                        <button class="btn btn-icon" onclick="saveToSGF()" title="保存SGF">💾</button>
+                    </div>
+                    <button class="btn btn-icon" id="moreBtn" onclick="toggleMorePanel()" title="更多">⋮</button>
                 </div>
-            </div>
-            <div class="main-panel-right">
-                <button class="btn btn-icon" id="soundToggleBtn" onclick="toggleSound()" title="音效开关" style="background: #f0f0f0; width: 32px; height: 32px; min-width: 32px; font-size: 14px;">🔊</button>
-                <button class="btn btn-icon" onclick="saveToSGF()" title="保存SGF" style="background: #f0f0f0; width: 32px; height: 32px; min-width: 32px; font-size: 14px;">💾</button>
             </div>
         </div>
 
@@ -512,6 +581,11 @@
             <div class="variation-header" id="variationHeader" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px;">
                 <div class="variation-options" id="variationOptions" style="flex: 1; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start;"></div>
                 <button class="btn btn-icon btn-danger" onclick="backToMain()" title="返回主面板" style="flex-shrink: 0;">↩</button>
+            </div>
+            <!-- 变化图提示 -->
+            <div class="variation-hint" id="variationHint">
+                <span class="variation-hint-text">👆 点击上方按钮查看 AI 推荐变化图</span>
+                <button class="variation-hint-close" onclick="hideVariationHint()" title="知道了">✕</button>
             </div>
             <div class="variation-controls" id="variationControls" style="display: none; justify-content: center; align-items: center; gap: 8px;">
                 <button class="btn btn-icon" onclick="varPrev()" title="上一步">◀</button>
@@ -722,6 +796,10 @@
         const problems = [{"index": 0, "move_num": 56, "phase": "layout", "difficulty": "easy", "is_blunder": true, "position": [{"color": "B", "coord": "pd"}, {"color": "W", "coord": "dp"}, {"color": "B", "coord": "pp"}, {"color": "W", "coord": "dc"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "dq"}, {"color": "W", "coord": "fq"}, {"color": "B", "coord": "fr"}, {"color": "W", "coord": "gr"}, {"color": "B", "coord": "eq"}, {"color": "W", "coord": "fp"}, {"color": "B", "coord": "ep"}, {"color": "W", "coord": "eo"}, {"color": "B", "coord": "do"}, {"color": "W", "coord": "bo"}, {"color": "B", "coord": "dn"}, {"color": "W", "coord": "en"}, {"color": "B", "coord": "em"}, {"color": "W", "coord": "fm"}, {"color": "B", "coord": "cm"}, {"color": "W", "coord": "bq"}, {"color": "B", "coord": "er"}, {"color": "W", "coord": "el"}, {"color": "B", "coord": "dm"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "gq"}, {"color": "W", "coord": "fl"}, {"color": "B", "coord": "co"}, {"color": "W", "coord": "bp"}, {"color": "B", "coord": "bn"}, {"color": "W", "coord": "gp"}, {"color": "B", "coord": "hq"}, {"color": "W", "coord": "hp"}, {"color": "B", "coord": "bl"}, {"color": "W", "coord": "iq"}, {"color": "B", "coord": "hr"}, {"color": "W", "coord": "ir"}, {"color": "B", "coord": "gs"}, {"color": "W", "coord": "jo"}, {"color": "B", "coord": "dd"}, {"color": "W", "coord": "ec"}, {"color": "B", "coord": "cd"}, {"color": "W", "coord": "cc"}, {"color": "B", "coord": "bc"}, {"color": "W", "coord": "br"}, {"color": "B", "coord": "cr"}, {"color": "W", "coord": "bk"}, {"color": "B", "coord": "be"}, {"color": "W", "coord": "cl"}, {"color": "B", "coord": "bs"}, {"color": "W", "coord": "ak"}, {"color": "B", "coord": "ar"}, {"color": "W", "coord": "al"}, {"color": "B", "coord": "bm"}, {"color": "W", "coord": "an"}], "options": [{"coord": "am", "color": "B", "winrate": "28.8%", "comment": "/\"jueyi黑28.8% | -3.0目", "moves": [{"color": "B", "coord": "am"}, {"color": "W", "coord": "ed"}, {"color": "B", "coord": "jd"}, {"color": "W", "coord": "lc"}, {"color": "B", "coord": "kf"}, {"color": "W", "coord": "de"}, {"color": "B", "coord": "cg"}, {"color": "W", "coord": "eg"}], "is_correct": false, "sort_order": 1, "letter": "A"}, {"coord": "ap", "color": "B", "winrate": "5.8%", "comment": "/\"jueyi黑5.8% | -7.0目", "moves": [{"color": "B", "coord": "ap"}, {"color": "W", "coord": "am"}, {"color": "B", "coord": "ao"}, {"color": "W", "coord": "aq"}, {"color": "B", "coord": "ao"}, {"color": "W", "coord": "as"}, {"color": "B", "coord": "fn"}, {"color": "W", "coord": "fo"}, {"color": "B", "coord": "ar"}, {"color": "W", "coord": "qp"}], "is_correct": false, "sort_order": 2, "letter": "B"}, {"coord": "aq", "color": "B", "winrate": "49.9%", "comment": "/\"jueyi黑49.9% | -0.5目", "moves": [{"color": "B", "coord": "aq"}, {"color": "W", "coord": "ed"}, {"color": "B", "coord": "ee"}, {"color": "W", "coord": "fe"}, {"color": "B", "coord": "ff"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "jc"}, {"color": "W", "coord": "qn"}, {"color": "B", "coord": "gc"}, {"color": "W", "coord": "gf"}], "is_correct": true, "sort_order": 0, "letter": "C"}], "practical_move": {"coord": "am", "color": "B", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "B", "coord": "am"}, {"color": "W", "coord": "ed"}, {"color": "B", "coord": "ee"}, {"color": "W", "coord": "fe"}, {"color": "B", "coord": "ff"}, {"color": "W", "coord": "ef"}, {"color": "B", "coord": "de"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "jd"}, {"color": "W", "coord": "lc"}, {"color": "B", "coord": "gc"}, {"color": "W", "coord": "ic"}, {"color": "B", "coord": "jc"}, {"color": "W", "coord": "jb"}, {"color": "B", "coord": "id"}]}}];
         let currentProblemIndex = 0;
         let currentProblem = problems[0];
+        
+        // 变化图提示状态
+        const VARIATION_HINT_KEY = 'weiqi_move_variation_hint_seen';
+        let variationHintShown = localStorage.getItem(VARIATION_HINT_KEY) === 'true';
         
         // 状态管理
         const STATE_MAIN = 'main';        // 主面板状态
@@ -1165,6 +1243,16 @@
             }
         }
 
+        // ==================== 更多按钮面板 ====================
+        function toggleMorePanel() {
+            const panel = document.getElementById('extraButtons');
+            const btn = document.getElementById('moreBtn');
+            const navButtons = document.getElementById('navButtons');
+            panel.classList.toggle('visible');
+            btn.classList.toggle('active');
+            navButtons.classList.toggle('expanded');
+        }
+
         // ==================== 打谱控制 ====================
         function prevMove() {
             if (currentMove > 0) {
@@ -1239,8 +1327,33 @@
             if (document.getElementById('variationHeader')) {
                 document.getElementById('variationHeader').style.display = 'flex';
             }
+            
+            // 显示或隐藏变化图提示
+            updateVariationHint();
 
             updateDisplay();
+        }
+        
+        // 更新变化图提示显示
+        function updateVariationHint() {
+            const hint = document.getElementById('variationHint');
+            if (hint) {
+                if (variationHintShown) {
+                    hint.classList.add('hidden');
+                } else {
+                    hint.classList.remove('hidden');
+                }
+            }
+        }
+        
+        // 隐藏变化图提示
+        function hideVariationHint() {
+            const hint = document.getElementById('variationHint');
+            if (hint) {
+                hint.classList.add('hidden');
+            }
+            variationHintShown = true;
+            localStorage.setItem(VARIATION_HINT_KEY, 'true');
         }
 
         function showTryplayPanel() {
@@ -1347,6 +1460,7 @@
         // 加载实战变化图
         function loadPracticalVariation() {
             if (!currentProblem.practical_move) return;
+            hideVariationHint();  // 用户点击后隐藏提示
             
             // 计算变化图着法的提子情况
             const board = createBoard();
@@ -1397,6 +1511,7 @@
         }
 
         function loadVariation(idx) {
+            hideVariationHint();  // 用户点击后隐藏提示
             const opt = currentProblem.options[idx];
             currentVariationOption = idx;
 

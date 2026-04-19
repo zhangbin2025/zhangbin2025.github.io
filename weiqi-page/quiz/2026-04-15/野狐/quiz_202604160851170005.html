@@ -249,7 +249,27 @@
         .nav-buttons {
             display: flex;
             align-items: center;
+            gap: 24px;
+            transition: gap 0.2s ease;
+        }
+        .nav-buttons.expanded {
             gap: 8px;
+        }
+        .extra-buttons {
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+        .extra-buttons.visible {
+            display: flex;
+        }
+        #moreBtn {
+            background: #f0f0f0;
+            transition: all 0.2s ease;
+        }
+        #moreBtn.active {
+            background: #667eea;
+            color: white;
         }
         
         /* 变化图面板 */
@@ -278,6 +298,54 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+        }
+        
+        /* 变化图提示 */
+        .variation-hint {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            animation: slideDown 0.3s ease;
+        }
+        .variation-hint.hidden {
+            display: none;
+        }
+        .variation-hint-text {
+            flex: 1;
+        }
+        .variation-hint-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .variation-hint-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         /* 试下模式面板 */
@@ -496,14 +564,15 @@
         <div class="main-panel" id="mainPanel">
             <div class="main-panel-center" style="flex: 1;">
                 <input type="range" id="moveSlider" min="0" max="0" value="0" oninput="goToMove(this.value)">
-                <div class="nav-buttons">
+                <div class="nav-buttons" id="navButtons">
                     <button class="btn btn-icon" onclick="prevMove()" title="上一手">◀</button>
                     <button class="btn btn-icon" onclick="nextMove()" title="下一手">▶</button>
+                    <div class="extra-buttons" id="extraButtons">
+                        <button class="btn btn-icon" id="soundToggleBtn" onclick="toggleSound()" title="音效开关">🔊</button>
+                        <button class="btn btn-icon" onclick="saveToSGF()" title="保存SGF">💾</button>
+                    </div>
+                    <button class="btn btn-icon" id="moreBtn" onclick="toggleMorePanel()" title="更多">⋮</button>
                 </div>
-            </div>
-            <div class="main-panel-right">
-                <button class="btn btn-icon" id="soundToggleBtn" onclick="toggleSound()" title="音效开关" style="background: #f0f0f0; width: 32px; height: 32px; min-width: 32px; font-size: 14px;">🔊</button>
-                <button class="btn btn-icon" onclick="saveToSGF()" title="保存SGF" style="background: #f0f0f0; width: 32px; height: 32px; min-width: 32px; font-size: 14px;">💾</button>
             </div>
         </div>
 
@@ -512,6 +581,11 @@
             <div class="variation-header" id="variationHeader" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px;">
                 <div class="variation-options" id="variationOptions" style="flex: 1; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start;"></div>
                 <button class="btn btn-icon btn-danger" onclick="backToMain()" title="返回主面板" style="flex-shrink: 0;">↩</button>
+            </div>
+            <!-- 变化图提示 -->
+            <div class="variation-hint" id="variationHint">
+                <span class="variation-hint-text">👆 点击上方按钮查看 AI 推荐变化图</span>
+                <button class="variation-hint-close" onclick="hideVariationHint()" title="知道了">✕</button>
             </div>
             <div class="variation-controls" id="variationControls" style="display: none; justify-content: center; align-items: center; gap: 8px;">
                 <button class="btn btn-icon" onclick="varPrev()" title="上一步">◀</button>
@@ -722,6 +796,10 @@
         const problems = [{"index": 0, "move_num": 54, "phase": "layout", "difficulty": "medium", "is_blunder": true, "position": [{"color": "B", "coord": "qd"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "co"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "do"}, {"color": "W", "coord": "fq"}, {"color": "B", "coord": "dk"}, {"color": "W", "coord": "oc"}, {"color": "B", "coord": "pe"}, {"color": "W", "coord": "fc"}, {"color": "B", "coord": "cf"}, {"color": "W", "coord": "qk"}, {"color": "B", "coord": "qn"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "lc"}, {"color": "W", "coord": "ld"}, {"color": "B", "coord": "kd"}, {"color": "W", "coord": "mc"}, {"color": "B", "coord": "kc"}, {"color": "W", "coord": "le"}, {"color": "B", "coord": "mb"}, {"color": "W", "coord": "nd"}, {"color": "B", "coord": "nb"}, {"color": "W", "coord": "ke"}, {"color": "B", "coord": "pg"}, {"color": "W", "coord": "id"}, {"color": "B", "coord": "ph"}, {"color": "W", "coord": "ib"}, {"color": "B", "coord": "pb"}, {"color": "W", "coord": "ce"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "di"}, {"color": "B", "coord": "je"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "cl"}, {"color": "W", "coord": "cj"}, {"color": "B", "coord": "dl"}, {"color": "W", "coord": "fh"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ff"}, {"color": "B", "coord": "fe"}, {"color": "W", "coord": "gg"}, {"color": "B", "coord": "ef"}, {"color": "W", "coord": "fg"}, {"color": "B", "coord": "he"}, {"color": "W", "coord": "hf"}, {"color": "B", "coord": "ie"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "gd"}, {"color": "W", "coord": "fd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ee"}], "options": [{"coord": "be", "color": "B", "winrate": "62.5%", "comment": "/\"jueyi黑62.5% | +2.5目", "moves": [{"color": "B", "coord": "be"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "cc"}, {"color": "W", "coord": "bf"}, {"color": "B", "coord": "cd"}, {"color": "W", "coord": "de"}, {"color": "B", "coord": "bg"}, {"color": "W", "coord": "bd"}, {"color": "B", "coord": "af"}, {"color": "W", "coord": "bc"}], "is_correct": false, "sort_order": 1, "letter": "A"}, {"coord": "ge", "color": "B", "winrate": "69.0%", "comment": "/\"jueyi黑69.0% | +3.5目", "moves": [{"color": "B", "coord": "ge"}, {"color": "W", "coord": "be"}, {"color": "B", "coord": "kg"}, {"color": "W", "coord": "nh"}, {"color": "B", "coord": "mg"}, {"color": "W", "coord": "ng"}, {"color": "B", "coord": "mf"}, {"color": "W", "coord": "nf"}, {"color": "B", "coord": "me"}, {"color": "W", "coord": "mh"}], "is_correct": true, "sort_order": 0, "letter": "B"}, {"coord": "de", "color": "B", "winrate": "44.0%", "comment": "/\"jueyi黑44.0% | -0.5目", "moves": [{"color": "B", "coord": "de"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "cd"}, {"color": "W", "coord": "bd"}, {"color": "B", "coord": "cc"}, {"color": "W", "coord": "be"}, {"color": "B", "coord": "dc"}, {"color": "W", "coord": "bc"}, {"color": "B", "coord": "ed"}, {"color": "W", "coord": "hd"}], "is_correct": false, "sort_order": 2, "letter": "C"}], "practical_move": {"coord": "de", "color": "B", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "B", "coord": "de"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "cd"}, {"color": "W", "coord": "cc"}, {"color": "B", "coord": "bd"}, {"color": "W", "coord": "bg"}, {"color": "B", "coord": "dc"}, {"color": "W", "coord": "db"}, {"color": "B", "coord": "ed"}, {"color": "W", "coord": "ec"}, {"color": "B", "coord": "fe"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ee"}, {"color": "B", "coord": "ge"}]}}, {"index": 1, "move_num": 78, "phase": "middle", "difficulty": "medium", "is_blunder": true, "position": [{"color": "B", "coord": "qd"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "co"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "do"}, {"color": "W", "coord": "fq"}, {"color": "B", "coord": "dk"}, {"color": "W", "coord": "oc"}, {"color": "B", "coord": "pe"}, {"color": "W", "coord": "fc"}, {"color": "B", "coord": "cf"}, {"color": "W", "coord": "qk"}, {"color": "B", "coord": "qn"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "lc"}, {"color": "W", "coord": "ld"}, {"color": "B", "coord": "kd"}, {"color": "W", "coord": "mc"}, {"color": "B", "coord": "kc"}, {"color": "W", "coord": "le"}, {"color": "B", "coord": "mb"}, {"color": "W", "coord": "nd"}, {"color": "B", "coord": "nb"}, {"color": "W", "coord": "ke"}, {"color": "B", "coord": "pg"}, {"color": "W", "coord": "id"}, {"color": "B", "coord": "ph"}, {"color": "W", "coord": "ib"}, {"color": "B", "coord": "pb"}, {"color": "W", "coord": "ce"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "di"}, {"color": "B", "coord": "je"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "cl"}, {"color": "W", "coord": "cj"}, {"color": "B", "coord": "dl"}, {"color": "W", "coord": "fh"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ff"}, {"color": "B", "coord": "fe"}, {"color": "W", "coord": "gg"}, {"color": "B", "coord": "ef"}, {"color": "W", "coord": "fg"}, {"color": "B", "coord": "he"}, {"color": "W", "coord": "hf"}, {"color": "B", "coord": "ie"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "gd"}, {"color": "W", "coord": "fd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ee"}, {"color": "B", "coord": "de"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "cd"}, {"color": "W", "coord": "cc"}, {"color": "B", "coord": "bd"}, {"color": "W", "coord": "bg"}, {"color": "B", "coord": "dc"}, {"color": "W", "coord": "db"}, {"color": "B", "coord": "ed"}, {"color": "W", "coord": "ec"}, {"color": "B", "coord": "fe"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ee"}, {"color": "B", "coord": "ge"}, {"color": "W", "coord": "ed"}, {"color": "B", "coord": "bf"}, {"color": "W", "coord": "ch"}, {"color": "B", "coord": "gc"}, {"color": "W", "coord": "gb"}, {"color": "B", "coord": "fb"}, {"color": "W", "coord": "eb"}, {"color": "B", "coord": "hb"}, {"color": "W", "coord": "fa"}], "options": [{"coord": "jg", "color": "B", "winrate": "88.7%", "comment": "/\"jueyi黑88.7% | +6.5目", "moves": [{"color": "B", "coord": "jg"}, {"color": "W", "coord": "fj"}, {"color": "B", "coord": "lh"}, {"color": "W", "coord": "qi"}, {"color": "B", "coord": "qg"}, {"color": "W", "coord": "pc"}, {"color": "B", "coord": "ob"}, {"color": "W", "coord": "nh"}, {"color": "B", "coord": "oi"}, {"color": "W", "coord": "li"}], "is_correct": false, "sort_order": 1, "letter": "A"}, {"coord": "eh", "color": "B", "winrate": "95.7%", "comment": "/\"jueyi黑95.7% | +8.5目", "moves": [{"color": "B", "coord": "eh"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "ei"}, {"color": "W", "coord": "dh"}, {"color": "B", "coord": "jg"}, {"color": "W", "coord": "lh"}, {"color": "B", "coord": "gj"}, {"color": "W", "coord": "ej"}, {"color": "B", "coord": "fi"}, {"color": "W", "coord": "dg"}], "is_correct": true, "sort_order": 0, "letter": "B"}, {"coord": "kg", "color": "B", "winrate": "73.3%", "comment": "/\"jueyi黑73.3% | +4.0目", "moves": [{"color": "B", "coord": "kg"}, {"color": "W", "coord": "fj"}, {"color": "B", "coord": "lh"}, {"color": "W", "coord": "qi"}, {"color": "B", "coord": "qg"}, {"color": "W", "coord": "jf"}, {"color": "B", "coord": "kf"}, {"color": "W", "coord": "mi"}, {"color": "B", "coord": "oj"}], "is_correct": false, "sort_order": 2, "letter": "C"}], "practical_move": {"coord": "kg", "color": "B", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "B", "coord": "kg"}, {"color": "W", "coord": "mg"}, {"color": "B", "coord": "hg"}, {"color": "W", "coord": "hh"}, {"color": "B", "coord": "ig"}, {"color": "W", "coord": "jh"}, {"color": "B", "coord": "jg"}, {"color": "W", "coord": "mi"}, {"color": "B", "coord": "eh"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "ei"}, {"color": "W", "coord": "dg"}, {"color": "B", "coord": "cg"}, {"color": "W", "coord": "bh"}, {"color": "B", "coord": "dh"}]}}, {"index": 2, "move_num": 83, "phase": "middle", "difficulty": "easy", "is_blunder": true, "position": [{"color": "B", "coord": "qd"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "co"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "do"}, {"color": "W", "coord": "fq"}, {"color": "B", "coord": "dk"}, {"color": "W", "coord": "oc"}, {"color": "B", "coord": "pe"}, {"color": "W", "coord": "fc"}, {"color": "B", "coord": "cf"}, {"color": "W", "coord": "qk"}, {"color": "B", "coord": "qn"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "lc"}, {"color": "W", "coord": "ld"}, {"color": "B", "coord": "kd"}, {"color": "W", "coord": "mc"}, {"color": "B", "coord": "kc"}, {"color": "W", "coord": "le"}, {"color": "B", "coord": "mb"}, {"color": "W", "coord": "nd"}, {"color": "B", "coord": "nb"}, {"color": "W", "coord": "ke"}, {"color": "B", "coord": "pg"}, {"color": "W", "coord": "id"}, {"color": "B", "coord": "ph"}, {"color": "W", "coord": "ib"}, {"color": "B", "coord": "pb"}, {"color": "W", "coord": "ce"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "di"}, {"color": "B", "coord": "je"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "cl"}, {"color": "W", "coord": "cj"}, {"color": "B", "coord": "dl"}, {"color": "W", "coord": "fh"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ff"}, {"color": "B", "coord": "fe"}, {"color": "W", "coord": "gg"}, {"color": "B", "coord": "ef"}, {"color": "W", "coord": "fg"}, {"color": "B", "coord": "he"}, {"color": "W", "coord": "hf"}, {"color": "B", "coord": "ie"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "gd"}, {"color": "W", "coord": "fd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ee"}, {"color": "B", "coord": "de"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "cd"}, {"color": "W", "coord": "cc"}, {"color": "B", "coord": "bd"}, {"color": "W", "coord": "bg"}, {"color": "B", "coord": "dc"}, {"color": "W", "coord": "db"}, {"color": "B", "coord": "ed"}, {"color": "W", "coord": "ec"}, {"color": "B", "coord": "fe"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ee"}, {"color": "B", "coord": "ge"}, {"color": "W", "coord": "ed"}, {"color": "B", "coord": "bf"}, {"color": "W", "coord": "ch"}, {"color": "B", "coord": "gc"}, {"color": "W", "coord": "gb"}, {"color": "B", "coord": "fb"}, {"color": "W", "coord": "eb"}, {"color": "B", "coord": "hb"}, {"color": "W", "coord": "fa"}, {"color": "B", "coord": "kg"}, {"color": "W", "coord": "mg"}, {"color": "B", "coord": "hg"}, {"color": "W", "coord": "hh"}, {"color": "B", "coord": "ig"}], "options": [{"coord": "fj", "color": "W", "winrate": "32.8%", "comment": "/\"jueyi白32.8% | -3.0目", "moves": [{"color": "W", "coord": "fj"}, {"color": "B", "coord": "lh"}, {"color": "W", "coord": "nh"}, {"color": "B", "coord": "mh"}, {"color": "W", "coord": "ni"}, {"color": "B", "coord": "ng"}, {"color": "W", "coord": "pi"}, {"color": "B", "coord": "qg"}, {"color": "W", "coord": "lg"}, {"color": "B", "coord": "ih"}], "is_correct": true, "sort_order": 0, "letter": "A"}, {"coord": "jh", "color": "W", "winrate": "8.7%", "comment": "/\"jueyi白8.7% | -7.5目", "moves": [{"color": "W", "coord": "jh"}, {"color": "B", "coord": "eh"}, {"color": "W", "coord": "ei"}, {"color": "B", "coord": "eg"}, {"color": "W", "coord": "fj"}, {"color": "B", "coord": "cg"}, {"color": "W", "coord": "jg"}, {"color": "B", "coord": "qi"}, {"color": "W", "coord": "ri"}, {"color": "B", "coord": "rh"}], "is_correct": false, "sort_order": 1, "letter": "B"}, {"coord": "mi", "color": "W", "winrate": "2.4%", "comment": "/\"jueyi白2.4% | -10.0目以上", "moves": [{"color": "W", "coord": "mi"}, {"color": "B", "coord": "eh"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "ei"}, {"color": "W", "coord": "dg"}, {"color": "B", "coord": "cg"}, {"color": "W", "coord": "af"}, {"color": "B", "coord": "be"}, {"color": "W", "coord": "bh"}, {"color": "B", "coord": "dh"}], "is_correct": false, "sort_order": 2, "letter": "C"}], "practical_move": {"coord": "jh", "color": "W", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "W", "coord": "jh"}, {"color": "B", "coord": "jg"}, {"color": "W", "coord": "mi"}, {"color": "B", "coord": "eh"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "ei"}, {"color": "W", "coord": "dg"}, {"color": "B", "coord": "cg"}, {"color": "W", "coord": "bh"}, {"color": "B", "coord": "dh"}, {"color": "W", "coord": "fi"}, {"color": "B", "coord": "ej"}, {"color": "W", "coord": "fj"}, {"color": "B", "coord": "bb"}, {"color": "W", "coord": "bc"}]}}, {"index": 3, "move_num": 84, "phase": "middle", "difficulty": "easy", "is_blunder": true, "position": [{"color": "B", "coord": "qd"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "co"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "do"}, {"color": "W", "coord": "fq"}, {"color": "B", "coord": "dk"}, {"color": "W", "coord": "oc"}, {"color": "B", "coord": "pe"}, {"color": "W", "coord": "fc"}, {"color": "B", "coord": "cf"}, {"color": "W", "coord": "qk"}, {"color": "B", "coord": "qn"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "lc"}, {"color": "W", "coord": "ld"}, {"color": "B", "coord": "kd"}, {"color": "W", "coord": "mc"}, {"color": "B", "coord": "kc"}, {"color": "W", "coord": "le"}, {"color": "B", "coord": "mb"}, {"color": "W", "coord": "nd"}, {"color": "B", "coord": "nb"}, {"color": "W", "coord": "ke"}, {"color": "B", "coord": "pg"}, {"color": "W", "coord": "id"}, {"color": "B", "coord": "ph"}, {"color": "W", "coord": "ib"}, {"color": "B", "coord": "pb"}, {"color": "W", "coord": "ce"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "di"}, {"color": "B", "coord": "je"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "cl"}, {"color": "W", "coord": "cj"}, {"color": "B", "coord": "dl"}, {"color": "W", "coord": "fh"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ff"}, {"color": "B", "coord": "fe"}, {"color": "W", "coord": "gg"}, {"color": "B", "coord": "ef"}, {"color": "W", "coord": "fg"}, {"color": "B", "coord": "he"}, {"color": "W", "coord": "hf"}, {"color": "B", "coord": "ie"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "gd"}, {"color": "W", "coord": "fd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ee"}, {"color": "B", "coord": "de"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "cd"}, {"color": "W", "coord": "cc"}, {"color": "B", "coord": "bd"}, {"color": "W", "coord": "bg"}, {"color": "B", "coord": "dc"}, {"color": "W", "coord": "db"}, {"color": "B", "coord": "ed"}, {"color": "W", "coord": "ec"}, {"color": "B", "coord": "fe"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ee"}, {"color": "B", "coord": "ge"}, {"color": "W", "coord": "ed"}, {"color": "B", "coord": "bf"}, {"color": "W", "coord": "ch"}, {"color": "B", "coord": "gc"}, {"color": "W", "coord": "gb"}, {"color": "B", "coord": "fb"}, {"color": "W", "coord": "eb"}, {"color": "B", "coord": "hb"}, {"color": "W", "coord": "fa"}, {"color": "B", "coord": "kg"}, {"color": "W", "coord": "mg"}, {"color": "B", "coord": "hg"}, {"color": "W", "coord": "hh"}, {"color": "B", "coord": "ig"}, {"color": "W", "coord": "jh"}], "options": [{"coord": "jg", "color": "B", "winrate": "74.2%", "comment": "/\"jueyi黑74.2% | +4.0目", "moves": [{"color": "B", "coord": "jg"}, {"color": "W", "coord": "fj"}, {"color": "B", "coord": "lh"}, {"color": "W", "coord": "nh"}, {"color": "B", "coord": "mh"}, {"color": "W", "coord": "nj"}, {"color": "B", "coord": "ng"}, {"color": "W", "coord": "qi"}, {"color": "B", "coord": "qg"}, {"color": "W", "coord": "nq"}], "is_correct": false, "sort_order": 2, "letter": "A"}, {"coord": "eh", "color": "B", "winrate": "94.6%", "comment": "/\"jueyi黑94.6% | +8.0目", "moves": [{"color": "B", "coord": "eh"}, {"color": "W", "coord": "ei"}, {"color": "B", "coord": "eg"}, {"color": "W", "coord": "fj"}, {"color": "B", "coord": "cg"}, {"color": "W", "coord": "jg"}, {"color": "B", "coord": "ih"}, {"color": "W", "coord": "ii"}, {"color": "B", "coord": "if"}, {"color": "W", "coord": "hi"}], "is_correct": true, "sort_order": 0, "letter": "B"}, {"coord": "ih", "color": "B", "winrate": "76.7%", "comment": "/\"jueyi黑76.7% | +5.0目", "moves": [{"color": "B", "coord": "ih"}, {"color": "W", "coord": "fj"}, {"color": "B", "coord": "ii"}, {"color": "W", "coord": "lj"}, {"color": "B", "coord": "oj"}, {"color": "W", "coord": "lh"}, {"color": "B", "coord": "ll"}, {"color": "W", "coord": "mk"}, {"color": "B", "coord": "pl"}], "is_correct": false, "sort_order": 1, "letter": "C"}], "practical_move": {"coord": "jg", "color": "B", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "B", "coord": "jg"}, {"color": "W", "coord": "mi"}, {"color": "B", "coord": "eh"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "ei"}, {"color": "W", "coord": "dg"}, {"color": "B", "coord": "cg"}, {"color": "W", "coord": "bh"}, {"color": "B", "coord": "dh"}, {"color": "W", "coord": "fi"}, {"color": "B", "coord": "ej"}, {"color": "W", "coord": "fj"}, {"color": "B", "coord": "bb"}, {"color": "W", "coord": "bc"}, {"color": "B", "coord": "ac"}]}}, {"index": 4, "move_num": 85, "phase": "middle", "difficulty": "medium", "is_blunder": true, "position": [{"color": "B", "coord": "qd"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "co"}, {"color": "W", "coord": "cp"}, {"color": "B", "coord": "do"}, {"color": "W", "coord": "fq"}, {"color": "B", "coord": "dk"}, {"color": "W", "coord": "oc"}, {"color": "B", "coord": "pe"}, {"color": "W", "coord": "fc"}, {"color": "B", "coord": "cf"}, {"color": "W", "coord": "qk"}, {"color": "B", "coord": "qn"}, {"color": "W", "coord": "qh"}, {"color": "B", "coord": "lc"}, {"color": "W", "coord": "ld"}, {"color": "B", "coord": "kd"}, {"color": "W", "coord": "mc"}, {"color": "B", "coord": "kc"}, {"color": "W", "coord": "le"}, {"color": "B", "coord": "mb"}, {"color": "W", "coord": "nd"}, {"color": "B", "coord": "nb"}, {"color": "W", "coord": "ke"}, {"color": "B", "coord": "pg"}, {"color": "W", "coord": "id"}, {"color": "B", "coord": "ph"}, {"color": "W", "coord": "ib"}, {"color": "B", "coord": "pb"}, {"color": "W", "coord": "ce"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "di"}, {"color": "B", "coord": "je"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "cl"}, {"color": "W", "coord": "cj"}, {"color": "B", "coord": "dl"}, {"color": "W", "coord": "fh"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ff"}, {"color": "B", "coord": "fe"}, {"color": "W", "coord": "gg"}, {"color": "B", "coord": "ef"}, {"color": "W", "coord": "fg"}, {"color": "B", "coord": "he"}, {"color": "W", "coord": "hf"}, {"color": "B", "coord": "ie"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "gd"}, {"color": "W", "coord": "fd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ee"}, {"color": "B", "coord": "de"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "cd"}, {"color": "W", "coord": "cc"}, {"color": "B", "coord": "bd"}, {"color": "W", "coord": "bg"}, {"color": "B", "coord": "dc"}, {"color": "W", "coord": "db"}, {"color": "B", "coord": "ed"}, {"color": "W", "coord": "ec"}, {"color": "B", "coord": "fe"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "gf"}, {"color": "W", "coord": "ee"}, {"color": "B", "coord": "ge"}, {"color": "W", "coord": "ed"}, {"color": "B", "coord": "bf"}, {"color": "W", "coord": "ch"}, {"color": "B", "coord": "gc"}, {"color": "W", "coord": "gb"}, {"color": "B", "coord": "fb"}, {"color": "W", "coord": "eb"}, {"color": "B", "coord": "hb"}, {"color": "W", "coord": "fa"}, {"color": "B", "coord": "kg"}, {"color": "W", "coord": "mg"}, {"color": "B", "coord": "hg"}, {"color": "W", "coord": "hh"}, {"color": "B", "coord": "ig"}, {"color": "W", "coord": "jh"}, {"color": "B", "coord": "jg"}], "options": [{"coord": "fj", "color": "W", "winrate": "24.6%", "comment": "/\"jueyi白24.6% | -4.5目", "moves": [{"color": "W", "coord": "fj"}, {"color": "B", "coord": "lh"}, {"color": "W", "coord": "nh"}, {"color": "B", "coord": "oi"}, {"color": "W", "coord": "mi"}, {"color": "B", "coord": "li"}, {"color": "W", "coord": "ni"}, {"color": "B", "coord": "nk"}, {"color": "W", "coord": "lj"}, {"color": "B", "coord": "ll"}], "is_correct": true, "sort_order": 0, "letter": "A"}, {"coord": "mi", "color": "W", "winrate": "2.6%", "comment": "/\"jueyi白2.6% | -10.0目以上", "moves": [{"color": "W", "coord": "mi"}, {"color": "B", "coord": "eh"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "ei"}, {"color": "W", "coord": "dg"}, {"color": "B", "coord": "cg"}, {"color": "W", "coord": "af"}, {"color": "B", "coord": "be"}, {"color": "W", "coord": "bi"}, {"color": "B", "coord": "dh"}], "is_correct": false, "sort_order": 2, "letter": "B"}, {"coord": "fi", "color": "W", "winrate": "17.2%", "comment": "/\"jueyi白17.2% | -5.5目", "moves": [{"color": "W", "coord": "fi"}, {"color": "B", "coord": "lh"}, {"color": "W", "coord": "nh"}, {"color": "B", "coord": "oi"}, {"color": "W", "coord": "oe"}, {"color": "B", "coord": "nc"}, {"color": "W", "coord": "mi"}, {"color": "B", "coord": "nk"}, {"color": "W", "coord": "lj"}, {"color": "B", "coord": "rl"}], "is_correct": false, "sort_order": 1, "letter": "C"}], "practical_move": {"coord": "mi", "color": "W", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "W", "coord": "mi"}, {"color": "B", "coord": "eh"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "ei"}, {"color": "W", "coord": "dg"}, {"color": "B", "coord": "cg"}, {"color": "W", "coord": "bh"}, {"color": "B", "coord": "dh"}, {"color": "W", "coord": "fi"}, {"color": "B", "coord": "ej"}, {"color": "W", "coord": "fj"}, {"color": "B", "coord": "bb"}, {"color": "W", "coord": "bc"}, {"color": "B", "coord": "ac"}, {"color": "W", "coord": "cb"}]}}];
         let currentProblemIndex = 0;
         let currentProblem = problems[0];
+        
+        // 变化图提示状态
+        const VARIATION_HINT_KEY = 'weiqi_move_variation_hint_seen';
+        let variationHintShown = localStorage.getItem(VARIATION_HINT_KEY) === 'true';
         
         // 状态管理
         const STATE_MAIN = 'main';        // 主面板状态
@@ -1165,6 +1243,16 @@
             }
         }
 
+        // ==================== 更多按钮面板 ====================
+        function toggleMorePanel() {
+            const panel = document.getElementById('extraButtons');
+            const btn = document.getElementById('moreBtn');
+            const navButtons = document.getElementById('navButtons');
+            panel.classList.toggle('visible');
+            btn.classList.toggle('active');
+            navButtons.classList.toggle('expanded');
+        }
+
         // ==================== 打谱控制 ====================
         function prevMove() {
             if (currentMove > 0) {
@@ -1239,8 +1327,33 @@
             if (document.getElementById('variationHeader')) {
                 document.getElementById('variationHeader').style.display = 'flex';
             }
+            
+            // 显示或隐藏变化图提示
+            updateVariationHint();
 
             updateDisplay();
+        }
+        
+        // 更新变化图提示显示
+        function updateVariationHint() {
+            const hint = document.getElementById('variationHint');
+            if (hint) {
+                if (variationHintShown) {
+                    hint.classList.add('hidden');
+                } else {
+                    hint.classList.remove('hidden');
+                }
+            }
+        }
+        
+        // 隐藏变化图提示
+        function hideVariationHint() {
+            const hint = document.getElementById('variationHint');
+            if (hint) {
+                hint.classList.add('hidden');
+            }
+            variationHintShown = true;
+            localStorage.setItem(VARIATION_HINT_KEY, 'true');
         }
 
         function showTryplayPanel() {
@@ -1347,6 +1460,7 @@
         // 加载实战变化图
         function loadPracticalVariation() {
             if (!currentProblem.practical_move) return;
+            hideVariationHint();  // 用户点击后隐藏提示
             
             // 计算变化图着法的提子情况
             const board = createBoard();
@@ -1397,6 +1511,7 @@
         }
 
         function loadVariation(idx) {
+            hideVariationHint();  // 用户点击后隐藏提示
             const opt = currentProblem.options[idx];
             currentVariationOption = idx;
 

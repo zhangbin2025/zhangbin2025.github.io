@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>第9届天台山杯女子世界团体赛韩国预选&lt;绝艺讲解&gt;</title>
+    <title>第13届韩国大舟杯元老赛8强&lt;绝艺讲解&gt;</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 0; }
@@ -59,8 +59,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1 id="gameTitle">第9届天台山杯女子世界团体赛韩国预选&lt;绝艺讲解&gt;</h1>
-            <div class="info" id="gameInfo">허서현 vs 조승아</div>
+            <h1 id="gameTitle">第13届韩国大舟杯元老赛8强&lt;绝艺讲解&gt;</h1>
+            <div class="info" id="gameInfo">강지성 vs 이창호</div>
         </div>
         <div class="board-container"><canvas id="board"></canvas></div>
         <div class="controls-row" id="mainControls">
@@ -95,15 +95,15 @@
             <div class="captured-info" id="capturedInfo"></div>
         </div>
         <div class="legend">
-            <div class="legend-item"><div class="stone-black"></div><span id="blackName">허서현</span></div>
-            <div class="legend-item"><div class="stone-white"></div><span id="whiteName">조승아</span></div>
+            <div class="legend-item"><div class="stone-black"></div><span id="blackName">강지성</span></div>
+            <div class="legend-item"><div class="stone-white"></div><span id="whiteName">이창호</span></div>
         </div>
     </div>
     <script>
-        const tree = (() => { const textarea = document.createElement('textarea'); textarea.innerHTML = '{&quot;properties&quot;: {&quot;CA&quot;: &quot;utf-8&quot;, &quot;FF&quot;: &quot;4&quot;, &quot;AP&quot;: &quot;WeiqiPage&quot;, &quot;SZ&quot;: &quot;19&quot;, &quot;GM&quot;: &quot;1&quot;, &quot;PB&quot;: &quot;허서현&quot;, &quot;PW&quot;: &quot;조승아&quot;, &quot;GN&quot;: &quot;第9届天台山杯女子世界团体赛韩国预选&lt;绝艺讲解&gt;&quot;, &quot;DT&quot;: &quot;2026-04-17&quot;, &quot;C&quot;: &quot;第9届天台山杯女子世界团体赛韩国预选&lt;绝艺讲解&gt; - 허서현 vs 조승아 - 定式 (TR角)&quot;}, &quot;is_root&quot;: true, &quot;move_number&quot;: 0, &quot;color&quot;: null, &quot;coord&quot;: null, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;pd&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 1, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;pd&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;qc&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 2, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;qc&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;qd&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 3, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;qd&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;pc&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 4, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;pc&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;od&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 5, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;od&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;oc&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 6, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;oc&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;nc&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 7, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;nc&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;nb&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 8, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;nb&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;rc&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 9, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;rc&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;rb&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 10, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;rb&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;ob&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 11, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;ob&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;rd&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 12, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;rd&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;qb&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 13, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;qb&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;sc&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 14, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;sc&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;pb&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 15, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;pb&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;rc&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 16, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;rc&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;mb&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 17, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;mb&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;nd&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 18, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;nd&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;mc&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 19, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;mc&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;qf&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 20, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;qf&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;nf&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 21, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;nf&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;ph&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 22, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;ph&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;qj&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 23, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;qj&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;pk&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 24, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;pk&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;pj&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 25, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;pj&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;oj&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 26, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;oj&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;oi&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 27, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;oi&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;pi&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 28, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;pi&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;pg&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 29, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;pg&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;qg&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 30, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;qg&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;ok&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 31, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;ok&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;nj&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 32, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;nj&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;tt&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 33, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;tt&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;qk&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 34, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;qk&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;tt&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 35, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;tt&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;rk&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 36, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;rk&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;tt&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 37, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;tt&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;rj&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 38, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;rj&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;qi&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 39, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;qi&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;qh&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 40, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;qh&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;tt&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 41, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;tt&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;je&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 42, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;je&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;id&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 43, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;id&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;me&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 44, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;me&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;le&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 45, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;le&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;lf&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 46, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;lf&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;md&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 47, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;md&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;ic&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 48, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;ic&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;ke&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 49, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;ke&quot;, &quot;children&quot;: []}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}'; return JSON.parse(textarea.value); })();
+        const tree = (() => { const textarea = document.createElement('textarea'); textarea.innerHTML = '{&quot;properties&quot;: {&quot;CA&quot;: &quot;utf-8&quot;, &quot;FF&quot;: &quot;4&quot;, &quot;AP&quot;: &quot;WeiqiPage&quot;, &quot;SZ&quot;: &quot;19&quot;, &quot;GM&quot;: &quot;1&quot;, &quot;PB&quot;: &quot;강지성&quot;, &quot;PW&quot;: &quot;이창호&quot;, &quot;GN&quot;: &quot;第13届韩国大舟杯元老赛8强&lt;绝艺讲解&gt;&quot;, &quot;DT&quot;: &quot;2026-04-17&quot;, &quot;C&quot;: &quot;第13届韩国大舟杯元老赛8强&lt;绝艺讲解&gt; - 강지성 vs 이창호 - 定式 (TL角)&quot;}, &quot;is_root&quot;: true, &quot;move_number&quot;: 0, &quot;color&quot;: null, &quot;coord&quot;: null, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;pc&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 1, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;pc&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;pe&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 2, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;pe&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;nd&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 3, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;nd&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;qc&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 4, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;qc&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;tt&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 5, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;tt&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;qh&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 6, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;qh&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;pg&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 7, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;pg&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;ph&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 8, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;ph&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;ng&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 9, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;ng&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;oc&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 10, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;oc&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;pd&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 11, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;pd&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;od&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 12, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;od&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;qd&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 13, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;qd&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;of&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 14, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;of&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;ob&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 15, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;ob&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;nc&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 16, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;nc&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;qb&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 17, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;qb&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;qe&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 18, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;qe&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;og&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 19, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;og&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;re&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 20, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;re&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;rd&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 21, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;rd&quot;, &quot;children&quot;: []}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}'; return JSON.parse(textarea.value); })();
         const BOARD_SIZE = 19;
         const handicapStones = [];
-        const DEFAULT_MOVE = 22;
+        const DEFAULT_MOVE = 4;
         
         // 核心状态
         const state = {
@@ -238,24 +238,19 @@
         }
         
         function hasStoneAt(x, y) {
+            // 使用 buildBoardFromMoves 来正确处理提子
+            const board = buildBoardFromMoves();
+            
+            // 如果是试下模式，还要应用当前已走的试下着法
             if (state.trialMode) {
-                // 试下模式：使用完整棋盘状态（包含提子）
-                const board = buildBoardFromMoves();
                 for (let i = 0; i < trialIndex && i < state.trialMoves.length; i++) {
                     const m = state.trialMoves[i];
                     board[m.y][m.x] = m.color;
                     removeDeadStonesOnBoard(board, m.x, m.y, m.color);
                 }
-                return board[y][x] !== null;
-            } else {
-                // 普通模式
-                const moves = getMovesToCurrent();
-                const board = createBoard();
-                for (const move of moves) {
-                    board[move.y][move.x] = move.color;
-                }
-                return board[y][x] !== null;
             }
+            
+            return board[y][x] !== null;
         }
         
         function isInCurrentMoves(x, y) {
@@ -985,22 +980,39 @@
         
         function isSuicideOnBoard(board, x, y, color) {
             const opponent = color === 'black' ? 'white' : 'black';
+            
+            // 临时放置棋子
             board[y][x] = color;
+            
+            // 检查能否提对方棋子（落子后对方相邻棋子是否没气）
             let canCapture = false;
             const checked = new Set();
-            for (const [nx, ny] of getNeighbors(x, y)) {
-                if (board[ny][nx] === opponent) {
-                    const key = `${nx},${ny}`;
-                    if (!checked.has(key)) {
-                        const group = findGroupOnBoard(board, nx, ny, opponent);
-                        for (const s of group) checked.add(`${s.x},${s.y}`);
-                        if (countLibertiesOnBoard(board, group) === 0) canCapture = true;
+            const dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]];
+            
+            for (const [dx, dy] of dirs) {
+                const nx = x + dx, ny = y + dy;
+                if (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE) {
+                    if (board[ny][nx] === opponent) {
+                        const key = `${nx},${ny}`;
+                        if (!checked.has(key)) {
+                            const group = findGroupOnBoard(board, nx, ny, opponent);
+                            for (const s of group) checked.add(`${s.x},${s.y}`);
+                            if (countLibertiesOnBoard(board, group) === 0) {
+                                canCapture = true;
+                            }
+                        }
                     }
                 }
             }
+            
+            // 检查己方棋块的气（如果提了对方子，新棋子就有气了）
             const myGroup = findGroupOnBoard(board, x, y, color);
             const myLiberties = countLibertiesOnBoard(board, myGroup);
+            
+            // 恢复棋盘
             board[y][x] = null;
+            
+            // 禁入点判定：己方没气 且 不能提对方子
             return myLiberties === 0 && !canCapture;
         }
         
@@ -1096,21 +1108,26 @@
         
         function trialPlaceStone(x, y) {
             const board = buildBoardFromMoves();
+            
             // 应用已有的试下着法
             for (let i = 0; i < trialIndex && i < state.trialMoves.length; i++) {
                 const m = state.trialMoves[i];
                 board[m.y][m.x] = m.color;
                 removeDeadStonesOnBoard(board, m.x, m.y, m.color);
             }
+            
             // 检查位置是否为空
             if (board[y][x] !== null) return false;
+            
             // 检查劫
             if (trialKoPosition && trialKoPosition.x === x && trialKoPosition.y === y) return false;
+            
             // 判断当前执子方
             const currentColor = trialIndex % 2 === 0 ? 
                 (getMovesToCurrent().length % 2 === 0 ? 'black' : 'white') :
                 (state.trialMoves[trialIndex - 1].color === 'black' ? 'white' : 'black');
-            // 检查自杀
+            
+            // 检查自杀（禁入点）
             if (isSuicideOnBoard(board, x, y, currentColor)) return false;
             // 落子
             board[y][x] = currentColor;
@@ -1141,11 +1158,8 @@
         canvas.addEventListener('click', (e) => {
             const pos = getBoardPosition(e);
             
-            // 检查是否已有棋子（包括主分支棋子和试下棋子在同一个位置）
+            // 检查是否已有棋子（hasStoneAt 已经正确处理了提子后的空位）
             if (hasStoneAt(pos.x, pos.y)) return;
-            
-            // 检查是否是当前显示局面中的棋子位置
-            if (isInCurrentMoves(pos.x, pos.y)) return;
             
             // 如果不在试下模式，先进入试下模式
             if (!state.trialMode) {
@@ -1230,7 +1244,12 @@
                 const maxDepth = getDefaultPathDepth(currentNode);
                 const targetMove = DEFAULT_MOVE === -1 ? maxDepth : Math.min(DEFAULT_MOVE, maxDepth);
                 if (targetMove > 0) {
-                    state.displayIndex = targetMove;
+                    // 修复：将 displayIndex 对应的默认路径加入 currentPath
+                    // 确保试下等功能能正确获取当前局面的棋子
+                    for (let i = 0; i < targetMove; i++) {
+                        state.currentPath.push(0);
+                    }
+                    state.displayIndex = 0;
                     updateDisplay();
                 }
             }, 100);

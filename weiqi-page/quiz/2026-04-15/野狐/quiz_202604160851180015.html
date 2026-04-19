@@ -249,7 +249,27 @@
         .nav-buttons {
             display: flex;
             align-items: center;
+            gap: 24px;
+            transition: gap 0.2s ease;
+        }
+        .nav-buttons.expanded {
             gap: 8px;
+        }
+        .extra-buttons {
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+        .extra-buttons.visible {
+            display: flex;
+        }
+        #moreBtn {
+            background: #f0f0f0;
+            transition: all 0.2s ease;
+        }
+        #moreBtn.active {
+            background: #667eea;
+            color: white;
         }
         
         /* 变化图面板 */
@@ -278,6 +298,54 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+        }
+        
+        /* 变化图提示 */
+        .variation-hint {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            animation: slideDown 0.3s ease;
+        }
+        .variation-hint.hidden {
+            display: none;
+        }
+        .variation-hint-text {
+            flex: 1;
+        }
+        .variation-hint-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .variation-hint-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         /* 试下模式面板 */
@@ -496,14 +564,15 @@
         <div class="main-panel" id="mainPanel">
             <div class="main-panel-center" style="flex: 1;">
                 <input type="range" id="moveSlider" min="0" max="0" value="0" oninput="goToMove(this.value)">
-                <div class="nav-buttons">
+                <div class="nav-buttons" id="navButtons">
                     <button class="btn btn-icon" onclick="prevMove()" title="上一手">◀</button>
                     <button class="btn btn-icon" onclick="nextMove()" title="下一手">▶</button>
+                    <div class="extra-buttons" id="extraButtons">
+                        <button class="btn btn-icon" id="soundToggleBtn" onclick="toggleSound()" title="音效开关">🔊</button>
+                        <button class="btn btn-icon" onclick="saveToSGF()" title="保存SGF">💾</button>
+                    </div>
+                    <button class="btn btn-icon" id="moreBtn" onclick="toggleMorePanel()" title="更多">⋮</button>
                 </div>
-            </div>
-            <div class="main-panel-right">
-                <button class="btn btn-icon" id="soundToggleBtn" onclick="toggleSound()" title="音效开关" style="background: #f0f0f0; width: 32px; height: 32px; min-width: 32px; font-size: 14px;">🔊</button>
-                <button class="btn btn-icon" onclick="saveToSGF()" title="保存SGF" style="background: #f0f0f0; width: 32px; height: 32px; min-width: 32px; font-size: 14px;">💾</button>
             </div>
         </div>
 
@@ -512,6 +581,11 @@
             <div class="variation-header" id="variationHeader" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px;">
                 <div class="variation-options" id="variationOptions" style="flex: 1; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start;"></div>
                 <button class="btn btn-icon btn-danger" onclick="backToMain()" title="返回主面板" style="flex-shrink: 0;">↩</button>
+            </div>
+            <!-- 变化图提示 -->
+            <div class="variation-hint" id="variationHint">
+                <span class="variation-hint-text">👆 点击上方按钮查看 AI 推荐变化图</span>
+                <button class="variation-hint-close" onclick="hideVariationHint()" title="知道了">✕</button>
             </div>
             <div class="variation-controls" id="variationControls" style="display: none; justify-content: center; align-items: center; gap: 8px;">
                 <button class="btn btn-icon" onclick="varPrev()" title="上一步">◀</button>
@@ -722,6 +796,10 @@
         const problems = [{"index": 0, "move_num": 73, "phase": "middle", "difficulty": "medium", "is_blunder": true, "position": [{"color": "B", "coord": "qd"}, {"color": "W", "coord": "dp"}, {"color": "B", "coord": "dc"}, {"color": "W", "coord": "qp"}, {"color": "B", "coord": "ce"}, {"color": "W", "coord": "oc"}, {"color": "B", "coord": "pe"}, {"color": "W", "coord": "lc"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "cp"}, {"color": "W", "coord": "do"}, {"color": "B", "coord": "bn"}, {"color": "W", "coord": "nq"}, {"color": "B", "coord": "jc"}, {"color": "W", "coord": "qi"}, {"color": "B", "coord": "pc"}, {"color": "W", "coord": "od"}, {"color": "B", "coord": "je"}, {"color": "W", "coord": "qf"}, {"color": "B", "coord": "pb"}, {"color": "W", "coord": "og"}, {"color": "B", "coord": "pg"}, {"color": "W", "coord": "pf"}, {"color": "B", "coord": "oe"}, {"color": "W", "coord": "of"}, {"color": "B", "coord": "ne"}, {"color": "W", "coord": "le"}, {"color": "B", "coord": "ip"}, {"color": "W", "coord": "cn"}, {"color": "B", "coord": "bm"}, {"color": "W", "coord": "dl"}, {"color": "B", "coord": "lq"}, {"color": "W", "coord": "lg"}, {"color": "B", "coord": "cr"}, {"color": "W", "coord": "gq"}, {"color": "B", "coord": "hq"}, {"color": "W", "coord": "gp"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "pp"}, {"color": "B", "coord": "oq"}, {"color": "W", "coord": "op"}, {"color": "B", "coord": "nr"}, {"color": "W", "coord": "mr"}, {"color": "B", "coord": "mq"}, {"color": "W", "coord": "np"}, {"color": "B", "coord": "or"}, {"color": "W", "coord": "jq"}, {"color": "B", "coord": "lo"}, {"color": "W", "coord": "jp"}, {"color": "B", "coord": "jo"}, {"color": "W", "coord": "io"}, {"color": "B", "coord": "lr"}, {"color": "W", "coord": "ko"}, {"color": "B", "coord": "jn"}, {"color": "W", "coord": "kn"}, {"color": "B", "coord": "ho"}, {"color": "W", "coord": "in"}, {"color": "B", "coord": "jm"}, {"color": "W", "coord": "hn"}, {"color": "B", "coord": "kp"}, {"color": "W", "coord": "km"}, {"color": "B", "coord": "kl"}, {"color": "W", "coord": "mn"}, {"color": "B", "coord": "jl"}, {"color": "W", "coord": "jr"}, {"color": "B", "coord": "mo"}, {"color": "W", "coord": "mm"}, {"color": "B", "coord": "on"}, {"color": "W", "coord": "no"}, {"color": "B", "coord": "nn"}, {"color": "W", "coord": "nl"}, {"color": "B", "coord": "qn"}], "options": [{"coord": "qr", "color": "W", "winrate": "62.5%", "comment": "/\"jueyi白62.5% | +1.5目", "moves": [{"color": "W", "coord": "qr"}, {"color": "B", "coord": "qq"}, {"color": "W", "coord": "rq"}, {"color": "B", "coord": "rr"}, {"color": "W", "coord": "ro"}, {"color": "B", "coord": "sq"}, {"color": "W", "coord": "rp"}, {"color": "B", "coord": "pr"}, {"color": "W", "coord": "rm"}, {"color": "B", "coord": "rn"}], "is_correct": true, "sort_order": 0, "letter": "A"}, {"coord": "pm", "color": "W", "winrate": "53.6%", "comment": "/\"jueyi白53.6% | +0.5目", "moves": [{"color": "W", "coord": "pm"}, {"color": "B", "coord": "pn"}, {"color": "W", "coord": "qr"}, {"color": "B", "coord": "qq"}, {"color": "W", "coord": "rq"}, {"color": "B", "coord": "rr"}, {"color": "W", "coord": "ro"}, {"color": "B", "coord": "sq"}, {"color": "W", "coord": "rp"}, {"color": "B", "coord": "qs"}], "is_correct": false, "sort_order": 1, "letter": "B"}, {"coord": "rn", "color": "W", "winrate": "32.9%", "comment": "/\"jueyi白32.9% | -3.0目", "moves": [{"color": "W", "coord": "rn"}, {"color": "B", "coord": "gn"}, {"color": "W", "coord": "hm"}, {"color": "B", "coord": "hl"}, {"color": "W", "coord": "gm"}, {"color": "B", "coord": "mg"}, {"color": "W", "coord": "lh"}, {"color": "B", "coord": "mf"}, {"color": "W", "coord": "lf"}, {"color": "B", "coord": "mk"}], "is_correct": false, "sort_order": 2, "letter": "C"}], "practical_move": {"coord": "rn", "color": "W", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "W", "coord": "rn"}, {"color": "B", "coord": "ol"}, {"color": "W", "coord": "pm"}, {"color": "B", "coord": "pn"}, {"color": "W", "coord": "rm"}, {"color": "B", "coord": "qm"}, {"color": "W", "coord": "qr"}, {"color": "B", "coord": "ro"}, {"color": "W", "coord": "qo"}, {"color": "B", "coord": "lm"}, {"color": "W", "coord": "nk"}, {"color": "B", "coord": "ln"}, {"color": "W", "coord": "oj"}, {"color": "B", "coord": "rl"}, {"color": "W", "coord": "rp"}]}}, {"index": 1, "move_num": 223, "phase": "endgame", "difficulty": "easy", "is_blunder": true, "position": [{"color": "B", "coord": "qd"}, {"color": "W", "coord": "dp"}, {"color": "B", "coord": "dc"}, {"color": "W", "coord": "qp"}, {"color": "B", "coord": "ce"}, {"color": "W", "coord": "oc"}, {"color": "B", "coord": "pe"}, {"color": "W", "coord": "lc"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "cp"}, {"color": "W", "coord": "do"}, {"color": "B", "coord": "bn"}, {"color": "W", "coord": "nq"}, {"color": "B", "coord": "jc"}, {"color": "W", "coord": "qi"}, {"color": "B", "coord": "pc"}, {"color": "W", "coord": "od"}, {"color": "B", "coord": "je"}, {"color": "W", "coord": "qf"}, {"color": "B", "coord": "pb"}, {"color": "W", "coord": "og"}, {"color": "B", "coord": "pg"}, {"color": "W", "coord": "pf"}, {"color": "B", "coord": "oe"}, {"color": "W", "coord": "of"}, {"color": "B", "coord": "ne"}, {"color": "W", "coord": "le"}, {"color": "B", "coord": "ip"}, {"color": "W", "coord": "cn"}, {"color": "B", "coord": "bm"}, {"color": "W", "coord": "dl"}, {"color": "B", "coord": "lq"}, {"color": "W", "coord": "lg"}, {"color": "B", "coord": "cr"}, {"color": "W", "coord": "gq"}, {"color": "B", "coord": "hq"}, {"color": "W", "coord": "gp"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "pp"}, {"color": "B", "coord": "oq"}, {"color": "W", "coord": "op"}, {"color": "B", "coord": "nr"}, {"color": "W", "coord": "mr"}, {"color": "B", "coord": "mq"}, {"color": "W", "coord": "np"}, {"color": "B", "coord": "or"}, {"color": "W", "coord": "jq"}, {"color": "B", "coord": "lo"}, {"color": "W", "coord": "jp"}, {"color": "B", "coord": "jo"}, {"color": "W", "coord": "io"}, {"color": "B", "coord": "lr"}, {"color": "W", "coord": "ko"}, {"color": "B", "coord": "jn"}, {"color": "W", "coord": "kn"}, {"color": "B", "coord": "ho"}, {"color": "W", "coord": "in"}, {"color": "B", "coord": "jm"}, {"color": "W", "coord": "hn"}, {"color": "B", "coord": "kp"}, {"color": "W", "coord": "km"}, {"color": "B", "coord": "kl"}, {"color": "W", "coord": "mn"}, {"color": "B", "coord": "jl"}, {"color": "W", "coord": "jr"}, {"color": "B", "coord": "mo"}, {"color": "W", "coord": "mm"}, {"color": "B", "coord": "on"}, {"color": "W", "coord": "no"}, {"color": "B", "coord": "nn"}, {"color": "W", "coord": "nl"}, {"color": "B", "coord": "qn"}, {"color": "W", "coord": "rn"}, {"color": "B", "coord": "ol"}, {"color": "W", "coord": "pm"}, {"color": "B", "coord": "pn"}, {"color": "W", "coord": "rm"}, {"color": "B", "coord": "qm"}, {"color": "W", "coord": "qr"}, {"color": "B", "coord": "ro"}, {"color": "W", "coord": "qo"}, {"color": "B", "coord": "lm"}, {"color": "W", "coord": "nk"}, {"color": "B", "coord": "ln"}, {"color": "W", "coord": "oj"}, {"color": "B", "coord": "rl"}, {"color": "W", "coord": "rp"}, {"color": "B", "coord": "pj"}, {"color": "W", "coord": "qj"}, {"color": "B", "coord": "jg"}, {"color": "W", "coord": "hc"}, {"color": "B", "coord": "kd"}, {"color": "W", "coord": "ec"}, {"color": "B", "coord": "ed"}, {"color": "W", "coord": "db"}, {"color": "B", "coord": "dd"}, {"color": "W", "coord": "fb"}, {"color": "B", "coord": "cb"}, {"color": "W", "coord": "fd"}, {"color": "B", "coord": "da"}, {"color": "W", "coord": "me"}, {"color": "B", "coord": "nh"}, {"color": "W", "coord": "mh"}, {"color": "B", "coord": "ni"}, {"color": "W", "coord": "oi"}, {"color": "B", "coord": "nf"}, {"color": "W", "coord": "ng"}, {"color": "B", "coord": "mf"}, {"color": "W", "coord": "id"}, {"color": "B", "coord": "jd"}, {"color": "W", "coord": "lf"}, {"color": "B", "coord": "mg"}, {"color": "W", "coord": "mi"}, {"color": "B", "coord": "mj"}, {"color": "W", "coord": "nj"}, {"color": "B", "coord": "lh"}, {"color": "W", "coord": "oh"}, {"color": "B", "coord": "kh"}, {"color": "W", "coord": "if"}, {"color": "B", "coord": "jf"}, {"color": "W", "coord": "kb"}, {"color": "B", "coord": "jb"}, {"color": "W", "coord": "nd"}, {"color": "B", "coord": "ob"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "mb"}, {"color": "W", "coord": "mc"}, {"color": "B", "coord": "na"}, {"color": "W", "coord": "lb"}, {"color": "B", "coord": "nc"}, {"color": "W", "coord": "ea"}, {"color": "B", "coord": "ca"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "qq"}, {"color": "W", "coord": "rq"}, {"color": "B", "coord": "nc"}, {"color": "W", "coord": "ib"}, {"color": "B", "coord": "ja"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "so"}, {"color": "W", "coord": "sp"}, {"color": "B", "coord": "nc"}, {"color": "W", "coord": "rd"}, {"color": "B", "coord": "rc"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "sm"}, {"color": "W", "coord": "sn"}, {"color": "B", "coord": "nc"}, {"color": "W", "coord": "re"}, {"color": "B", "coord": "nb"}, {"color": "W", "coord": "ff"}, {"color": "B", "coord": "eb"}, {"color": "W", "coord": "fc"}, {"color": "B", "coord": "dh"}, {"color": "W", "coord": "ie"}, {"color": "B", "coord": "hg"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "gn"}, {"color": "W", "coord": "hm"}, {"color": "B", "coord": "fl"}, {"color": "W", "coord": "dg"}, {"color": "B", "coord": "cg"}, {"color": "W", "coord": "ch"}, {"color": "B", "coord": "ci"}, {"color": "W", "coord": "ig"}, {"color": "B", "coord": "ih"}, {"color": "W", "coord": "hh"}, {"color": "B", "coord": "bh"}, {"color": "W", "coord": "ii"}, {"color": "B", "coord": "jh"}, {"color": "W", "coord": "hi"}, {"color": "B", "coord": "gr"}, {"color": "W", "coord": "fr"}, {"color": "B", "coord": "er"}, {"color": "W", "coord": "hr"}, {"color": "B", "coord": "go"}, {"color": "W", "coord": "hl"}, {"color": "B", "coord": "hp"}, {"color": "W", "coord": "eq"}, {"color": "B", "coord": "ek"}, {"color": "W", "coord": "ei"}, {"color": "B", "coord": "fi"}, {"color": "W", "coord": "eh"}, {"color": "B", "coord": "dk"}, {"color": "W", "coord": "en"}, {"color": "B", "coord": "fn"}, {"color": "W", "coord": "cl"}, {"color": "B", "coord": "fp"}, {"color": "W", "coord": "gs"}, {"color": "B", "coord": "ik"}, {"color": "W", "coord": "gk"}, {"color": "B", "coord": "fk"}, {"color": "W", "coord": "gj"}, {"color": "B", "coord": "dr"}, {"color": "W", "coord": "fq"}, {"color": "B", "coord": "fj"}, {"color": "W", "coord": "sc"}, {"color": "B", "coord": "sb"}, {"color": "W", "coord": "sd"}, {"color": "B", "coord": "rb"}, {"color": "W", "coord": "qe"}, {"color": "B", "coord": "pd"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "dj"}, {"color": "W", "coord": "kj"}, {"color": "B", "coord": "jj"}, {"color": "W", "coord": "lk"}, {"color": "B", "coord": "ml"}, {"color": "W", "coord": "nm"}, {"color": "B", "coord": "ji"}, {"color": "W", "coord": "db"}, {"color": "B", "coord": "gi"}, {"color": "W", "coord": "hj"}, {"color": "B", "coord": "gl"}, {"color": "W", "coord": "hk"}, {"color": "B", "coord": "eb"}, {"color": "W", "coord": "fa"}, {"color": "B", "coord": "ic"}, {"color": "W", "coord": "hb"}, {"color": "B", "coord": "li"}, {"color": "W", "coord": "lj"}, {"color": "B", "coord": "hf"}], "options": [{"coord": "he", "color": "W", "winrate": "93.2%", "comment": "/\"jueyi白93.2% | +2.5目", "moves": [{"color": "W", "coord": "he"}, {"color": "B", "coord": "ge"}, {"color": "W", "coord": "hd"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "ee"}, {"color": "B", "coord": "gh"}, {"color": "W", "coord": "gg"}, {"color": "B", "coord": "cm"}, {"color": "W", "coord": "co"}, {"color": "B", "coord": "dm"}], "is_correct": true, "sort_order": 0, "letter": "A"}, {"coord": "ge", "color": "W", "winrate": "69.7%", "comment": "/\"jueyi白69.7% | +0.5目", "moves": [{"color": "W", "coord": "ge"}, {"color": "B", "coord": "gh"}, {"color": "W", "coord": "gg"}, {"color": "B", "coord": "ll"}, {"color": "W", "coord": "mk"}, {"color": "B", "coord": "cm"}, {"color": "W", "coord": "co"}, {"color": "B", "coord": "bo"}, {"color": "W", "coord": "dm"}, {"color": "B", "coord": "bj"}], "is_correct": false, "sort_order": 1, "letter": "B"}], "practical_move": {"coord": "ge", "color": "W", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "W", "coord": "ge"}, {"color": "B", "coord": "gh"}, {"color": "W", "coord": "gg"}, {"color": "B", "coord": "bj"}, {"color": "W", "coord": "di"}, {"color": "B", "coord": "cj"}, {"color": "W", "coord": "bl"}, {"color": "B", "coord": "cm"}, {"color": "W", "coord": "co"}, {"color": "B", "coord": "bo"}, {"color": "W", "coord": "dm"}, {"color": "B", "coord": "ll"}, {"color": "W", "coord": "mk"}, {"color": "B", "coord": "am"}, {"color": "W", "coord": "df"}]}}, {"index": 2, "move_num": 234, "phase": "endgame", "difficulty": "easy", "is_blunder": true, "position": [{"color": "B", "coord": "qd"}, {"color": "W", "coord": "dp"}, {"color": "B", "coord": "dc"}, {"color": "W", "coord": "qp"}, {"color": "B", "coord": "ce"}, {"color": "W", "coord": "oc"}, {"color": "B", "coord": "pe"}, {"color": "W", "coord": "lc"}, {"color": "B", "coord": "cq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "cp"}, {"color": "W", "coord": "do"}, {"color": "B", "coord": "bn"}, {"color": "W", "coord": "nq"}, {"color": "B", "coord": "jc"}, {"color": "W", "coord": "qi"}, {"color": "B", "coord": "pc"}, {"color": "W", "coord": "od"}, {"color": "B", "coord": "je"}, {"color": "W", "coord": "qf"}, {"color": "B", "coord": "pb"}, {"color": "W", "coord": "og"}, {"color": "B", "coord": "pg"}, {"color": "W", "coord": "pf"}, {"color": "B", "coord": "oe"}, {"color": "W", "coord": "of"}, {"color": "B", "coord": "ne"}, {"color": "W", "coord": "le"}, {"color": "B", "coord": "ip"}, {"color": "W", "coord": "cn"}, {"color": "B", "coord": "bm"}, {"color": "W", "coord": "dl"}, {"color": "B", "coord": "lq"}, {"color": "W", "coord": "lg"}, {"color": "B", "coord": "cr"}, {"color": "W", "coord": "gq"}, {"color": "B", "coord": "hq"}, {"color": "W", "coord": "gp"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "pp"}, {"color": "B", "coord": "oq"}, {"color": "W", "coord": "op"}, {"color": "B", "coord": "nr"}, {"color": "W", "coord": "mr"}, {"color": "B", "coord": "mq"}, {"color": "W", "coord": "np"}, {"color": "B", "coord": "or"}, {"color": "W", "coord": "jq"}, {"color": "B", "coord": "lo"}, {"color": "W", "coord": "jp"}, {"color": "B", "coord": "jo"}, {"color": "W", "coord": "io"}, {"color": "B", "coord": "lr"}, {"color": "W", "coord": "ko"}, {"color": "B", "coord": "jn"}, {"color": "W", "coord": "kn"}, {"color": "B", "coord": "ho"}, {"color": "W", "coord": "in"}, {"color": "B", "coord": "jm"}, {"color": "W", "coord": "hn"}, {"color": "B", "coord": "kp"}, {"color": "W", "coord": "km"}, {"color": "B", "coord": "kl"}, {"color": "W", "coord": "mn"}, {"color": "B", "coord": "jl"}, {"color": "W", "coord": "jr"}, {"color": "B", "coord": "mo"}, {"color": "W", "coord": "mm"}, {"color": "B", "coord": "on"}, {"color": "W", "coord": "no"}, {"color": "B", "coord": "nn"}, {"color": "W", "coord": "nl"}, {"color": "B", "coord": "qn"}, {"color": "W", "coord": "rn"}, {"color": "B", "coord": "ol"}, {"color": "W", "coord": "pm"}, {"color": "B", "coord": "pn"}, {"color": "W", "coord": "rm"}, {"color": "B", "coord": "qm"}, {"color": "W", "coord": "qr"}, {"color": "B", "coord": "ro"}, {"color": "W", "coord": "qo"}, {"color": "B", "coord": "lm"}, {"color": "W", "coord": "nk"}, {"color": "B", "coord": "ln"}, {"color": "W", "coord": "oj"}, {"color": "B", "coord": "rl"}, {"color": "W", "coord": "rp"}, {"color": "B", "coord": "pj"}, {"color": "W", "coord": "qj"}, {"color": "B", "coord": "jg"}, {"color": "W", "coord": "hc"}, {"color": "B", "coord": "kd"}, {"color": "W", "coord": "ec"}, {"color": "B", "coord": "ed"}, {"color": "W", "coord": "db"}, {"color": "B", "coord": "dd"}, {"color": "W", "coord": "fb"}, {"color": "B", "coord": "cb"}, {"color": "W", "coord": "fd"}, {"color": "B", "coord": "da"}, {"color": "W", "coord": "me"}, {"color": "B", "coord": "nh"}, {"color": "W", "coord": "mh"}, {"color": "B", "coord": "ni"}, {"color": "W", "coord": "oi"}, {"color": "B", "coord": "nf"}, {"color": "W", "coord": "ng"}, {"color": "B", "coord": "mf"}, {"color": "W", "coord": "id"}, {"color": "B", "coord": "jd"}, {"color": "W", "coord": "lf"}, {"color": "B", "coord": "mg"}, {"color": "W", "coord": "mi"}, {"color": "B", "coord": "mj"}, {"color": "W", "coord": "nj"}, {"color": "B", "coord": "lh"}, {"color": "W", "coord": "oh"}, {"color": "B", "coord": "kh"}, {"color": "W", "coord": "if"}, {"color": "B", "coord": "jf"}, {"color": "W", "coord": "kb"}, {"color": "B", "coord": "jb"}, {"color": "W", "coord": "nd"}, {"color": "B", "coord": "ob"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "mb"}, {"color": "W", "coord": "mc"}, {"color": "B", "coord": "na"}, {"color": "W", "coord": "lb"}, {"color": "B", "coord": "nc"}, {"color": "W", "coord": "ea"}, {"color": "B", "coord": "ca"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "qq"}, {"color": "W", "coord": "rq"}, {"color": "B", "coord": "nc"}, {"color": "W", "coord": "ib"}, {"color": "B", "coord": "ja"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "so"}, {"color": "W", "coord": "sp"}, {"color": "B", "coord": "nc"}, {"color": "W", "coord": "rd"}, {"color": "B", "coord": "rc"}, {"color": "W", "coord": "nb"}, {"color": "B", "coord": "sm"}, {"color": "W", "coord": "sn"}, {"color": "B", "coord": "nc"}, {"color": "W", "coord": "re"}, {"color": "B", "coord": "nb"}, {"color": "W", "coord": "ff"}, {"color": "B", "coord": "eb"}, {"color": "W", "coord": "fc"}, {"color": "B", "coord": "dh"}, {"color": "W", "coord": "ie"}, {"color": "B", "coord": "hg"}, {"color": "W", "coord": "eg"}, {"color": "B", "coord": "gn"}, {"color": "W", "coord": "hm"}, {"color": "B", "coord": "fl"}, {"color": "W", "coord": "dg"}, {"color": "B", "coord": "cg"}, {"color": "W", "coord": "ch"}, {"color": "B", "coord": "ci"}, {"color": "W", "coord": "ig"}, {"color": "B", "coord": "ih"}, {"color": "W", "coord": "hh"}, {"color": "B", "coord": "bh"}, {"color": "W", "coord": "ii"}, {"color": "B", "coord": "jh"}, {"color": "W", "coord": "hi"}, {"color": "B", "coord": "gr"}, {"color": "W", "coord": "fr"}, {"color": "B", "coord": "er"}, {"color": "W", "coord": "hr"}, {"color": "B", "coord": "go"}, {"color": "W", "coord": "hl"}, {"color": "B", "coord": "hp"}, {"color": "W", "coord": "eq"}, {"color": "B", "coord": "ek"}, {"color": "W", "coord": "ei"}, {"color": "B", "coord": "fi"}, {"color": "W", "coord": "eh"}, {"color": "B", "coord": "dk"}, {"color": "W", "coord": "en"}, {"color": "B", "coord": "fn"}, {"color": "W", "coord": "cl"}, {"color": "B", "coord": "fp"}, {"color": "W", "coord": "gs"}, {"color": "B", "coord": "ik"}, {"color": "W", "coord": "gk"}, {"color": "B", "coord": "fk"}, {"color": "W", "coord": "gj"}, {"color": "B", "coord": "dr"}, {"color": "W", "coord": "fq"}, {"color": "B", "coord": "fj"}, {"color": "W", "coord": "sc"}, {"color": "B", "coord": "sb"}, {"color": "W", "coord": "sd"}, {"color": "B", "coord": "rb"}, {"color": "W", "coord": "qe"}, {"color": "B", "coord": "pd"}, {"color": "W", "coord": "ck"}, {"color": "B", "coord": "dj"}, {"color": "W", "coord": "kj"}, {"color": "B", "coord": "jj"}, {"color": "W", "coord": "lk"}, {"color": "B", "coord": "ml"}, {"color": "W", "coord": "nm"}, {"color": "B", "coord": "ji"}, {"color": "W", "coord": "db"}, {"color": "B", "coord": "gi"}, {"color": "W", "coord": "hj"}, {"color": "B", "coord": "gl"}, {"color": "W", "coord": "hk"}, {"color": "B", "coord": "eb"}, {"color": "W", "coord": "fa"}, {"color": "B", "coord": "ic"}, {"color": "W", "coord": "hb"}, {"color": "B", "coord": "li"}, {"color": "W", "coord": "lj"}, {"color": "B", "coord": "hf"}, {"color": "W", "coord": "ge"}, {"color": "B", "coord": "gh"}, {"color": "W", "coord": "gg"}, {"color": "B", "coord": "bj"}, {"color": "W", "coord": "di"}, {"color": "B", "coord": "cj"}, {"color": "W", "coord": "bl"}, {"color": "B", "coord": "cm"}, {"color": "W", "coord": "co"}, {"color": "B", "coord": "bo"}, {"color": "W", "coord": "dm"}], "options": [{"coord": "ps", "color": "B", "winrate": "65.1%", "comment": "/\"jueyi黑65.1% | +0.5目", "moves": [{"color": "B", "coord": "ps"}, {"color": "W", "coord": "rr"}, {"color": "B", "coord": "ll"}, {"color": "W", "coord": "mk"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "am"}, {"color": "B", "coord": "pr"}, {"color": "W", "coord": "al"}, {"color": "B", "coord": "bp"}, {"color": "W", "coord": "an"}], "is_correct": true, "sort_order": 0, "letter": "A"}, {"coord": "ll", "color": "B", "winrate": "35.4%", "comment": "/\"jueyi黑35.4% | -0.5目", "moves": [{"color": "B", "coord": "ll"}, {"color": "W", "coord": "mk"}, {"color": "B", "coord": "df"}, {"color": "W", "coord": "am"}, {"color": "B", "coord": "ps"}, {"color": "W", "coord": "rr"}, {"color": "B", "coord": "pr"}, {"color": "W", "coord": "an"}, {"color": "B", "coord": "ao"}, {"color": "W", "coord": "al"}], "is_correct": false, "sort_order": 1, "letter": "B"}, {"coord": "al", "color": "B", "winrate": "25.3%", "comment": "/\"jueyi黑25.3% | -0.5目", "moves": [{"color": "B", "coord": "al"}, {"color": "W", "coord": "df"}, {"color": "B", "coord": "cf"}, {"color": "W", "coord": "ak"}, {"color": "B", "coord": "am"}, {"color": "W", "coord": "bk"}, {"color": "B", "coord": "ll"}, {"color": "W", "coord": "mk"}, {"color": "B", "coord": "ps"}, {"color": "W", "coord": "rr"}], "is_correct": false, "sort_order": 2, "letter": "C"}], "practical_move": {"coord": "ll", "color": "B", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "B", "coord": "ll"}, {"color": "W", "coord": "mk"}, {"color": "B", "coord": "am"}, {"color": "W", "coord": "df"}, {"color": "B", "coord": "cf"}, {"color": "W", "coord": "rr"}, {"color": "B", "coord": "ee"}, {"color": "W", "coord": "ak"}, {"color": "B", "coord": "aj"}, {"color": "W", "coord": "pr"}, {"color": "B", "coord": "os"}, {"color": "W", "coord": "ps"}, {"color": "B", "coord": "ms"}, {"color": "W", "coord": "eo"}, {"color": "B", "coord": "fo"}]}}];
         let currentProblemIndex = 0;
         let currentProblem = problems[0];
+        
+        // 变化图提示状态
+        const VARIATION_HINT_KEY = 'weiqi_move_variation_hint_seen';
+        let variationHintShown = localStorage.getItem(VARIATION_HINT_KEY) === 'true';
         
         // 状态管理
         const STATE_MAIN = 'main';        // 主面板状态
@@ -1165,6 +1243,16 @@
             }
         }
 
+        // ==================== 更多按钮面板 ====================
+        function toggleMorePanel() {
+            const panel = document.getElementById('extraButtons');
+            const btn = document.getElementById('moreBtn');
+            const navButtons = document.getElementById('navButtons');
+            panel.classList.toggle('visible');
+            btn.classList.toggle('active');
+            navButtons.classList.toggle('expanded');
+        }
+
         // ==================== 打谱控制 ====================
         function prevMove() {
             if (currentMove > 0) {
@@ -1239,8 +1327,33 @@
             if (document.getElementById('variationHeader')) {
                 document.getElementById('variationHeader').style.display = 'flex';
             }
+            
+            // 显示或隐藏变化图提示
+            updateVariationHint();
 
             updateDisplay();
+        }
+        
+        // 更新变化图提示显示
+        function updateVariationHint() {
+            const hint = document.getElementById('variationHint');
+            if (hint) {
+                if (variationHintShown) {
+                    hint.classList.add('hidden');
+                } else {
+                    hint.classList.remove('hidden');
+                }
+            }
+        }
+        
+        // 隐藏变化图提示
+        function hideVariationHint() {
+            const hint = document.getElementById('variationHint');
+            if (hint) {
+                hint.classList.add('hidden');
+            }
+            variationHintShown = true;
+            localStorage.setItem(VARIATION_HINT_KEY, 'true');
         }
 
         function showTryplayPanel() {
@@ -1347,6 +1460,7 @@
         // 加载实战变化图
         function loadPracticalVariation() {
             if (!currentProblem.practical_move) return;
+            hideVariationHint();  // 用户点击后隐藏提示
             
             // 计算变化图着法的提子情况
             const board = createBoard();
@@ -1397,6 +1511,7 @@
         }
 
         function loadVariation(idx) {
+            hideVariationHint();  // 用户点击后隐藏提示
             const opt = currentProblem.options[idx];
             currentVariationOption = idx;
 
