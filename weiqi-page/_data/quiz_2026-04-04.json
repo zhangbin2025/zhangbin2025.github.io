@@ -1,0 +1,127 @@
+[
+  {
+    "id": "202604041805400001",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz/2026-04-04/野狐/quiz_202604041805400001.html",
+    "game_path": "/weiqi-page/games/2026-04-04/野狐/game_202604041805400001.html",
+    "black": "余正麒",
+    "white": "表悠斗",
+    "event": "日本国家队研究会大循环<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 7,
+    "stats": {
+      "total": 7,
+      "result": "黑中盘胜",
+      "phase": {
+        "layout": 0,
+        "middle": 7,
+        "endgame": 0
+      },
+      "difficulty": {
+        "easy": 2,
+        "medium": 3,
+        "hard": 2
+      }
+    }
+  },
+  {
+    "id": "202604041805400003",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz/2026-04-04/野狐/quiz_202604041805400003.html",
+    "game_path": "/weiqi-page/games/2026-04-04/野狐/game_202604041805400003.html",
+    "black": "渡辺寛大",
+    "white": "国松聪",
+    "event": "日本国家队研究会大循环<绝艺讲解>",
+    "result": "黑胜6.50目",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "黑胜6.50目",
+      "phase": {
+        "layout": 0,
+        "middle": 3,
+        "endgame": 0
+      },
+      "difficulty": {
+        "easy": 2,
+        "medium": 0,
+        "hard": 1
+      }
+    }
+  },
+  {
+    "id": "202604041805400004",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz/2026-04-04/野狐/quiz_202604041805400004.html",
+    "game_path": "/weiqi-page/games/2026-04-04/野狐/game_202604041805400004.html",
+    "black": "平田智也",
+    "white": "表悠斗",
+    "event": "日本国家队研究会大循环<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 7,
+    "stats": {
+      "total": 7,
+      "result": "黑中盘胜",
+      "phase": {
+        "layout": 0,
+        "middle": 7,
+        "endgame": 0
+      },
+      "difficulty": {
+        "easy": 2,
+        "medium": 3,
+        "hard": 2
+      }
+    }
+  },
+  {
+    "id": "202604041805400005",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz/2026-04-04/野狐/quiz_202604041805400005.html",
+    "game_path": "/weiqi-page/games/2026-04-04/野狐/game_202604041805400005.html",
+    "black": "최재영",
+    "white": "김정현",
+    "event": "第6届韩国最佳棋士战16强<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑中盘胜",
+      "phase": {
+        "layout": 1,
+        "middle": 0,
+        "endgame": 0
+      },
+      "difficulty": {
+        "easy": 1,
+        "medium": 0,
+        "hard": 0
+      }
+    }
+  },
+  {
+    "id": "202604041805410007",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz/2026-04-04/野狐/quiz_202604041805410007.html",
+    "game_path": "/weiqi-page/games/2026-04-04/野狐/game_202604041805410007.html",
+    "black": "福岡航太朗",
+    "white": "大竹优",
+    "event": "第5届日本U25俊英战决赛2/3局<绝艺讲解>",
+    "result": "黑胜1.50目",
+    "count": 8,
+    "stats": {
+      "total": 8,
+      "result": "黑胜1.50目",
+      "phase": {
+        "layout": 0,
+        "middle": 0,
+        "endgame": 8
+      },
+      "difficulty": {
+        "easy": 6,
+        "medium": 1,
+        "hard": 1
+      }
+    }
+  }
+]

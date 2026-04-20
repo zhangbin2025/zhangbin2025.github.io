@@ -1,0 +1,110 @@
+[
+  {
+    "id": "202603300818410001",
+    "source": "野狐",
+    "path": "/weiqi-page/games/2026-03-29/野狐/game_202603300818410001.html",
+    "black": "叶长欣",
+    "white": "傅健恒",
+    "black_rank": "P7段",
+    "white_rank": "P8段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第2届烂柯杯中国青少年公开赛南京站8轮<绝艺讲解>"
+  },
+  {
+    "id": "202603300818410002",
+    "source": "野狐",
+    "path": "/weiqi-page/games/2026-03-29/野狐/game_202603300818410002.html",
+    "black": "陈豪鑫",
+    "white": "田沐沐",
+    "black_rank": "P7段",
+    "white_rank": "P6段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第2届烂柯杯中国青少年公开赛南京站8轮<绝艺讲解>"
+  },
+  {
+    "id": "202603300818410003",
+    "source": "野狐",
+    "path": "/weiqi-page/games/2026-03-29/野狐/game_202603300818410003.html",
+    "black": "田沐沐",
+    "white": "叶长欣",
+    "black_rank": "P6段",
+    "white_rank": "P7段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第2届烂柯杯中国青少年公开赛南京站9轮<绝艺讲解>"
+  },
+  {
+    "id": "202603300818410004",
+    "source": "野狐",
+    "path": "/weiqi-page/games/2026-03-29/野狐/game_202603300818410004.html",
+    "black": "段博尧",
+    "white": "傅健恒",
+    "black_rank": "P7段",
+    "white_rank": "P8段",
+    "result": "B+0.75",
+    "result_cn": "黑胜0.75目",
+    "event": "第2届烂柯杯中国青少年公开赛南京站9轮<绝艺讲解>"
+  },
+  {
+    "id": "202603300818410005",
+    "source": "野狐",
+    "path": "/weiqi-page/games/2026-03-29/野狐/game_202603300818410005.html",
+    "black": "이원영",
+    "white": "안성준",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "2026韩国KB围棋联赛总决赛决胜轮<绝艺讲解>"
+  },
+  {
+    "id": "202603300818410006",
+    "source": "野狐",
+    "path": "/weiqi-page/games/2026-03-29/野狐/game_202603300818410006.html",
+    "black": "송규상",
+    "white": "이지현M",
+    "black_rank": "P8段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "2026韩国KB围棋联赛总决赛决胜轮<绝艺讲解>"
+  },
+  {
+    "id": "202603300818410007",
+    "source": "野狐",
+    "path": "/weiqi-page/games/2026-03-29/野狐/game_202603300818410007.html",
+    "black": "김은지",
+    "white": "廖元赫",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "2026韩国KB围棋联赛总决赛决胜轮<绝艺讲解>"
+  },
+  {
+    "id": "202603300818410008",
+    "source": "野狐",
+    "path": "/weiqi-page/games/2026-03-29/野狐/game_202603300818410008.html",
+    "black": "최재영",
+    "white": "金禹丞",
+    "black_rank": "P8段",
+    "white_rank": "P9段",
+    "result": "B+3.50",
+    "result_cn": "黑胜3.50目",
+    "event": "2026韩国KB围棋联赛总决赛决胜轮<绝艺讲解>"
+  },
+  {
+    "id": "202603300818410009",
+    "source": "野狐",
+    "path": "/weiqi-page/games/2026-03-29/野狐/game_202603300818410009.html",
+    "black": "박정환",
+    "white": "한태희",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "B+8.50",
+    "result_cn": "黑胜8.50目",
+    "event": "2026韩国KB围棋联赛总决赛决胜轮<绝艺讲解>"
+  }
+]

@@ -77,7 +77,7 @@
                 <div class="extra-buttons" id="extraButtons">
                     <button class="btn" id="soundToggleBtn" onclick="toggleSound()" title="音效开关" style="width: 32px; height: 32px; font-size: 14px;">🔊</button>
                     <button class="btn" id="numToggleBtn" onclick="toggleNumbers()" title="显示/隐藏手数" style="width: 32px; height: 32px; font-size: 11px;">1️⃣</button>
-                    <button class="btn" onclick="shareOrDownloadSGF()" title="下载/分享SGF" style="width: 32px; height: 32px; font-size: 14px;">📤</button>
+                    <button class="btn" onclick="downloadSGF()" title="下载SGF" style="width: 32px; height: 32px; font-size: 14px;">💾</button>
                 </div>
                 <button class="btn" id="moreBtn" onclick="toggleMorePanel()" title="更多" style="width: 32px; height: 32px; font-size: 14px;">⋮</button>
             </div>
@@ -104,138 +104,6 @@
         const BOARD_SIZE = 19;
         const handicapStones = [];
         const DEFAULT_MOVE = -1;
-        
-        // SGF内容缓存（用于分享/下载）
-        let cachedSGF = null;
-        
-        // 微信浏览器检测
-        function isWeixinBrowser() {
-            return /MicroMessenger/i.test(navigator.userAgent);
-        }
-        
-        // 生成SGF内容
-        function generateSGF() {
-            if (cachedSGF) return cachedSGF;
-            
-            let sgf = '(;GM[1]FF[4]SZ[' + BOARD_SIZE + ']';
-            sgf += 'PB[' + (tree.properties.PB || '黑棋') + ']';
-            sgf += 'PW[' + (tree.properties.PW || '白棋') + ']';
-            if (tree.properties.DT) sgf += 'DT[' + tree.properties.DT + ']';
-            if (tree.properties.RE) sgf += 'RE[' + tree.properties.RE + ']';
-            if (tree.properties.KM) sgf += 'KM[' + tree.properties.KM + ']';
-            if (handicapStones && handicapStones.length > 0) {
-                sgf += 'HA[' + handicapStones.length + ']';
-                for (const s of handicapStones) {
-                    sgf += 'AB[' + String.fromCharCode(97 + s.x) + String.fromCharCode(97 + s.y) + ']';
-                }
-            }
-            
-            const moves = getMovesToCurrent();
-            
-            if (moves.length === 0 && !state.trialMode) {
-                // 第0手且不在试下模式，下载整个棋谱（包含所有变化分支）
-                function appendMoves(node) {
-                    if (node.color && node.coord) {
-                        sgf += ';' + node.color + '[' + node.coord + ']';
-                        if (node.properties && node.properties.C) {
-                            sgf += 'C[' + node.properties.C.replace(/[\\\]]/g, '\\\\$&') + ']';
-                        }
-                    }
-                    if (node.children && node.children.length > 0) {
-                        if (node.children.length === 1) {
-                            appendMoves(node.children[0]);
-                        } else {
-                            for (const child of node.children) {
-                                sgf += '(';
-                                appendMoves(child);
-                                sgf += ')';
-                            }
-                        }
-                    }
-                }
-                appendMoves(tree);
-            } else {
-                // 下载当前局面的着法序列
-                for (const move of moves) {
-                    const color = move.color === 'black' ? 'B' : 'W';
-                    sgf += ';' + color + '[' + move.coord + ']';
-                }
-                // 如果是试下模式，追加试下着法
-                if (state.trialMode) {
-                    for (let i = 0; i < trialIndex; i++) {
-                        const m = state.trialMoves[i];
-                        const color = m.color === 'black' ? 'B' : 'W';
-                        sgf += ';' + color + '[' + String.fromCharCode(97 + m.x) + String.fromCharCode(97 + m.y) + ']';
-                    }
-                }
-            }
-            
-            sgf += ')';
-            cachedSGF = sgf;
-            return sgf;
-        }
-        
-        // 清除SGF缓存（当棋谱状态改变时调用）
-        function clearSGFCache() {
-            cachedSGF = null;
-        }
-        
-        // 普通下载SGF
-        function downloadSGF(sgfContent, filename) {
-            const blob = new Blob([sgfContent], { type: 'application/x-go-sgf' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename || '20260419_第20届倡棋杯中国职业锦标赛本赛1轮_绝艺讲解__范廷钰_vs_檀啸_390011.sgf';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-        
-        // Web Share API 分享SGF
-        async function shareSGF(sgfContent, filename) {
-            // iOS限制：iOS的Web Share对文件支持有限，降级到下载
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-            
-            if (!navigator.share || isIOS) {
-                // 不支持Web Share或是iOS，降级到普通下载
-                downloadSGF(sgfContent, filename);
-                return;
-            }
-            
-            const file = new File([sgfContent], filename, {
-                type: 'application/x-go-sgf'
-            });
-            
-            try {
-                await navigator.share({
-                    title: document.title || '围棋棋谱',
-                    text: '分享围棋棋谱: ' + document.title,
-                    files: [file]
-                });
-            } catch (err) {
-                // 用户取消或不支持，降级到普通下载
-                if (err.name !== 'AbortError') {
-                    console.log('分享失败，降级到下载:', err);
-                    downloadSGF(sgfContent, filename);
-                }
-            }
-        }
-        
-        // 分享或下载SGF（根据浏览器环境自动选择）
-        async function shareOrDownloadSGF() {
-            const sgf = generateSGF();
-            const filename = '20260419_第20届倡棋杯中国职业锦标赛本赛1轮_绝艺讲解__范廷钰_vs_檀啸_390011.sgf';
-            
-            if (isWeixinBrowser()) {
-                // 微信浏览器：优先使用Web Share API
-                await shareSGF(sgf, filename);
-            } else {
-                // 非微信浏览器：直接下载
-                downloadSGF(sgf, filename);
-            }
-        }
         
         // 核心状态
         const state = {
@@ -931,7 +799,6 @@
             // 然后添加选择的子分支
             state.currentPath.push(variationIndex);
             state.displayIndex = 0;
-            clearSGFCache();
 
             if (isPlaying) togglePlay();
             playStoneSound();
@@ -941,7 +808,6 @@
         function prevMove() {
             if (state.displayIndex > 0) {
                 state.displayIndex--;
-                clearSGFCache();
                 playUndoSound();
                 updateDisplay();
             } else if (state.currentPath.length > 0) {
@@ -959,7 +825,6 @@
                 if (state.currentPath.length === 0) {
                     state.variationBaseMove = 0;
                 }
-                clearSGFCache();
                 playUndoSound();
                 updateDisplay();
             }
@@ -973,7 +838,6 @@
             const beforeWhite = currentWhiteCaptured;
             
             state.displayIndex++;
-            clearSGFCache();
             updateDisplay();
             
             // 如果提子数增加了，说明有提子
@@ -994,7 +858,6 @@
                 const beforeWhite = currentWhiteCaptured;
                 
                 state.displayIndex = target;
-                clearSGFCache();
                 updateDisplay();
                 
                 // 根据方向播放声效
@@ -1306,6 +1169,64 @@
             // 试下放子（包含提子逻辑）
             trialPlaceStone(pos.x, pos.y);
         });
+        
+        function downloadSGF() {
+            let sgf = '(;GM[1]FF[4]SZ[' + BOARD_SIZE + ']';
+            sgf += 'PB[' + (tree.properties.PB || '黑棋') + ']';
+            sgf += 'PW[' + (tree.properties.PW || '白棋') + ']';
+            if (handicapStones && handicapStones.length > 0) {
+                sgf += 'HA[' + handicapStones.length + ']';
+                for (const s of handicapStones) {
+                    sgf += 'AB[' + String.fromCharCode(97 + s.x) + String.fromCharCode(97 + s.y) + ']';
+                }
+            }
+            
+            const moves = getMovesToCurrent();
+            
+            if (moves.length === 0 && !state.trialMode) {
+                // 第0手且不在试下模式，下载整个棋谱（包含所有变化分支）
+                function appendMoves(node) {
+                    if (node.color && node.coord) {
+                        sgf += ';' + node.color + '[' + node.coord + ']';
+                    }
+                    if (node.children && node.children.length > 0) {
+                        if (node.children.length === 1) {
+                            appendMoves(node.children[0]);
+                        } else {
+                            for (const child of node.children) {
+                                sgf += '(';
+                                appendMoves(child);
+                                sgf += ')';
+                            }
+                        }
+                    }
+                }
+                appendMoves(tree);
+            } else {
+                // 下载当前局面的着法序列
+                for (const move of moves) {
+                    const color = move.color === 'black' ? 'B' : 'W';
+                    sgf += ';' + color + '[' + move.coord + ']';
+                }
+                // 如果是试下模式，追加试下着法
+                if (state.trialMode) {
+                    for (let i = 0; i < trialIndex; i++) {
+                        const m = state.trialMoves[i];
+                        const color = m.color === 'black' ? 'B' : 'W';
+                        sgf += ';' + color + '[' + String.fromCharCode(97 + m.x) + String.fromCharCode(97 + m.y) + ']';
+                    }
+                }
+            }
+            
+            sgf += ')';
+            const blob = new Blob([sgf], { type: 'application/x-go-sgf' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = '20260419_第20届倡棋杯中国职业锦标赛本赛1轮_绝艺讲解__范廷钰_vs_檀啸_390011.sgf';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
         
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') prevMove();

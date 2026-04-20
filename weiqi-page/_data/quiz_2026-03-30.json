@@ -1,0 +1,77 @@
+[
+  {
+    "id": "202603311402510002",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz/2026-03-30/野狐/quiz_202603311402510002.html",
+    "game_path": "/weiqi-page/games/2026-03-30/野狐/game_202603311402510002.html",
+    "black": "朴键昊",
+    "white": "申旻埈",
+    "event": "第6届韩国最佳棋士战16强<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      },
+      "difficulty": {
+        "easy": 1,
+        "medium": 0,
+        "hard": 0
+      }
+    }
+  },
+  {
+    "id": "202603311402510003",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz/2026-03-30/野狐/quiz_202603311402510003.html",
+    "game_path": "/weiqi-page/games/2026-03-30/野狐/game_202603311402510003.html",
+    "black": "山下敬吾",
+    "white": "伊田笃史",
+    "event": "第74期日本王座战预选决赛<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑中盘胜",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      },
+      "difficulty": {
+        "easy": 1,
+        "medium": 0,
+        "hard": 0
+      }
+    }
+  },
+  {
+    "id": "202603311402510004",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz/2026-03-30/野狐/quiz_202603311402510004.html",
+    "game_path": "/weiqi-page/games/2026-03-30/野狐/game_202603311402510004.html",
+    "black": "許家元",
+    "white": "村本渉",
+    "event": "第51期碁圣战本赛<绝艺讲解>",
+    "result": "黑胜1.50目",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "黑胜1.50目",
+      "phase": {
+        "layout": 0,
+        "middle": 3,
+        "endgame": 0
+      },
+      "difficulty": {
+        "easy": 2,
+        "medium": 0,
+        "hard": 1
+      }
+    }
+  }
+]
