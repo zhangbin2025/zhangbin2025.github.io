@@ -1,7 +1,7 @@
 [
   {
     "id": "joseki_001",
-    "name": "TR角定式 kj_31625",
+    "name": "TR角定式 kj_31742",
     "path": "/weiqi-page/joseki/2026-04-07/joseki_001.html",
     "game_path": "/weiqi-page/games/2026-04-07/野狐/game_202604091100470001.html",
     "moves": [
@@ -57,7 +57,7 @@
     "count": 23,
     "frequency": 23,
     "probability": 0.0,
-    "joseki_id": "kj_31625",
+    "joseki_id": "kj_31742",
     "corner": "tr",
     "black": "양종찬",
     "white": "강재우",
@@ -66,7 +66,7 @@
   },
   {
     "id": "joseki_002",
-    "name": "BL角定式 kj_24047",
+    "name": "BL角定式 kj_24150",
     "path": "/weiqi-page/joseki/2026-04-07/joseki_002.html",
     "game_path": "/weiqi-page/games/2026-04-07/野狐/game_202604091100470001.html",
     "moves": [
@@ -88,10 +88,10 @@
     ],
     "move_count": 15,
     "matched_prefix_len": 14,
-    "count": 23,
-    "frequency": 23,
+    "count": 24,
+    "frequency": 24,
     "probability": 0.0,
-    "joseki_id": "kj_24047",
+    "joseki_id": "kj_24150",
     "corner": "bl",
     "black": "양종찬",
     "white": "강재우",
@@ -100,7 +100,7 @@
   },
   {
     "id": "joseki_003",
-    "name": "BR角定式 kj_43151",
+    "name": "BR角定式 kj_43411",
     "path": "/weiqi-page/joseki/2026-04-07/joseki_003.html",
     "game_path": "/weiqi-page/games/2026-04-07/野狐/game_202604091100470001.html",
     "moves": [
@@ -116,10 +116,10 @@
     ],
     "move_count": 9,
     "matched_prefix_len": 7,
-    "count": 14,
-    "frequency": 14,
+    "count": 19,
+    "frequency": 19,
     "probability": 0.0,
-    "joseki_id": "kj_43151",
+    "joseki_id": "kj_43411",
     "corner": "br",
     "black": "양종찬",
     "white": "강재우",
@@ -128,7 +128,7 @@
   },
   {
     "id": "joseki_004",
-    "name": "TL角定式 kj_02513",
+    "name": "TL角定式 kj_02562",
     "path": "/weiqi-page/joseki/2026-04-07/joseki_004.html",
     "game_path": "/weiqi-page/games/2026-04-07/野狐/game_202604091100470001.html",
     "moves": [
@@ -164,10 +164,10 @@
     ],
     "move_count": 29,
     "matched_prefix_len": 5,
-    "count": 29,
-    "frequency": 29,
+    "count": 23,
+    "frequency": 23,
     "probability": 0.0,
-    "joseki_id": "kj_02513",
+    "joseki_id": "kj_02562",
     "corner": "tl",
     "black": "양종찬",
     "white": "강재우",
