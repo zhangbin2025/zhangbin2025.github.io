@@ -1,7 +1,7 @@
 [
   {
     "id": "joseki_001",
-    "name": "BL角定式 kj_51900",
+    "name": "BL角定式 kj_52155",
     "path": "/weiqi-page/joseki/2026-03-23/joseki_001.html",
     "game_path": "/weiqi-page/games/2026-03-23/野狐/game_202603261117290001.html",
     "moves": [
@@ -55,7 +55,7 @@
     "count": 25,
     "frequency": 25,
     "probability": 0.0,
-    "joseki_id": "kj_51900",
+    "joseki_id": "kj_52155",
     "corner": "bl",
     "black": "党毅飞",
     "white": "金禹丞",
@@ -64,7 +64,7 @@
   },
   {
     "id": "joseki_002",
-    "name": "BR角定式 kj_00931",
+    "name": "BR角定式 kj_00897",
     "path": "/weiqi-page/joseki/2026-03-23/joseki_002.html",
     "game_path": "/weiqi-page/games/2026-03-23/野狐/game_202603261117290001.html",
     "moves": [
@@ -105,7 +105,7 @@
     "count": 142,
     "frequency": 142,
     "probability": 0.0,
-    "joseki_id": "kj_00931",
+    "joseki_id": "kj_00897",
     "corner": "br",
     "black": "党毅飞",
     "white": "金禹丞",
@@ -114,7 +114,7 @@
   },
   {
     "id": "joseki_003",
-    "name": "BL角定式 kj_52426",
+    "name": "BL角定式 kj_52681",
     "path": "/weiqi-page/joseki/2026-03-23/joseki_003.html",
     "game_path": "/weiqi-page/games/2026-03-23/野狐/game_202603261117280001.html",
     "moves": [
@@ -170,7 +170,7 @@
     "count": 79,
     "frequency": 79,
     "probability": 0.0,
-    "joseki_id": "kj_52426",
+    "joseki_id": "kj_52681",
     "corner": "bl",
     "black": "金明训",
     "white": "李元道",
@@ -179,7 +179,7 @@
   },
   {
     "id": "joseki_004",
-    "name": "BR角定式 kj_00354",
+    "name": "BR角定式 kj_00343",
     "path": "/weiqi-page/joseki/2026-03-23/joseki_004.html",
     "game_path": "/weiqi-page/games/2026-03-23/野狐/game_202603261117280001.html",
     "moves": [
@@ -204,7 +204,7 @@
     "count": 21,
     "frequency": 21,
     "probability": 0.0,
-    "joseki_id": "kj_00354",
+    "joseki_id": "kj_00343",
     "corner": "br",
     "black": "金明训",
     "white": "李元道",
@@ -213,7 +213,7 @@
   },
   {
     "id": "joseki_005",
-    "name": "TL角定式 kj_47150",
+    "name": "TL角定式 kj_47280",
     "path": "/weiqi-page/joseki/2026-03-23/joseki_005.html",
     "game_path": "/weiqi-page/games/2026-03-23/野狐/game_202603261117280001.html",
     "moves": [
@@ -226,6 +226,8 @@
       "qh",
       "rg",
       "rh",
+      "kh",
+      "tt",
       "oh",
       "mh",
       "pf",
@@ -243,12 +245,12 @@
       "tt",
       "mf"
     ],
-    "move_count": 25,
+    "move_count": 27,
     "matched_prefix_len": 7,
-    "count": 14,
-    "frequency": 14,
+    "count": 12,
+    "frequency": 12,
     "probability": 0.0,
-    "joseki_id": "kj_47150",
+    "joseki_id": "kj_47280",
     "corner": "tl",
     "black": "金明训",
     "white": "李元道",
@@ -257,7 +259,7 @@
   },
   {
     "id": "joseki_006",
-    "name": "TR角定式 kj_55072",
+    "name": "TR角定式 kj_55278",
     "path": "/weiqi-page/joseki/2026-03-23/joseki_006.html",
     "game_path": "/weiqi-page/games/2026-03-23/野狐/game_202603261117290001.html",
     "moves": [
@@ -274,7 +276,7 @@
     "count": 69,
     "frequency": 69,
     "probability": 0.0,
-    "joseki_id": "kj_55072",
+    "joseki_id": "kj_55278",
     "corner": "tr",
     "black": "党毅飞",
     "white": "金禹丞",
@@ -283,7 +285,7 @@
   },
   {
     "id": "joseki_007",
-    "name": "TL角定式 kj_11636",
+    "name": "TL角定式 kj_11655",
     "path": "/weiqi-page/joseki/2026-03-23/joseki_007.html",
     "game_path": "/weiqi-page/games/2026-03-23/野狐/game_202603261117290001.html",
     "moves": [
@@ -315,10 +317,10 @@
     ],
     "move_count": 25,
     "matched_prefix_len": 4,
-    "count": 106,
-    "frequency": 106,
+    "count": 105,
+    "frequency": 105,
     "probability": 0.0,
-    "joseki_id": "kj_11636",
+    "joseki_id": "kj_11655",
     "corner": "tl",
     "black": "党毅飞",
     "white": "金禹丞",

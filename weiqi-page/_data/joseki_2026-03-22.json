@@ -1,7 +1,7 @@
 [
   {
     "id": "joseki_001",
-    "name": "TR角定式 kj_24509",
+    "name": "TR角定式 kj_24599",
     "path": "/weiqi-page/joseki/2026-03-22/joseki_001.html",
     "game_path": "/weiqi-page/games/2026-03-22/野狐/game_202603261118040001.html",
     "moves": [
@@ -70,10 +70,10 @@
     ],
     "move_count": 62,
     "matched_prefix_len": 33,
-    "count": 36,
-    "frequency": 36,
+    "count": 37,
+    "frequency": 37,
     "probability": 0.0,
-    "joseki_id": "kj_24509",
+    "joseki_id": "kj_24599",
     "corner": "tr",
     "black": "송지훈",
     "white": "金禹丞",
@@ -82,7 +82,7 @@
   },
   {
     "id": "joseki_002",
-    "name": "TL角定式 kj_18326",
+    "name": "TL角定式 kj_18345",
     "path": "/weiqi-page/joseki/2026-03-22/joseki_002.html",
     "game_path": "/weiqi-page/games/2026-03-22/野狐/game_202603261118030001.html",
     "moves": [
@@ -111,7 +111,7 @@
     "count": 24,
     "frequency": 24,
     "probability": 0.0,
-    "joseki_id": "kj_18326",
+    "joseki_id": "kj_18345",
     "corner": "tl",
     "black": "최민서",
     "white": "한주영",
@@ -120,7 +120,7 @@
   },
   {
     "id": "joseki_003",
-    "name": "TR角定式 kj_27881",
+    "name": "TR角定式 kj_27953",
     "path": "/weiqi-page/joseki/2026-03-22/joseki_003.html",
     "game_path": "/weiqi-page/games/2026-03-22/野狐/game_202603261118030001.html",
     "moves": [
@@ -153,7 +153,7 @@
     "count": 28,
     "frequency": 28,
     "probability": 0.0,
-    "joseki_id": "kj_27881",
+    "joseki_id": "kj_27953",
     "corner": "tr",
     "black": "최민서",
     "white": "한주영",
@@ -162,7 +162,7 @@
   },
   {
     "id": "joseki_004",
-    "name": "BL角定式 kj_20519",
+    "name": "BL角定式 kj_20724",
     "path": "/weiqi-page/joseki/2026-03-22/joseki_004.html",
     "game_path": "/weiqi-page/games/2026-03-22/野狐/game_202603261118030001.html",
     "moves": [
@@ -199,7 +199,7 @@
     "count": 22,
     "frequency": 22,
     "probability": 0.0,
-    "joseki_id": "kj_20519",
+    "joseki_id": "kj_20724",
     "corner": "bl",
     "black": "최민서",
     "white": "한주영",
@@ -208,7 +208,7 @@
   },
   {
     "id": "joseki_005",
-    "name": "BR角定式 kj_19678",
+    "name": "BR角定式 kj_19779",
     "path": "/weiqi-page/joseki/2026-03-22/joseki_005.html",
     "game_path": "/weiqi-page/games/2026-03-22/野狐/game_202603261118030001.html",
     "moves": [
@@ -243,10 +243,10 @@
     ],
     "move_count": 28,
     "matched_prefix_len": 8,
-    "count": 114,
-    "frequency": 114,
+    "count": 59,
+    "frequency": 59,
     "probability": 0.0,
-    "joseki_id": "kj_19678",
+    "joseki_id": "kj_19779",
     "corner": "br",
     "black": "최민서",
     "white": "한주영",
@@ -255,7 +255,7 @@
   },
   {
     "id": "joseki_006",
-    "name": "BR角定式 kj_55598",
+    "name": "BR角定式 kj_55797",
     "path": "/weiqi-page/joseki/2026-03-22/joseki_006.html",
     "game_path": "/weiqi-page/games/2026-03-22/野狐/game_202603261118040001.html",
     "moves": [
@@ -284,10 +284,10 @@
     ],
     "move_count": 22,
     "matched_prefix_len": 4,
-    "count": 21,
-    "frequency": 21,
+    "count": 19,
+    "frequency": 19,
     "probability": 0.0,
-    "joseki_id": "kj_55598",
+    "joseki_id": "kj_55797",
     "corner": "br",
     "black": "송지훈",
     "white": "金禹丞",
