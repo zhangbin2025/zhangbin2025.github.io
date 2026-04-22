@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>第4届烂柯杯世界公开赛综合预选&lt;绝艺讲解&gt;</title>
+    <title>第4届烂柯杯世界公开赛综合预选&lt;张学斌＆夏夏＆绝艺解说&gt;</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 0; }
@@ -59,8 +59,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1 id="gameTitle">第4届烂柯杯世界公开赛综合预选&lt;绝艺讲解&gt;</h1>
-            <div class="info" id="gameInfo">송지훈 vs 许嘉阳</div>
+            <h1 id="gameTitle">第4届烂柯杯世界公开赛综合预选&lt;张学斌＆夏夏＆绝艺解说&gt;</h1>
+            <div class="info" id="gameInfo">이지현M vs 柁嘉熹</div>
         </div>
         <div class="board-container"><canvas id="board"></canvas></div>
         <div class="controls-row" id="mainControls">
@@ -95,15 +95,15 @@
             <div class="captured-info" id="capturedInfo"></div>
         </div>
         <div class="legend">
-            <div class="legend-item"><div class="stone-black"></div><span id="blackName">송지훈</span></div>
-            <div class="legend-item"><div class="stone-white"></div><span id="whiteName">许嘉阳</span></div>
+            <div class="legend-item"><div class="stone-black"></div><span id="blackName">이지현M</span></div>
+            <div class="legend-item"><div class="stone-white"></div><span id="whiteName">柁嘉熹</span></div>
         </div>
     </div>
     <script>
-        const tree = (() => { const textarea = document.createElement('textarea'); textarea.innerHTML = '{&quot;properties&quot;: {&quot;CA&quot;: &quot;utf-8&quot;, &quot;FF&quot;: &quot;4&quot;, &quot;AP&quot;: &quot;WeiqiPage&quot;, &quot;SZ&quot;: &quot;19&quot;, &quot;GM&quot;: &quot;1&quot;, &quot;PB&quot;: &quot;송지훈&quot;, &quot;PW&quot;: &quot;许嘉阳&quot;, &quot;GN&quot;: &quot;第4届烂柯杯世界公开赛综合预选&lt;绝艺讲解&gt;&quot;, &quot;DT&quot;: &quot;2026-04-09&quot;, &quot;C&quot;: &quot;第4届烂柯杯世界公开赛综合预选&lt;绝艺讲解&gt; - 송지훈 vs 许嘉阳 - 定式 (TR角)&quot;}, &quot;is_root&quot;: true, &quot;move_number&quot;: 0, &quot;color&quot;: null, &quot;coord&quot;: null, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;pd&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 1, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;pd&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;tt&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 2, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;tt&quot;, &quot;children&quot;: []}]}]}'; return JSON.parse(textarea.value); })();
+        const tree = (() => { const textarea = document.createElement('textarea'); textarea.innerHTML = '{&quot;properties&quot;: {&quot;CA&quot;: &quot;utf-8&quot;, &quot;FF&quot;: &quot;4&quot;, &quot;AP&quot;: &quot;WeiqiPage&quot;, &quot;SZ&quot;: &quot;19&quot;, &quot;GM&quot;: &quot;1&quot;, &quot;PB&quot;: &quot;이지현M&quot;, &quot;PW&quot;: &quot;柁嘉熹&quot;, &quot;GN&quot;: &quot;第4届烂柯杯世界公开赛综合预选&lt;张学斌＆夏夏＆绝艺解说&gt;&quot;, &quot;DT&quot;: &quot;2026-04-09&quot;, &quot;C&quot;: &quot;第4届烂柯杯世界公开赛综合预选&lt;张学斌＆夏夏＆绝艺解说&gt; - 이지현M vs 柁嘉熹 - 定式 (TR角)&quot;}, &quot;is_root&quot;: true, &quot;move_number&quot;: 0, &quot;color&quot;: null, &quot;coord&quot;: null, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;pd&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 1, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;pd&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;tt&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 2, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;tt&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;nc&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 3, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;nc&quot;, &quot;children&quot;: []}]}]}]}'; return JSON.parse(textarea.value); })();
         const BOARD_SIZE = 19;
         const handicapStones = [];
-        const DEFAULT_MOVE = 2;
+        const DEFAULT_MOVE = 3;
         
         // 核心状态
         const state = {

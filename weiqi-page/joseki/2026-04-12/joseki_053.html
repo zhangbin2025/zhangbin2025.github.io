@@ -60,7 +60,7 @@
     <div class="container">
         <div class="header">
             <h1 id="gameTitle">第4届烂柯杯世界公开赛综合预选决赛&lt;绝艺讲解&gt;</h1>
-            <div class="info" id="gameInfo">심재익 vs 赵斐</div>
+            <div class="info" id="gameInfo">胡耀宇 vs 이원영</div>
         </div>
         <div class="board-container"><canvas id="board"></canvas></div>
         <div class="controls-row" id="mainControls">
@@ -95,12 +95,12 @@
             <div class="captured-info" id="capturedInfo"></div>
         </div>
         <div class="legend">
-            <div class="legend-item"><div class="stone-black"></div><span id="blackName">심재익</span></div>
-            <div class="legend-item"><div class="stone-white"></div><span id="whiteName">赵斐</span></div>
+            <div class="legend-item"><div class="stone-black"></div><span id="blackName">胡耀宇</span></div>
+            <div class="legend-item"><div class="stone-white"></div><span id="whiteName">이원영</span></div>
         </div>
     </div>
     <script>
-        const tree = (() => { const textarea = document.createElement('textarea'); textarea.innerHTML = '{&quot;properties&quot;: {&quot;CA&quot;: &quot;utf-8&quot;, &quot;FF&quot;: &quot;4&quot;, &quot;AP&quot;: &quot;WeiqiPage&quot;, &quot;SZ&quot;: &quot;19&quot;, &quot;GM&quot;: &quot;1&quot;, &quot;PB&quot;: &quot;심재익&quot;, &quot;PW&quot;: &quot;赵斐&quot;, &quot;GN&quot;: &quot;第4届烂柯杯世界公开赛综合预选决赛&lt;绝艺讲解&gt;&quot;, &quot;DT&quot;: &quot;2026-04-12&quot;, &quot;C&quot;: &quot;第4届烂柯杯世界公开赛综合预选决赛&lt;绝艺讲解&gt; - 심재익 vs 赵斐 - 定式 (TL角)&quot;}, &quot;is_root&quot;: true, &quot;move_number&quot;: 0, &quot;color&quot;: null, &quot;coord&quot;: null, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;qd&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 1, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;qd&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;tt&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 2, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;tt&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;od&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 3, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;od&quot;, &quot;children&quot;: []}]}]}]}'; return JSON.parse(textarea.value); })();
+        const tree = (() => { const textarea = document.createElement('textarea'); textarea.innerHTML = '{&quot;properties&quot;: {&quot;CA&quot;: &quot;utf-8&quot;, &quot;FF&quot;: &quot;4&quot;, &quot;AP&quot;: &quot;WeiqiPage&quot;, &quot;SZ&quot;: &quot;19&quot;, &quot;GM&quot;: &quot;1&quot;, &quot;PB&quot;: &quot;胡耀宇&quot;, &quot;PW&quot;: &quot;이원영&quot;, &quot;GN&quot;: &quot;第4届烂柯杯世界公开赛综合预选决赛&lt;绝艺讲解&gt;&quot;, &quot;DT&quot;: &quot;2026-04-12&quot;, &quot;C&quot;: &quot;第4届烂柯杯世界公开赛综合预选决赛&lt;绝艺讲解&gt; - 胡耀宇 vs 이원영 - 定式 (TR角)&quot;}, &quot;is_root&quot;: true, &quot;move_number&quot;: 0, &quot;color&quot;: null, &quot;coord&quot;: null, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;pd&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 1, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;pd&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;tt&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 2, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;tt&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;nd&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 3, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;nd&quot;, &quot;children&quot;: []}]}]}]}'; return JSON.parse(textarea.value); })();
         const BOARD_SIZE = 19;
         const handicapStones = [];
         const DEFAULT_MOVE = 3;
