@@ -126,9 +126,11 @@
         .tag-phase-layout { background: #4CAF50; color: white; }
         .tag-phase-middle { background: #2196F3; color: white; }
         .tag-phase-endgame { background: #FF9800; color: white; }
-        .tag-difficulty-easy { background: #81C784; color: white; }
-        .tag-difficulty-medium { background: #FFB74D; color: white; }
-        .tag-difficulty-hard { background: #E57373; color: white; }
+        /* 等级标签样式 - 三级：职业(红)/高段(橙)/普通(绿) */
+        .tag-level { color: white; font-weight: bold; }
+        .tag-level[data-level="职业"] { background: #E57373; }  /* 原困难色 */
+        .tag-level[data-level="高段"] { background: #FFB74D; }  /* 原中等色 */
+        .tag-level[data-level="普通"] { background: #81C784; }  /* 原简单色 */
         .tag-blunder { background: #F44336; color: white; }
         .board-container {
             display: flex;
@@ -547,7 +549,7 @@
             </div>
             <div class="problem-info" id="problemInfo">
                 <span class="tag tag-phase-middle" id="phaseTag">中盘</span>
-                <span class="tag tag-difficulty-medium" id="difficultyTag">中等</span>
+                <span class="tag tag-level" id="levelTag" data-level="未知">未知</span>
                 <span style="flex: 1;"></span>
                 <span class="turn-indicator-tag" id="turnIndicatorTag">
                     <span class="turn-dot black" id="turnDot"></span>
@@ -793,7 +795,7 @@
         // ==================== 数据 ====================
         const BOARD_SIZE = 19;
         const handicapStones = [];
-        const problems = [{"index": 0, "move_num": 24, "phase": "layout", "difficulty": "easy", "is_blunder": true, "position": [{"color": "B", "coord": "qd"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "nd"}, {"color": "W", "coord": "qo"}, {"color": "B", "coord": "qk"}, {"color": "W", "coord": "op"}, {"color": "B", "coord": "oq"}, {"color": "W", "coord": "np"}, {"color": "B", "coord": "mr"}, {"color": "W", "coord": "nl"}, {"color": "B", "coord": "qm"}, {"color": "W", "coord": "lq"}, {"color": "B", "coord": "mq"}, {"color": "W", "coord": "mp"}, {"color": "B", "coord": "lp"}, {"color": "W", "coord": "kq"}, {"color": "B", "coord": "lo"}, {"color": "W", "coord": "jp"}, {"color": "B", "coord": "nn"}, {"color": "W", "coord": "mo"}, {"color": "B", "coord": "pp"}, {"color": "W", "coord": "po"}], "options": [{"coord": "mn", "color": "B", "winrate": "56.3%", "comment": "/\"jueyi黑56.3%", "moves": [{"color": "B", "coord": "mn"}, {"color": "W", "coord": "on"}, {"color": "B", "coord": "jo"}, {"color": "W", "coord": "pl"}, {"color": "B", "coord": "io"}, {"color": "W", "coord": "hq"}, {"color": "B", "coord": "kl"}, {"color": "W", "coord": "il"}, {"color": "B", "coord": "ln"}, {"color": "W", "coord": "pj"}], "is_correct": true, "sort_order": 0, "letter": "A"}, {"coord": "oo", "color": "B", "winrate": "33.7%", "comment": "/\"jueyi黑33.7%", "moves": [{"color": "B", "coord": "oo"}, {"color": "W", "coord": "on"}, {"color": "B", "coord": "mn"}, {"color": "W", "coord": "no"}, {"color": "B", "coord": "lm"}, {"color": "W", "coord": "kn"}, {"color": "B", "coord": "ln"}, {"color": "W", "coord": "pl"}, {"color": "B", "coord": "pk"}, {"color": "W", "coord": "ok"}], "is_correct": false, "sort_order": 1, "letter": "B"}], "practical_move": {"coord": "oo", "color": "B", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "B", "coord": "oo"}, {"color": "W", "coord": "on"}, {"color": "B", "coord": "mn"}, {"color": "W", "coord": "no"}, {"color": "B", "coord": "kn"}, {"color": "W", "coord": "lm"}, {"color": "B", "coord": "ln"}, {"color": "W", "coord": "pl"}, {"color": "B", "coord": "in"}, {"color": "W", "coord": "gp"}, {"color": "B", "coord": "pk"}, {"color": "W", "coord": "ok"}, {"color": "B", "coord": "pm"}, {"color": "W", "coord": "om"}, {"color": "B", "coord": "jk"}]}}];
+        const problems = [{"index": 0, "move_num": 24, "phase": "layout", "gameLevel": "职业", "is_blunder": true, "position": [{"color": "B", "coord": "qd"}, {"color": "W", "coord": "dd"}, {"color": "B", "coord": "pq"}, {"color": "W", "coord": "dq"}, {"color": "B", "coord": "nd"}, {"color": "W", "coord": "qo"}, {"color": "B", "coord": "qk"}, {"color": "W", "coord": "op"}, {"color": "B", "coord": "oq"}, {"color": "W", "coord": "np"}, {"color": "B", "coord": "mr"}, {"color": "W", "coord": "nl"}, {"color": "B", "coord": "qm"}, {"color": "W", "coord": "lq"}, {"color": "B", "coord": "mq"}, {"color": "W", "coord": "mp"}, {"color": "B", "coord": "lp"}, {"color": "W", "coord": "kq"}, {"color": "B", "coord": "lo"}, {"color": "W", "coord": "jp"}, {"color": "B", "coord": "nn"}, {"color": "W", "coord": "mo"}, {"color": "B", "coord": "pp"}, {"color": "W", "coord": "po"}], "options": [{"coord": "mn", "color": "B", "winrate": "56.3%", "comment": "/\"jueyi黑56.3%", "moves": [{"color": "B", "coord": "mn"}, {"color": "W", "coord": "on"}, {"color": "B", "coord": "jo"}, {"color": "W", "coord": "pl"}, {"color": "B", "coord": "io"}, {"color": "W", "coord": "hq"}, {"color": "B", "coord": "kl"}, {"color": "W", "coord": "il"}, {"color": "B", "coord": "ln"}, {"color": "W", "coord": "pj"}], "is_correct": true, "sort_order": 0, "letter": "A"}, {"coord": "oo", "color": "B", "winrate": "33.7%", "comment": "/\"jueyi黑33.7%", "moves": [{"color": "B", "coord": "oo"}, {"color": "W", "coord": "on"}, {"color": "B", "coord": "mn"}, {"color": "W", "coord": "no"}, {"color": "B", "coord": "lm"}, {"color": "W", "coord": "kn"}, {"color": "B", "coord": "ln"}, {"color": "W", "coord": "pl"}, {"color": "B", "coord": "pk"}, {"color": "W", "coord": "ok"}], "is_correct": false, "sort_order": 1, "letter": "B"}], "practical_move": {"coord": "oo", "color": "B", "winrate": "N/A", "is_blunder": false, "moves": [{"color": "B", "coord": "oo"}, {"color": "W", "coord": "on"}, {"color": "B", "coord": "mn"}, {"color": "W", "coord": "no"}, {"color": "B", "coord": "kn"}, {"color": "W", "coord": "lm"}, {"color": "B", "coord": "ln"}, {"color": "W", "coord": "pl"}, {"color": "B", "coord": "in"}, {"color": "W", "coord": "gp"}, {"color": "B", "coord": "pk"}, {"color": "W", "coord": "ok"}, {"color": "B", "coord": "pm"}, {"color": "W", "coord": "om"}, {"color": "B", "coord": "jk"}]}}];
         let currentProblemIndex = 0;
         let currentProblem = problems[0];
         
@@ -1929,7 +1931,7 @@
             sgf += `EV[${gameTitle}]`;
             
             // 添加题目信息
-            sgf += `C[第${currentProblemIndex + 1}题 - ${currentProblem.phase || '中盘'} ${currentProblem.difficulty || '中等'}]`;
+            sgf += `C[第${currentProblemIndex + 1}题 - ${currentProblem.phase || '中盘'} ${currentProblem.gameLevel || '未知'}]`;
 
             // 添加让子（如果有）
             if (handicapStones && handicapStones.length > 0) {
@@ -2022,13 +2024,14 @@
             
             // 更新标签
             const phaseTag = document.getElementById('phaseTag');
-            const difficultyTag = document.getElementById('difficultyTag');
+            const levelTag = document.getElementById('levelTag');
             const phaseNames = { layout: '布局', middle: '中盘', endgame: '官子' };
-            const difficultyNames = { easy: '简单', medium: '中等', hard: '困难' };
             phaseTag.textContent = phaseNames[currentProblem.phase] || currentProblem.phase;
             phaseTag.className = `tag tag-phase-${currentProblem.phase}`;
-            difficultyTag.textContent = difficultyNames[currentProblem.difficulty] || currentProblem.difficulty;
-            difficultyTag.className = `tag tag-difficulty-${currentProblem.difficulty}`;
+            // 显示等级
+            const gameLevel = currentProblem.gameLevel || '未知';
+            levelTag.textContent = gameLevel;
+            levelTag.setAttribute('data-level', gameLevel);
             
             // 恶手题标签 - 插入到弹性空间之前（即中间位置）
             const problemInfo = document.getElementById('problemInfo');

@@ -121,27 +121,27 @@
         .stat-item.middle { background: #e8f5e9; }
         .stat-item.endgame { background: #fff3e0; }
         
-        /* 难度小标签 */
-        .difficulty-row {
+        /* 等级分布标签 - 三级 */
+        .level-row {
             display: flex;
             justify-content: center;
-            gap: 16px;
+            gap: 8px;
             margin-bottom: 0;
-            font-size: 0.85em;
+            font-size: 0.8em;
+            flex-wrap: wrap;
         }
-        .diff-tag {
+        .level-tag {
             display: flex;
             align-items: center;
             gap: 4px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
         }
-        .diff-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-        .dot-easy { background: #4caf50; }
-        .dot-medium { background: #ff9800; }
-        .dot-hard { background: #f44336; }
+        .level-tag.pro { background: #E57373; }   /* 原困难色 */
+        .level-tag.high { background: #FFB74D; }  /* 原中等色 */
+        .level-tag.normal { background: #81C784; } /* 原简单色 */
         
         /* 定式卡片配色 */
         .stat-item.hot { background: #ffebee; }
@@ -162,7 +162,7 @@
     <div class="container">
         <header>
             <h1>围棋智能助手</h1>
-            <div class="date-display">2026-04-21</div>
+            <div class="date-display">2026-04-22</div>
         </header>
         
         <div class="cards">
@@ -181,7 +181,7 @@
                         </div>
                         <div class="stat-item events">
                             <span class="emoji">🏆</span>
-                            <span class="count">4</span>
+                            <span class="count">5</span>
                             <span class="name">个赛事</span>
                         </div>
                         <div class="stat-item sources">
@@ -203,33 +203,24 @@
                     <div class="triple-stats">
                         <div class="stat-item layout">
                             <span class="emoji">🌅</span>
-                            <span class="count">0</span>
+                            <span class="count">1</span>
                             <span class="name">布局</span>
                         </div>
                         <div class="stat-item middle">
                             <span class="emoji">⚔️</span>
-                            <span class="count">7</span>
+                            <span class="count">8</span>
                             <span class="name">中盘</span>
                         </div>
                         <div class="stat-item endgame">
                             <span class="emoji">🔚</span>
-                            <span class="count">1</span>
+                            <span class="count">2</span>
                             <span class="name">官子</span>
                         </div>
                     </div>
-                    <div class="difficulty-row">
-                        <span class="diff-tag">
-                            <span class="diff-dot dot-easy"></span>
-                            简单5
-                        </span>
-                        <span class="diff-tag">
-                            <span class="diff-dot dot-medium"></span>
-                            中等2
-                        </span>
-                        <span class="diff-tag">
-                            <span class="diff-dot dot-hard"></span>
-                            困难1
-                        </span>
+                    <div class="level-row">
+                        <span class="level-tag pro">职业11</span>
+                        <span class="level-tag high">高段0</span>
+                        <span class="level-tag normal">普通0</span>
                     </div>
                 </div>
             </a>
@@ -249,7 +240,7 @@
                         </div>
                         <div class="stat-item hit">
                             <span class="emoji">🎯</span>
-                            <span class="count">1</span>
+                            <span class="count">0</span>
                             <span class="name">命中</span>
                         </div>
                         <div class="stat-item complex">

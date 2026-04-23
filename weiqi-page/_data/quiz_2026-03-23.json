@@ -12,15 +12,11 @@
     "stats": {
       "total": 1,
       "result": "黑中盘胜",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 1,
         "endgame": 0
-      },
-      "difficulty": {
-        "easy": 1,
-        "medium": 0,
-        "hard": 0
       }
     }
   },
@@ -37,15 +33,11 @@
     "stats": {
       "total": 1,
       "result": "黑中盘胜",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 1,
         "endgame": 0
-      },
-      "difficulty": {
-        "easy": 1,
-        "medium": 0,
-        "hard": 0
       }
     }
   },
@@ -62,15 +54,11 @@
     "stats": {
       "total": 1,
       "result": "黑中盘胜",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 1,
         "endgame": 0
-      },
-      "difficulty": {
-        "easy": 1,
-        "medium": 0,
-        "hard": 0
       }
     }
   },
@@ -87,15 +75,11 @@
     "stats": {
       "total": 1,
       "result": "黑中盘胜",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 1,
         "endgame": 0
-      },
-      "difficulty": {
-        "easy": 1,
-        "medium": 0,
-        "hard": 0
       }
     }
   },
@@ -112,15 +96,11 @@
     "stats": {
       "total": 1,
       "result": "黑中盘胜",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 1,
         "endgame": 0
-      },
-      "difficulty": {
-        "easy": 1,
-        "medium": 0,
-        "hard": 0
       }
     }
   },
@@ -137,15 +117,11 @@
     "stats": {
       "total": 1,
       "result": "黑中盘胜",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 1,
         "endgame": 0
-      },
-      "difficulty": {
-        "easy": 1,
-        "medium": 0,
-        "hard": 0
       }
     }
   },
@@ -162,15 +138,11 @@
     "stats": {
       "total": 1,
       "result": "黑中盘胜",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 1,
         "endgame": 0
-      },
-      "difficulty": {
-        "easy": 1,
-        "medium": 0,
-        "hard": 0
       }
     }
   },
@@ -187,15 +159,11 @@
     "stats": {
       "total": 1,
       "result": "黑中盘胜",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 1,
         "endgame": 0
-      },
-      "difficulty": {
-        "easy": 1,
-        "medium": 0,
-        "hard": 0
       }
     }
   },
@@ -212,15 +180,11 @@
     "stats": {
       "total": 1,
       "result": "黑中盘胜",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 1,
         "endgame": 0
-      },
-      "difficulty": {
-        "easy": 1,
-        "medium": 0,
-        "hard": 0
       }
     }
   },
@@ -237,15 +201,11 @@
     "stats": {
       "total": 7,
       "result": "白胜0.50目",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 6,
         "endgame": 1
-      },
-      "difficulty": {
-        "easy": 3,
-        "medium": 4,
-        "hard": 0
       }
     }
   },
@@ -262,15 +222,11 @@
     "stats": {
       "total": 7,
       "result": "白胜0.50目",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 6,
         "endgame": 1
-      },
-      "difficulty": {
-        "easy": 3,
-        "medium": 4,
-        "hard": 0
       }
     }
   },
@@ -287,15 +243,11 @@
     "stats": {
       "total": 7,
       "result": "白胜0.50目",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 6,
         "endgame": 1
-      },
-      "difficulty": {
-        "easy": 3,
-        "medium": 4,
-        "hard": 0
       }
     }
   },
@@ -312,15 +264,11 @@
     "stats": {
       "total": 7,
       "result": "白胜0.50目",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 6,
         "endgame": 1
-      },
-      "difficulty": {
-        "easy": 3,
-        "medium": 4,
-        "hard": 0
       }
     }
   },
@@ -337,15 +285,11 @@
     "stats": {
       "total": 7,
       "result": "白胜0.50目",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 6,
         "endgame": 1
-      },
-      "difficulty": {
-        "easy": 3,
-        "medium": 4,
-        "hard": 0
       }
     }
   }

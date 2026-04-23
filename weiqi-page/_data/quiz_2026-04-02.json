@@ -12,15 +12,11 @@
     "stats": {
       "total": 1,
       "result": "白中盘胜",
+      "game_level": "职业",
       "phase": {
         "layout": 1,
         "middle": 0,
         "endgame": 0
-      },
-      "difficulty": {
-        "easy": 1,
-        "medium": 0,
-        "hard": 0
       }
     }
   },
@@ -37,15 +33,11 @@
     "stats": {
       "total": 5,
       "result": "黑胜1.50目",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 1,
         "endgame": 4
-      },
-      "difficulty": {
-        "easy": 5,
-        "medium": 0,
-        "hard": 0
       }
     }
   },
@@ -62,15 +54,11 @@
     "stats": {
       "total": 3,
       "result": "黑中盘胜",
+      "game_level": "职业",
       "phase": {
         "layout": 2,
         "middle": 1,
         "endgame": 0
-      },
-      "difficulty": {
-        "easy": 2,
-        "medium": 1,
-        "hard": 0
       }
     }
   }

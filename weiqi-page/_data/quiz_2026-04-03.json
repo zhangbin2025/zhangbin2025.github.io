@@ -12,15 +12,11 @@
     "stats": {
       "total": 3,
       "result": "黑中盘胜",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 3,
         "endgame": 0
-      },
-      "difficulty": {
-        "easy": 3,
-        "medium": 0,
-        "hard": 0
       }
     }
   },
@@ -37,15 +33,11 @@
     "stats": {
       "total": 3,
       "result": "白胜2.50目",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 2,
         "endgame": 1
-      },
-      "difficulty": {
-        "easy": 3,
-        "medium": 0,
-        "hard": 0
       }
     }
   },
@@ -62,15 +54,11 @@
     "stats": {
       "total": 3,
       "result": "白胜3.50目",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 3,
         "endgame": 0
-      },
-      "difficulty": {
-        "easy": 1,
-        "medium": 0,
-        "hard": 2
       }
     }
   },
@@ -87,15 +75,11 @@
     "stats": {
       "total": 5,
       "result": "白中盘胜",
+      "game_level": "职业",
       "phase": {
         "layout": 2,
         "middle": 3,
         "endgame": 0
-      },
-      "difficulty": {
-        "easy": 3,
-        "medium": 1,
-        "hard": 1
       }
     }
   },
@@ -112,15 +96,11 @@
     "stats": {
       "total": 1,
       "result": "白中盘胜",
+      "game_level": "职业",
       "phase": {
         "layout": 1,
         "middle": 0,
         "endgame": 0
-      },
-      "difficulty": {
-        "easy": 1,
-        "medium": 0,
-        "hard": 0
       }
     }
   },
@@ -137,15 +117,11 @@
     "stats": {
       "total": 6,
       "result": "白中盘胜",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 6,
         "endgame": 0
-      },
-      "difficulty": {
-        "easy": 3,
-        "medium": 1,
-        "hard": 2
       }
     }
   },
@@ -162,15 +138,11 @@
     "stats": {
       "total": 2,
       "result": "白胜5.50目",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 2,
         "endgame": 0
-      },
-      "difficulty": {
-        "easy": 1,
-        "medium": 0,
-        "hard": 1
       }
     }
   }

@@ -12,15 +12,11 @@
     "stats": {
       "total": 4,
       "result": "黑中盘胜",
+      "game_level": "职业",
       "phase": {
         "layout": 1,
         "middle": 3,
         "endgame": 0
-      },
-      "difficulty": {
-        "easy": 1,
-        "medium": 2,
-        "hard": 1
       }
     }
   },
@@ -37,15 +33,11 @@
     "stats": {
       "total": 5,
       "result": "黑中盘胜",
+      "game_level": "职业",
       "phase": {
         "layout": 0,
         "middle": 5,
         "endgame": 0
-      },
-      "difficulty": {
-        "easy": 4,
-        "medium": 0,
-        "hard": 1
       }
     }
   }

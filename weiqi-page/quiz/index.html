@@ -45,8 +45,9 @@
             box-shadow: 0 3px 8px rgba(0,0,0,0.08);
         }
         .quiz-card.visited { opacity: 0.6; }
-        /* 修复点击：让所有子元素点击穿透到容器 */
+        /* 修复点击：让所有子元素点击穿透到容器，但保留棋谱按钮 */
         .quiz-card-wrapper * { pointer-events: none; }
+        .quiz-card-wrapper .game-btn { pointer-events: auto; }
         .quiz-header { display: flex; align-items: center; margin-bottom: 6px; width: 100%; overflow: hidden; }
         .players { font-weight: 600; font-size: 1.05em; color: #333; display: flex; align-items: center; gap: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .stone-icon { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
@@ -57,7 +58,17 @@
         .quiz-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f0f0f0; }
         .stats { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.85em; color: #666; }
         .stats .count { font-weight: 600; color: #1976d2; }
-        .stats .phase, .stats .difficulty { color: #888; }
+        .stats .phase { color: #888; }
+        .stats .level { 
+            color: #fff; 
+            padding: 2px 8px; 
+            border-radius: 4px; 
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        .stats .level[data-level="职业"] { background: #E57373; }  /* 原困难色 */
+        .stats .level[data-level="高段"] { background: #FFB74D; }  /* 原中等色 */
+        .stats .level[data-level="普通"] { background: #81C784; }  /* 原简单色 */
         .game-btn { padding: 5px 12px; background: #e8f5e9; color: #2e7d32; border-radius: 12px; font-size: 0.85em; white-space: nowrap; cursor: pointer; transition: background 0.2s; }
         .game-btn:hover { background: #c8e6c9; }
         footer { text-align: center; padding: 15px; color: #999; font-size: 0.8em; }
@@ -116,12 +127,12 @@
         <header>
             <div class="header-left"><h1>🎯 实战选点</h1></div>
             <div class="header-actions">
-                <button id="calendarBtn" class="calendar-btn" onclick="openCalendar()">📅 <span id="selectedDateText">2026-04-21</span></button>
+                <button id="calendarBtn" class="calendar-btn" onclick="openCalendar()">📅 <span id="selectedDateText">2026-04-22</span></button>
                 <button class="icon-btn" onclick="clearVisited()" title="清除本日访问记录">👁️</button>
             </div>
         </header>
         <select id="dateFilter" style="display:none" onchange="filterByDate()">
-            <option value="2026-04-21" selected>2026-04-21</option><option value="2026-04-20" >2026-04-20</option><option value="2026-04-19" >2026-04-19</option><option value="2026-04-18" >2026-04-18</option><option value="2026-04-17" >2026-04-17</option><option value="2026-04-16" >2026-04-16</option><option value="2026-04-15" >2026-04-15</option><option value="2026-04-14" >2026-04-14</option><option value="2026-04-13" >2026-04-13</option><option value="2026-04-12" >2026-04-12</option><option value="2026-04-11" >2026-04-11</option><option value="2026-04-10" >2026-04-10</option><option value="2026-04-09" >2026-04-09</option><option value="2026-04-08" >2026-04-08</option><option value="2026-04-07" >2026-04-07</option><option value="2026-04-06" >2026-04-06</option><option value="2026-04-04" >2026-04-04</option><option value="2026-04-03" >2026-04-03</option><option value="2026-04-02" >2026-04-02</option><option value="2026-04-01" >2026-04-01</option><option value="2026-03-31" >2026-03-31</option><option value="2026-03-30" >2026-03-30</option><option value="2026-03-29" >2026-03-29</option><option value="2026-03-28" >2026-03-28</option><option value="2026-03-27" >2026-03-27</option><option value="2026-03-26" >2026-03-26</option><option value="2026-03-25" >2026-03-25</option><option value="2026-03-24" >2026-03-24</option><option value="2026-03-23" >2026-03-23</option><option value="2026-03-22" >2026-03-22</option>
+            <option value="2026-04-22" selected>2026-04-22</option><option value="2026-04-21" >2026-04-21</option><option value="2026-04-20" >2026-04-20</option><option value="2026-04-19" >2026-04-19</option><option value="2026-04-18" >2026-04-18</option><option value="2026-04-17" >2026-04-17</option><option value="2026-04-16" >2026-04-16</option><option value="2026-04-15" >2026-04-15</option><option value="2026-04-14" >2026-04-14</option><option value="2026-04-13" >2026-04-13</option><option value="2026-04-12" >2026-04-12</option><option value="2026-04-11" >2026-04-11</option><option value="2026-04-10" >2026-04-10</option><option value="2026-04-09" >2026-04-09</option><option value="2026-04-08" >2026-04-08</option><option value="2026-04-07" >2026-04-07</option><option value="2026-04-06" >2026-04-06</option><option value="2026-04-04" >2026-04-04</option><option value="2026-04-03" >2026-04-03</option><option value="2026-04-02" >2026-04-02</option><option value="2026-04-01" >2026-04-01</option><option value="2026-03-31" >2026-03-31</option><option value="2026-03-30" >2026-03-30</option><option value="2026-03-29" >2026-03-29</option><option value="2026-03-28" >2026-03-28</option><option value="2026-03-27" >2026-03-27</option><option value="2026-03-26" >2026-03-26</option><option value="2026-03-25" >2026-03-25</option><option value="2026-03-24" >2026-03-24</option><option value="2026-03-23" >2026-03-23</option><option value="2026-03-22" >2026-03-22</option>
         </select>
         <div id="content">
             
@@ -145,7 +156,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单0 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -165,7 +176,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -185,7 +196,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -205,7 +216,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单0 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -225,7 +236,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单2 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -245,7 +256,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单1 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -265,7 +276,7 @@
                                 <span class="count">4题</span>
                                 
                                 <span class="phase">中盘4</span>
-                                <span class="difficulty">简单4 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -285,7 +296,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单0 中等2 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -305,7 +316,7 @@
                                 <span class="count">4题</span>
                                 
                                 <span class="phase">中盘1官子3</span>
-                                <span class="difficulty">简单2 中等2 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -339,7 +350,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单0 中等2 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -359,7 +370,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">官子3</span>
-                                <span class="difficulty">简单2 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -379,7 +390,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">中盘2官子1</span>
-                                <span class="difficulty">简单2 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -399,7 +410,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单0 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -419,7 +430,7 @@
                                 <span class="count">7题</span>
                                 
                                 <span class="phase">布局2中盘5</span>
-                                <span class="difficulty">简单7 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -439,7 +450,7 @@
                                 <span class="count">10题</span>
                                 
                                 <span class="phase">布局1中盘2官子7</span>
-                                <span class="difficulty">简单9 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -459,7 +470,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">中盘3</span>
-                                <span class="difficulty">简单3 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -493,7 +504,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -513,7 +524,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单0 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -533,7 +544,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -553,7 +564,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单0 中等2 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -573,7 +584,7 @@
                                 <span class="count">4题</span>
                                 
                                 <span class="phase">中盘4</span>
-                                <span class="difficulty">简单0 中等1 困难3</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -593,7 +604,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">中盘3</span>
-                                <span class="difficulty">简单2 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -613,12 +624,106 @@
                                 <span class="count">4题</span>
                                 
                                 <span class="phase">中盘4</span>
-                                <span class="difficulty">简单3 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
                                 <span class="result">白中盘胜</span>
                                 <span class="game-btn" data-game-path="/weiqi-page/games/2026-03-26/野狐/game_202603270826020013.html">📖 棋谱</span>
+                            </div>
+                        </div></div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="date-section" data-date="2026-04-22">
+                
+                <div class="source-group">
+                    <div class="source-header" onclick="toggleSource(this)">
+                        <span>🏷️ 野狐 (4份, 11题)</span>
+                        <span class="source-toggle">▼</span>
+                    </div>
+                    <div class="quiz-list">
+                        
+                        <div class="quiz-card-wrapper" data-path="/weiqi-page/quiz/2026-04-22/野狐/quiz_202604232222480002.html" data-quiz-id="202604232222480002"><div class="quiz-card">
+                            <div class="quiz-header">
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>박민규<span style="color:#999;font-weight:normal;">vs</span><span class="stone-icon stone-white"></span>신진서
+                                </span>
+                            </div>
+                            <div class="event">第31届韩国GS加德士杯败者组<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">1题</span>
+                                
+                                <span class="phase">布局1</span>
+                                <span class="level" data-level="职业">职业</span>
+                                
+                            </div>
+                            <div class="quiz-footer">
+                                <span class="result">白中盘胜</span>
+                                <span class="game-btn" data-game-path="/weiqi-page/games/2026-04-22/野狐/game_202604232222480002.html">📖 棋谱</span>
+                            </div>
+                        </div></div>
+                        
+                        <div class="quiz-card-wrapper" data-path="/weiqi-page/quiz/2026-04-22/野狐/quiz_202604232222480003.html" data-quiz-id="202604232222480003"><div class="quiz-card">
+                            <div class="quiz-header">
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>홍성지<span style="color:#999;font-weight:normal;">vs</span><span class="stone-icon stone-white"></span>원성진
+                                </span>
+                            </div>
+                            <div class="event">第31届韩国GS加德士杯败者组<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">3题</span>
+                                
+                                <span class="phase">中盘1官子2</span>
+                                <span class="level" data-level="职业">职业</span>
+                                
+                            </div>
+                            <div class="quiz-footer">
+                                <span class="result">黑胜0.50目</span>
+                                <span class="game-btn" data-game-path="/weiqi-page/games/2026-04-22/野狐/game_202604232222480003.html">📖 棋谱</span>
+                            </div>
+                        </div></div>
+                        
+                        <div class="quiz-card-wrapper" data-path="/weiqi-page/quiz/2026-04-22/野狐/quiz_202604232222480004.html" data-quiz-id="202604232222480004"><div class="quiz-card">
+                            <div class="quiz-header">
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>김형우<span style="color:#999;font-weight:normal;">vs</span><span class="stone-icon stone-white"></span>이창석
+                                </span>
+                            </div>
+                            <div class="event">第6届韩国最佳棋士战16强<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">4题</span>
+                                
+                                <span class="phase">中盘4</span>
+                                <span class="level" data-level="职业">职业</span>
+                                
+                            </div>
+                            <div class="quiz-footer">
+                                <span class="result">黑中盘胜</span>
+                                <span class="game-btn" data-game-path="/weiqi-page/games/2026-04-22/野狐/game_202604232222480004.html">📖 棋谱</span>
+                            </div>
+                        </div></div>
+                        
+                        <div class="quiz-card-wrapper" data-path="/weiqi-page/quiz/2026-04-22/野狐/quiz_202604232222480006.html" data-quiz-id="202604232222480006"><div class="quiz-card">
+                            <div class="quiz-header">
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>김영삼<span style="color:#999;font-weight:normal;">vs</span><span class="stone-icon stone-white"></span>이창호
+                                </span>
+                            </div>
+                            <div class="event">第20届韩国GG杯绅士淑女擂台赛预选<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">3题</span>
+                                
+                                <span class="phase">中盘3</span>
+                                <span class="level" data-level="职业">职业</span>
+                                
+                            </div>
+                            <div class="quiz-footer">
+                                <span class="result">黑中盘胜</span>
+                                <span class="game-btn" data-game-path="/weiqi-page/games/2026-04-22/野狐/game_202604232222480006.html">📖 棋谱</span>
                             </div>
                         </div></div>
                         
@@ -647,7 +752,7 @@
                                 <span class="count">7题</span>
                                 
                                 <span class="phase">中盘7</span>
-                                <span class="difficulty">简单2 中等3 困难2</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -667,7 +772,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">中盘3</span>
-                                <span class="difficulty">简单2 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -687,7 +792,7 @@
                                 <span class="count">7题</span>
                                 
                                 <span class="phase">中盘7</span>
-                                <span class="difficulty">简单2 中等3 困难2</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -707,7 +812,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -727,7 +832,7 @@
                                 <span class="count">8题</span>
                                 
                                 <span class="phase">官子8</span>
-                                <span class="difficulty">简单6 中等1 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -761,7 +866,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单0 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -781,7 +886,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -801,7 +906,7 @@
                                 <span class="count">4题</span>
                                 
                                 <span class="phase">中盘4</span>
-                                <span class="difficulty">简单2 中等1 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -821,7 +926,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -841,7 +946,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">官子3</span>
-                                <span class="difficulty">简单2 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -861,7 +966,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -881,7 +986,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -901,7 +1006,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -921,7 +1026,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">布局1中盘2</span>
-                                <span class="difficulty">简单3 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -955,7 +1060,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单1 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -975,7 +1080,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -995,7 +1100,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单0 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1015,7 +1120,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1035,7 +1140,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘1官子1</span>
-                                <span class="difficulty">简单1 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1055,7 +1160,7 @@
                                 <span class="count">8题</span>
                                 
                                 <span class="phase">中盘4官子4</span>
-                                <span class="difficulty">简单6 中等0 困难2</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1075,7 +1180,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1095,7 +1200,7 @@
                                 <span class="count">4题</span>
                                 
                                 <span class="phase">布局1中盘3</span>
-                                <span class="difficulty">简单2 中等1 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1115,7 +1220,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">官子1</span>
-                                <span class="difficulty">简单0 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1135,7 +1240,7 @@
                                 <span class="count">10题</span>
                                 
                                 <span class="phase">布局2中盘6官子2</span>
-                                <span class="difficulty">简单6 中等2 困难2</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1155,7 +1260,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">中盘3</span>
-                                <span class="difficulty">简单1 中等0 困难2</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1189,7 +1294,7 @@
                                 <span class="count">4题</span>
                                 
                                 <span class="phase">布局1中盘3</span>
-                                <span class="difficulty">简单1 中等2 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1209,7 +1314,7 @@
                                 <span class="count">5题</span>
                                 
                                 <span class="phase">中盘5</span>
-                                <span class="difficulty">简单4 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1243,7 +1348,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">官子1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1263,7 +1368,7 @@
                                 <span class="count">4题</span>
                                 
                                 <span class="phase">中盘4</span>
-                                <span class="difficulty">简单0 中等4 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1283,7 +1388,7 @@
                                 <span class="count">4题</span>
                                 
                                 <span class="phase">中盘4</span>
-                                <span class="difficulty">简单2 中等2 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1303,7 +1408,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单0 中等1 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1323,7 +1428,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1343,7 +1448,7 @@
                                 <span class="count">6题</span>
                                 
                                 <span class="phase">中盘6</span>
-                                <span class="difficulty">简单5 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1363,7 +1468,7 @@
                                 <span class="count">6题</span>
                                 
                                 <span class="phase">中盘5官子1</span>
-                                <span class="difficulty">简单5 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1383,7 +1488,7 @@
                                 <span class="count">5题</span>
                                 
                                 <span class="phase">中盘2官子3</span>
-                                <span class="difficulty">简单4 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1417,7 +1522,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">中盘3</span>
-                                <span class="difficulty">简单3 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1437,7 +1542,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">中盘2官子1</span>
-                                <span class="difficulty">简单3 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1457,7 +1562,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">中盘3</span>
-                                <span class="difficulty">简单1 中等0 困难2</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1477,7 +1582,7 @@
                                 <span class="count">5题</span>
                                 
                                 <span class="phase">布局2中盘3</span>
-                                <span class="difficulty">简单3 中等1 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1497,7 +1602,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1517,7 +1622,7 @@
                                 <span class="count">6题</span>
                                 
                                 <span class="phase">中盘6</span>
-                                <span class="difficulty">简单3 中等1 困难2</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1537,7 +1642,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单1 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1571,7 +1676,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">布局1中盘1</span>
-                                <span class="difficulty">简单1 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1591,7 +1696,7 @@
                                 <span class="count">6题</span>
                                 
                                 <span class="phase">中盘6</span>
-                                <span class="difficulty">简单3 中等3 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1611,7 +1716,7 @@
                                 <span class="count">5题</span>
                                 
                                 <span class="phase">中盘5</span>
-                                <span class="difficulty">简单4 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1631,7 +1736,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">官子1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1651,7 +1756,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单0 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1671,7 +1776,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单0 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1691,7 +1796,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">布局1中盘2</span>
-                                <span class="difficulty">简单1 中等2 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1711,7 +1816,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单0 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1731,7 +1836,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1751,7 +1856,7 @@
                                 <span class="count">7题</span>
                                 
                                 <span class="phase">布局1中盘6</span>
-                                <span class="difficulty">简单3 中等3 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1771,7 +1876,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">布局2</span>
-                                <span class="difficulty">简单0 中等2 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1791,7 +1896,7 @@
                                 <span class="count">7题</span>
                                 
                                 <span class="phase">中盘1官子6</span>
-                                <span class="difficulty">简单5 中等1 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1811,7 +1916,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单0 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1845,7 +1950,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1865,7 +1970,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1885,7 +1990,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1905,7 +2010,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1925,7 +2030,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1945,7 +2050,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1965,7 +2070,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -1985,7 +2090,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2005,7 +2110,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2025,7 +2130,7 @@
                                 <span class="count">7题</span>
                                 
                                 <span class="phase">中盘6官子1</span>
-                                <span class="difficulty">简单3 中等4 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2045,7 +2150,7 @@
                                 <span class="count">7题</span>
                                 
                                 <span class="phase">中盘6官子1</span>
-                                <span class="difficulty">简单3 中等4 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2065,7 +2170,7 @@
                                 <span class="count">7题</span>
                                 
                                 <span class="phase">中盘6官子1</span>
-                                <span class="difficulty">简单3 中等4 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2085,7 +2190,7 @@
                                 <span class="count">7题</span>
                                 
                                 <span class="phase">中盘6官子1</span>
-                                <span class="difficulty">简单3 中等4 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2105,7 +2210,7 @@
                                 <span class="count">7题</span>
                                 
                                 <span class="phase">中盘6官子1</span>
-                                <span class="difficulty">简单3 中等4 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2139,7 +2244,7 @@
                                 <span class="count">5题</span>
                                 
                                 <span class="phase">布局1中盘4</span>
-                                <span class="difficulty">简单2 中等3 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2159,7 +2264,7 @@
                                 <span class="count">5题</span>
                                 
                                 <span class="phase">中盘3官子2</span>
-                                <span class="difficulty">简单2 中等3 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2179,7 +2284,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2199,7 +2304,7 @@
                                 <span class="count">5题</span>
                                 
                                 <span class="phase">布局2中盘3</span>
-                                <span class="difficulty">简单0 中等5 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2219,7 +2324,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2239,7 +2344,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘1官子1</span>
-                                <span class="difficulty">简单2 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2259,7 +2364,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">中盘1官子2</span>
-                                <span class="difficulty">简单2 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2279,7 +2384,7 @@
                                 <span class="count">4题</span>
                                 
                                 <span class="phase">官子4</span>
-                                <span class="difficulty">简单3 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2299,7 +2404,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">官子1</span>
-                                <span class="difficulty">简单0 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2319,7 +2424,7 @@
                                 <span class="count">4题</span>
                                 
                                 <span class="phase">布局1中盘3</span>
-                                <span class="difficulty">简单4 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2353,7 +2458,7 @@
                                 <span class="count">6题</span>
                                 
                                 <span class="phase">中盘4官子2</span>
-                                <span class="difficulty">简单4 中等2 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2373,7 +2478,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2393,7 +2498,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">布局2中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难2</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2413,7 +2518,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2433,7 +2538,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2453,7 +2558,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2487,7 +2592,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2507,7 +2612,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2527,7 +2632,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">中盘3</span>
-                                <span class="difficulty">简单2 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2561,7 +2666,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单1 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2595,7 +2700,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单0 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2615,7 +2720,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2635,7 +2740,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单1 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2655,7 +2760,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2675,7 +2780,7 @@
                                 <span class="count">6题</span>
                                 
                                 <span class="phase">官子6</span>
-                                <span class="difficulty">简单4 中等1 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2695,7 +2800,7 @@
                                 <span class="count">4题</span>
                                 
                                 <span class="phase">中盘4</span>
-                                <span class="difficulty">简单2 中等2 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2729,7 +2834,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2749,7 +2854,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘1官子1</span>
-                                <span class="difficulty">简单1 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2769,7 +2874,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单0 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2789,7 +2894,7 @@
                                 <span class="count">4题</span>
                                 
                                 <span class="phase">中盘4</span>
-                                <span class="difficulty">简单3 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2823,7 +2928,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2843,7 +2948,7 @@
                                 <span class="count">5题</span>
                                 
                                 <span class="phase">中盘1官子4</span>
-                                <span class="difficulty">简单5 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2863,7 +2968,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">布局2中盘1</span>
-                                <span class="difficulty">简单2 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2897,7 +3002,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">官子1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2917,7 +3022,7 @@
                                 <span class="count">4题</span>
                                 
                                 <span class="phase">中盘4</span>
-                                <span class="difficulty">简单3 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2937,7 +3042,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">中盘3</span>
-                                <span class="difficulty">简单2 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2957,7 +3062,7 @@
                                 <span class="count">4题</span>
                                 
                                 <span class="phase">中盘3官子1</span>
-                                <span class="difficulty">简单1 中等2 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2977,7 +3082,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单0 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -2997,7 +3102,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3031,7 +3136,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单0 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3051,7 +3156,7 @@
                                 <span class="count">6题</span>
                                 
                                 <span class="phase">布局1中盘5</span>
-                                <span class="difficulty">简单3 中等3 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3085,7 +3190,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单1 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3105,7 +3210,7 @@
                                 <span class="count">5题</span>
                                 
                                 <span class="phase">中盘5</span>
-                                <span class="difficulty">简单1 中等2 困难2</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3125,7 +3230,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">布局2中盘1</span>
-                                <span class="difficulty">简单3 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3163,7 +3268,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3183,7 +3288,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单0 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3203,7 +3308,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单0 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3223,7 +3328,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">中盘3</span>
-                                <span class="difficulty">简单2 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3243,7 +3348,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单1 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3263,7 +3368,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单0 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3283,7 +3388,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">中盘3</span>
-                                <span class="difficulty">简单1 中等1 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3303,7 +3408,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单2 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3323,7 +3428,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">中盘3</span>
-                                <span class="difficulty">简单3 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3343,7 +3448,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单2 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3377,7 +3482,7 @@
                                 <span class="count">5题</span>
                                 
                                 <span class="phase">中盘5</span>
-                                <span class="difficulty">简单4 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3397,7 +3502,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单0 中等1 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3417,7 +3522,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单1 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3437,7 +3542,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3457,7 +3562,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单0 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3477,7 +3582,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3497,7 +3602,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">中盘3</span>
-                                <span class="difficulty">简单1 中等2 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3531,7 +3636,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3551,7 +3656,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3571,7 +3676,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3591,7 +3696,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3611,7 +3716,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3631,7 +3736,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单1 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3651,7 +3756,7 @@
                                 <span class="count">4题</span>
                                 
                                 <span class="phase">布局1中盘3</span>
-                                <span class="difficulty">简单1 中等2 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3671,7 +3776,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单0 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3691,7 +3796,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单2 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3711,7 +3816,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单0 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3731,7 +3836,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3765,7 +3870,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单0 中等2 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3785,7 +3890,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3805,7 +3910,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">中盘3</span>
-                                <span class="difficulty">简单1 中等1 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3825,7 +3930,7 @@
                                 <span class="count">4题</span>
                                 
                                 <span class="phase">中盘4</span>
-                                <span class="difficulty">简单2 中等1 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3845,7 +3950,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单2 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3865,7 +3970,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单2 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3885,7 +3990,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">中盘3</span>
-                                <span class="difficulty">简单2 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3905,7 +4010,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">布局1中盘1</span>
-                                <span class="difficulty">简单1 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3925,7 +4030,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单2 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3945,7 +4050,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3965,7 +4070,7 @@
                                 <span class="count">10题</span>
                                 
                                 <span class="phase">官子10</span>
-                                <span class="difficulty">简单10 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -3999,7 +4104,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -4019,7 +4124,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单1 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -4039,7 +4144,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">布局1中盘1</span>
-                                <span class="difficulty">简单1 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -4059,7 +4164,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">中盘2官子1</span>
-                                <span class="difficulty">简单2 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -4079,7 +4184,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">布局1中盘1官子1</span>
-                                <span class="difficulty">简单1 中等1 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -4099,7 +4204,7 @@
                                 <span class="count">4题</span>
                                 
                                 <span class="phase">中盘1官子3</span>
-                                <span class="difficulty">简单3 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -4119,7 +4224,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单2 中等0 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -4153,7 +4258,7 @@
                                 <span class="count">5题</span>
                                 
                                 <span class="phase">中盘5</span>
-                                <span class="difficulty">简单4 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -4173,7 +4278,7 @@
                                 <span class="count">5题</span>
                                 
                                 <span class="phase">中盘5</span>
-                                <span class="difficulty">简单4 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -4193,7 +4298,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">中盘2</span>
-                                <span class="difficulty">简单1 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -4213,7 +4318,7 @@
                                 <span class="count">3题</span>
                                 
                                 <span class="phase">布局2中盘1</span>
-                                <span class="difficulty">简单1 中等1 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -4251,7 +4356,7 @@
                                 <span class="count">2题</span>
                                 
                                 <span class="phase">布局1中盘1</span>
-                                <span class="difficulty">简单1 中等0 困难1</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -4271,7 +4376,7 @@
                                 <span class="count">1题</span>
                                 
                                 <span class="phase">布局1</span>
-                                <span class="difficulty">简单0 中等1 困难0</span>
+                                <span class="level" data-level="职业">职业</span>
                                 
                             </div>
                             <div class="quiz-footer">
@@ -4305,8 +4410,8 @@
     </div>
     <script>
         // ========== 日历选择器功能 ==========
-        const availableDates = ["2026-04-21", "2026-04-20", "2026-04-19", "2026-04-18", "2026-04-17", "2026-04-16", "2026-04-15", "2026-04-14", "2026-04-13", "2026-04-12", "2026-04-11", "2026-04-10", "2026-04-09", "2026-04-08", "2026-04-07", "2026-04-06", "2026-04-04", "2026-04-03", "2026-04-02", "2026-04-01", "2026-03-31", "2026-03-30", "2026-03-29", "2026-03-28", "2026-03-27", "2026-03-26", "2026-03-25", "2026-03-24", "2026-03-23", "2026-03-22"];
-        let selectedDate = availableDates.length > 0 ? availableDates[0] : '2026-04-21';
+        const availableDates = ["2026-04-22", "2026-04-21", "2026-04-20", "2026-04-19", "2026-04-18", "2026-04-17", "2026-04-16", "2026-04-15", "2026-04-14", "2026-04-13", "2026-04-12", "2026-04-11", "2026-04-10", "2026-04-09", "2026-04-08", "2026-04-07", "2026-04-06", "2026-04-04", "2026-04-03", "2026-04-02", "2026-04-01", "2026-03-31", "2026-03-30", "2026-03-29", "2026-03-28", "2026-03-27", "2026-03-26", "2026-03-25", "2026-03-24", "2026-03-23", "2026-03-22"];
+        let selectedDate = availableDates.length > 0 ? availableDates[0] : '2026-04-22';
         let currentMonth = new Date(selectedDate + 'T00:00:00');
 
         function openCalendar() {
