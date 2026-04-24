@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>第20届倡棋杯中国职业锦标赛本赛1轮&lt;绝艺讲解&gt;</title>
+    <title>实战右上角标准化定式（4手）</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 0; }
@@ -59,8 +59,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1 id="gameTitle">第20届倡棋杯中国职业锦标赛本赛1轮&lt;绝艺讲解&gt;</h1>
-            <div class="info" id="gameInfo">党毅飞 vs 江维杰</div>
+            <h1 id="gameTitle">实战右上角标准化定式（4手）</h1>
+            <div class="info" id="gameInfo">黑棋 vs 白棋</div>
         </div>
         <div class="board-container"><canvas id="board"></canvas></div>
         <div class="controls-row" id="mainControls">
@@ -95,12 +95,12 @@
             <div class="captured-info" id="capturedInfo"></div>
         </div>
         <div class="legend">
-            <div class="legend-item"><div class="stone-black"></div><span id="blackName">党毅飞</span></div>
-            <div class="legend-item"><div class="stone-white"></div><span id="whiteName">江维杰</span></div>
+            <div class="legend-item"><div class="stone-black"></div><span id="blackName">黑棋</span></div>
+            <div class="legend-item"><div class="stone-white"></div><span id="whiteName">白棋</span></div>
         </div>
     </div>
     <script>
-        const tree = (() => { const textarea = document.createElement('textarea'); textarea.innerHTML = '{&quot;properties&quot;: {&quot;CA&quot;: &quot;utf-8&quot;, &quot;FF&quot;: &quot;4&quot;, &quot;AP&quot;: &quot;WeiqiPage&quot;, &quot;SZ&quot;: &quot;19&quot;, &quot;GM&quot;: &quot;1&quot;, &quot;PB&quot;: &quot;党毅飞&quot;, &quot;PW&quot;: &quot;江维杰&quot;, &quot;GN&quot;: &quot;第20届倡棋杯中国职业锦标赛本赛1轮&lt;绝艺讲解&gt;&quot;, &quot;DT&quot;: &quot;2026-04-19&quot;, &quot;C&quot;: &quot;第20届倡棋杯中国职业锦标赛本赛1轮&lt;绝艺讲解&gt; - 党毅飞 vs 江维杰 - 定式 (TR角)&quot;}, &quot;is_root&quot;: true, &quot;move_number&quot;: 0, &quot;color&quot;: null, &quot;coord&quot;: null, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;qd&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 1, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;qd&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;tt&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 2, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;tt&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;nd&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 3, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;nd&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;lc&quot;, &quot;C&quot;: &quot;出现次数:2068&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 4, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;lc&quot;, &quot;children&quot;: []}]}]}]}]}'; return JSON.parse(textarea.value); })();
+        const tree = (() => { const textarea = document.createElement('textarea'); textarea.innerHTML = '{&quot;properties&quot;: {&quot;CA&quot;: &quot;utf-8&quot;, &quot;FF&quot;: &quot;4&quot;, &quot;AP&quot;: &quot;WeiqiPage&quot;, &quot;SZ&quot;: &quot;19&quot;, &quot;GM&quot;: &quot;1&quot;, &quot;GN&quot;: &quot;实战右上角标准化定式（4手）&quot;, &quot;C&quot;: &quot;实战右上角标准化定式（4手）&quot;}, &quot;is_root&quot;: true, &quot;move_number&quot;: 0, &quot;color&quot;: null, &quot;coord&quot;: null, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;qd&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 1, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;qd&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;tt&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 2, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;tt&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;B&quot;: &quot;nd&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 3, &quot;color&quot;: &quot;B&quot;, &quot;coord&quot;: &quot;nd&quot;, &quot;children&quot;: [{&quot;properties&quot;: {&quot;W&quot;: &quot;lc&quot;}, &quot;is_root&quot;: false, &quot;move_number&quot;: 4, &quot;color&quot;: &quot;W&quot;, &quot;coord&quot;: &quot;lc&quot;, &quot;children&quot;: []}]}]}]}]}'; return JSON.parse(textarea.value); })();
         const BOARD_SIZE = 19;
         const handicapStones = [];
         const DEFAULT_MOVE = 4;
