@@ -28,15 +28,15 @@
     "black": "表悠斗",
     "white": "村川大介",
     "event": "日本国家队网训赛<绝艺讲解>",
-    "result": "白中盘胜",
-    "count": 1,
+    "result": "黑中盘胜",
+    "count": 2,
     "stats": {
-      "total": 1,
-      "result": "白中盘胜",
+      "total": 2,
+      "result": "黑中盘胜",
       "game_level": "职业",
       "phase": {
         "layout": 0,
-        "middle": 1,
+        "middle": 2,
         "endgame": 0
       }
     }
@@ -109,7 +109,7 @@
     "source": "野狐",
     "path": "/weiqi-page/quiz/2026-04-17/野狐/quiz_202604182347300010.html",
     "game_path": "/weiqi-page/games/2026-04-17/野狐/game_202604182347300010.html",
-    "black": "강지성",
+    "black": "姜至省",
     "white": "李昌镐",
     "event": "第13届韩国大舟杯元老赛8强<绝艺讲解>",
     "result": "白胜3.50目",

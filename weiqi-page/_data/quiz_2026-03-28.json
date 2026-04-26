@@ -7,15 +7,15 @@
     "black": "村川大介",
     "white": "伊田笃史",
     "event": "日本国家队研究会大循环<绝艺讲解>",
-    "result": "黑中盘胜",
+    "result": "白中盘胜",
     "count": 1,
     "stats": {
       "total": 1,
-      "result": "黑中盘胜",
+      "result": "白中盘胜",
       "game_level": "职业",
       "phase": {
-        "layout": 0,
-        "middle": 1,
+        "layout": 1,
+        "middle": 0,
         "endgame": 0
       }
     }
@@ -28,15 +28,15 @@
     "black": "加藤千笑",
     "white": "大川拓也",
     "event": "日本国家队研究会大循环<绝艺讲解>",
-    "result": "白中盘胜",
-    "count": 1,
+    "result": "黑胜2.50目",
+    "count": 4,
     "stats": {
-      "total": 1,
-      "result": "白中盘胜",
+      "total": 4,
+      "result": "黑胜2.50目",
       "game_level": "职业",
       "phase": {
         "layout": 0,
-        "middle": 1,
+        "middle": 4,
         "endgame": 0
       }
     }
@@ -109,7 +109,7 @@
     "source": "野狐",
     "path": "/weiqi-page/quiz/2026-03-28/野狐/quiz_202603282319250010.html",
     "game_path": "/weiqi-page/games/2026-03-28/野狐/game_202603282319250010.html",
-    "black": "이원도",
+    "black": "李元道",
     "white": "崔精",
     "event": "第6届韩国最佳棋士战16强<绝艺讲解>",
     "result": "黑中盘胜",
@@ -126,33 +126,12 @@
     }
   },
   {
-    "id": "202603282319250011",
-    "source": "野狐",
-    "path": "/weiqi-page/quiz/2026-03-28/野狐/quiz_202603282319250011.html",
-    "game_path": "/weiqi-page/games/2026-03-28/野狐/game_202603282319250011.html",
-    "black": "加藤千笑",
-    "white": "牛栄子",
-    "event": "日本国家队研究会大循环<绝艺讲解>",
-    "result": "黑胜2.50目",
-    "count": 4,
-    "stats": {
-      "total": 4,
-      "result": "黑胜2.50目",
-      "game_level": "职业",
-      "phase": {
-        "layout": 0,
-        "middle": 4,
-        "endgame": 0
-      }
-    }
-  },
-  {
     "id": "202603282319250013",
     "source": "野狐",
     "path": "/weiqi-page/quiz/2026-03-28/野狐/quiz_202603282319250013.html",
     "game_path": "/weiqi-page/games/2026-03-28/野狐/game_202603282319250013.html",
     "black": "이지현M",
-    "white": "송규상",
+    "white": "宋圭相",
     "event": "2026韩国KB围棋联赛总决赛第2/3轮<绝艺讲解>",
     "result": "白胜1.50目",
     "count": 2,
@@ -172,7 +151,7 @@
     "source": "野狐",
     "path": "/weiqi-page/quiz/2026-03-28/野狐/quiz_202603282319250015.html",
     "game_path": "/weiqi-page/games/2026-03-28/野狐/game_202603282319250015.html",
-    "black": "이원영",
+    "black": "李元荣",
     "white": "廖元赫",
     "event": "2026韩国KB围棋联赛总决赛第2/3轮<绝艺讲解>",
     "result": "白中盘胜",

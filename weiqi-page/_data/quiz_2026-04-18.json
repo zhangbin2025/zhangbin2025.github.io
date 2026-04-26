@@ -70,15 +70,15 @@
     "black": "国松聪",
     "white": "加藤千笑",
     "event": "日本国家队研究会大循环<绝艺讲解>",
-    "result": "白中盘胜",
-    "count": 1,
+    "result": "黑中盘胜",
+    "count": 2,
     "stats": {
-      "total": 1,
-      "result": "白中盘胜",
+      "total": 2,
+      "result": "黑中盘胜",
       "game_level": "职业",
       "phase": {
-        "layout": 1,
-        "middle": 0,
+        "layout": 0,
+        "middle": 2,
         "endgame": 0
       }
     }
@@ -210,6 +210,27 @@
     }
   },
   {
+    "id": "202604190825510012",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz/2026-04-18/野狐/quiz_202604190825510012.html",
+    "game_path": "/weiqi-page/games/2026-04-18/野狐/game_202604190825510012.html",
+    "black": "大竹优",
+    "white": "加藤千笑",
+    "event": "日本国家队研究会大循环<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 0,
+        "endgame": 0
+      }
+    }
+  },
+  {
     "id": "202604190825510013",
     "source": "野狐",
     "path": "/weiqi-page/quiz/2026-04-18/野狐/quiz_202604190825510013.html",
@@ -224,8 +245,8 @@
       "result": "白中盘胜",
       "game_level": "职业",
       "phase": {
-        "layout": 0,
-        "middle": 1,
+        "layout": 1,
+        "middle": 0,
         "endgame": 0
       }
     }

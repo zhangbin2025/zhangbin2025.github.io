@@ -21,6 +21,27 @@
     }
   },
   {
+    "id": "202604041805400002",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz/2026-04-04/野狐/quiz_202604041805400002.html",
+    "game_path": "/weiqi-page/games/2026-04-04/野狐/game_202604041805400002.html",
+    "black": "栁原咲輝",
+    "white": "田中健太郎",
+    "event": "日本国家队研究会大循环<绝艺讲解>",
+    "result": "白胜3.50目",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "白胜3.50目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
     "id": "202604041805400003",
     "source": "野狐",
     "path": "/weiqi-page/quiz/2026-04-04/野狐/quiz_202604041805400003.html",
@@ -49,15 +70,15 @@
     "black": "平田智也",
     "white": "表悠斗",
     "event": "日本国家队研究会大循环<绝艺讲解>",
-    "result": "黑中盘胜",
-    "count": 7,
+    "result": "白中盘胜",
+    "count": 4,
     "stats": {
-      "total": 7,
-      "result": "黑中盘胜",
+      "total": 4,
+      "result": "白中盘胜",
       "game_level": "职业",
       "phase": {
         "layout": 0,
-        "middle": 7,
+        "middle": 4,
         "endgame": 0
       }
     }
@@ -68,7 +89,7 @@
     "path": "/weiqi-page/quiz/2026-04-04/野狐/quiz_202604041805400005.html",
     "game_path": "/weiqi-page/games/2026-04-04/野狐/game_202604041805400005.html",
     "black": "崔宰荣",
-    "white": "金桢炫",
+    "white": "金庭贤",
     "event": "第6届韩国最佳棋士战16强<绝艺讲解>",
     "result": "黑中盘胜",
     "count": 1,
