@@ -190,16 +190,30 @@
             font-size: 14px;
             cursor: pointer;
         }
-        /* 移动端：减小间距，棋盘最大化 */
+        /* 移动端：棋盘最大化 */
         @media (max-width: 599px) {
             .container {
-                padding: 2px;
+                padding: 0;
             }
             .header {
-                margin-bottom: 4px;
+                margin: 2px 0;
+            }
+            .header h1 {
+                font-size: 14px;
             }
             .board-container {
+                margin: 0;
+                padding: 0 2px;
+            }
+            #board {
+                width: calc(100vw - 4px);
+                height: calc(100vw - 4px);
+                max-width: calc(100vh - 100px);
+                max-height: calc(100vh - 100px);
+            }
+            .toolbar {
                 margin: 4px 0;
+                padding: 0 4px;
             }
         }
         @media (min-width: 600px) {
@@ -230,7 +244,7 @@
                 <button class="btn btn-sm" onclick="passMove()" title="停一手">
                     <svg viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor" stroke="none"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor" stroke="none"/></svg>
                 </button>
-                <button class="btn btn-sm btn-danger" onclick="clearBoard()" title="清空棋盘">
+                <button class="btn btn-sm" onclick="clearBoard()" title="清空棋盘">
                     <svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                 </button>
                 <button id="exportBtn" class="btn btn-sm" onclick="exportSGF()" title="导出SGF">
