@@ -315,6 +315,19 @@
                 correctLevel: QRCode.CorrectLevel.M
             });
 
+            // 将 canvas 转换为 img，支持微信长按识别
+            setTimeout(function() {
+                const canvas = qrContainer.querySelector('canvas');
+                if (canvas) {
+                    const img = document.createElement('img');
+                    img.src = canvas.toDataURL('image/png');
+                    img.style.width = '200px';
+                    img.style.height = '200px';
+                    qrContainer.innerHTML = '';
+                    qrContainer.appendChild(img);
+                }
+            }, 100);
+
             document.getElementById('qrModal').classList.add('show');
         }
 
