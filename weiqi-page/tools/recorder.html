@@ -337,6 +337,7 @@
             if (exportBtn) {
                 exportBtn.innerHTML = '📱';
                 exportBtn.title = '分享二维码';
+                exportBtn.removeAttribute('onclick');
                 exportBtn.onclick = showQRCode;
             }
             // 延迟加载 qrcode.js，确保页面功能先初始化
