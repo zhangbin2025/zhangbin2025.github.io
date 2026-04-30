@@ -24,7 +24,6 @@ async function getApiBase() {
     const now = Date.now();
     
     if (cached && (now - cachedTime) < CACHE_MAX_AGE) {
-        console.log('使用缓存的域名:', cached);
         return cached;
     }
     
@@ -35,7 +34,6 @@ async function getApiBase() {
             // 缓存到 localStorage
             localStorage.setItem(DOMAIN_CACHE_KEY, window.API_BASE);
             localStorage.setItem(DOMAIN_CACHE_TIME_KEY, now.toString());
-            console.log('域名已更新:', window.API_BASE);
             return window.API_BASE;
         }
     } catch (e) {
@@ -44,7 +42,6 @@ async function getApiBase() {
     
     // 4. 使用过期缓存（降级）
     if (cached) {
-        console.warn('使用过期的域名缓存:', cached);
         return cached;
     }
     
@@ -54,18 +51,11 @@ async function getApiBase() {
 // 动态加载 JS 文件（支持跨域）
 function loadScript(src) {
     return new Promise((resolve, reject) => {
-        console.log('[Auth] 正在加载域名配置:', src);
         const script = document.createElement('script');
         script.src = src;
         script.crossOrigin = 'anonymous';
-        script.onload = () => {
-            console.log('[Auth] 域名配置加载完成, API_BASE=', window.API_BASE);
-            resolve();
-        };
-        script.onerror = (e) => {
-            console.error('[Auth] 加载失败:', src, e);
-            reject(new Error('Failed to load: ' + src));
-        };
+        script.onload = () => resolve();
+        script.onerror = (e) => reject(new Error('Failed to load: ' + src));
         document.head.appendChild(script);
     });
 }
@@ -86,16 +76,13 @@ function hasInvalidChars(str) {
 function getToken() {
     try {
         const token = localStorage.getItem(TOKEN_KEY);
-        // 检测 Token 是否包含非法字符（如中文）
+        // 检测 Token 是否包含非法字符（如中文），有则清除
         if (token && hasInvalidChars(token)) {
-            console.warn('[Auth Debug] Token 包含非法字符，自动清除');
             clearToken();
             return '';
         }
-        console.log('[Auth Debug] getToken:', token ? '有Token' : '无Token');
         return token || '';
     } catch (e) {
-        console.error('[Auth Debug] getToken 错误:', e.message);
         return '';
     }
 }
@@ -120,9 +107,7 @@ function clearToken() {
  * @returns {boolean}
  */
 function hasToken() {
-    const has = !!getToken();
-    console.log('[Auth Debug] hasToken:', has);
-    return has;
+    return !!getToken();
 }
 
 /**
@@ -131,9 +116,7 @@ function hasToken() {
  */
 function redirectToAuth(returnUrl) {
     const url = returnUrl || window.location.href;
-    console.log('[Auth Debug] redirectToAuth, returnUrl:', url);
     const encodedReturnUrl = encodeURIComponent(url);
-    console.log('[Auth Debug] 即将跳转到:', `/weiqi-page/auth.html?return=${encodedReturnUrl}`);
     setTimeout(() => {
         window.location.replace(`/weiqi-page/auth.html?return=${encodedReturnUrl}`);
     }, 10);
@@ -147,33 +130,10 @@ function redirectToAuth(returnUrl) {
  * @param {object} options - fetch 选项
  * @returns {Promise<Response|null>} 如果返回 null 表示已跳转
  */
-// 检查字符串是否包含非 ISO-8859-1 字符
-function isValidHeaderValue(str) {
-    if (!str) return true;
-    for (let i = 0; i < str.length; i++) {
-        const code = str.charCodeAt(i);
-        // ISO-8859-1 范围是 0-255
-        if (code > 255) return false;
-    }
-    return true;
-}
-
 async function fetchWithAuth(url, options = {}) {
-    console.log('[Auth Debug] fetchWithAuth 开始, url:', url);
     const token = getToken();
-    console.log('[Auth Debug] token:', token ? '有' : '无');
-    
-    let apiBase;
-    try {
-        apiBase = await getApiBase();
-        console.log('[Auth Debug] apiBase:', apiBase);
-    } catch (e) {
-        console.error('[Auth Debug] getApiBase 失败:', e.message);
-        throw new Error('获取 API 域名失败: ' + e.message);
-    }
-    
+    const apiBase = await getApiBase();
     const fullUrl = url.startsWith('http') ? url : `${apiBase}${url}`;
-    console.log('[Auth Debug] fullUrl:', fullUrl);
     
     // 添加认证头
     const headers = {
@@ -182,16 +142,13 @@ async function fetchWithAuth(url, options = {}) {
     };
     
     try {
-        console.log('[Auth Debug] 开始 fetch...');
         const response = await fetch(fullUrl, {
             ...options,
             headers
         });
-        console.log('[Auth Debug] fetch 完成, status:', response.status);
         
         // 401/403 跳转到认证页面
         if (response.status === 401 || response.status === 403) {
-            console.log('[Auth Debug] 401/403, 清除Token并跳转');
             clearToken();
             setTimeout(() => {
                 redirectToAuth(window.location.href);
@@ -201,7 +158,6 @@ async function fetchWithAuth(url, options = {}) {
         
         return response;
     } catch (error) {
-        console.error('[Auth Debug] fetch 失败:', error.message);
         throw new Error('网络请求失败，请检查网络连接');
     }
 }
