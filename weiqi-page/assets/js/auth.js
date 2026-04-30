@@ -11,50 +11,20 @@ const DOMAIN_CACHE_KEY = 'weiqi_api_domain';
 const DOMAIN_CACHE_TIME_KEY = 'weiqi_api_domain_time';
 const CACHE_MAX_AGE = 10 * 60 * 1000; // 10分钟缓存
 
-// ========== 微信浏览器兼容性：存储检测 ==========
-let storageAvailable = false;
-let storageType = 'localStorage';
-
-// 测试 localStorage 是否可用
-try {
-    const testKey = '__test_storage__';
-    localStorage.setItem(testKey, 'test');
-    localStorage.removeItem(testKey);
-    storageAvailable = true;
-} catch (e) {
-    console.warn('localStorage 不可用，尝试使用 sessionStorage');
-    try {
-        const testKey = '__test_storage__';
-        sessionStorage.setItem(testKey, 'test');
-        sessionStorage.removeItem(testKey);
-        storageAvailable = true;
-        storageType = 'sessionStorage';
-    } catch (e2) {
-        console.warn('sessionStorage 也不可用，将使用内存存储（刷新丢失）');
-        storageAvailable = false;
-    }
-}
-
-// 内存存储作为最后的 fallback
-let memoryToken = '';
-let memoryApiDomain = '';
-let memoryDomainTime = 0;
-
-// ========== 域名相关 ==========
+// 动态 API_BASE（通过 getApiBase() 获取）
 async function getApiBase() {
     // 1. 检查内存缓存
     if (window.API_BASE) {
         return window.API_BASE;
     }
     
-    // 2. 检查存储缓存（未过期）
-    const cached = safeGetItem(DOMAIN_CACHE_KEY);
-    const cachedTime = parseInt(safeGetItem(DOMAIN_CACHE_TIME_KEY) || '0');
+    // 2. 检查 localStorage 缓存（未过期）
+    const cached = localStorage.getItem(DOMAIN_CACHE_KEY);
+    const cachedTime = parseInt(localStorage.getItem(DOMAIN_CACHE_TIME_KEY) || '0');
     const now = Date.now();
     
     if (cached && (now - cachedTime) < CACHE_MAX_AGE) {
         console.log('使用缓存的域名:', cached);
-        window.API_BASE = cached;
         return cached;
     }
     
@@ -62,9 +32,9 @@ async function getApiBase() {
     try {
         await loadScript(DOMAIN_JS_URL + '?v=' + now);
         if (window.API_BASE) {
-            // 缓存
-            safeSetItem(DOMAIN_CACHE_KEY, window.API_BASE);
-            safeSetItem(DOMAIN_CACHE_TIME_KEY, now.toString());
+            // 缓存到 localStorage
+            localStorage.setItem(DOMAIN_CACHE_KEY, window.API_BASE);
+            localStorage.setItem(DOMAIN_CACHE_TIME_KEY, now.toString());
             console.log('域名已更新:', window.API_BASE);
             return window.API_BASE;
         }
@@ -75,13 +45,13 @@ async function getApiBase() {
     // 4. 使用过期缓存（降级）
     if (cached) {
         console.warn('使用过期的域名缓存:', cached);
-        window.API_BASE = cached;
         return cached;
     }
     
     throw new Error('无法获取 API 域名，请检查网络连接或稍后刷新页面重试');
 }
 
+// 动态加载 JS 文件（支持跨域）
 function loadScript(src) {
     return new Promise((resolve, reject) => {
         console.log('[Auth] 正在加载域名配置:', src);
@@ -100,79 +70,41 @@ function loadScript(src) {
     });
 }
 
-// ========== 安全的存储操作（微信兼容） ==========
-function safeGetItem(key) {
-    try {
-        if (storageType === 'localStorage') {
-            return localStorage.getItem(key);
-        } else if (storageType === 'sessionStorage') {
-            return sessionStorage.getItem(key);
-        }
-        // 内存存储
-        if (key === TOKEN_KEY) return memoryToken;
-        if (key === DOMAIN_CACHE_KEY) return memoryApiDomain;
-        if (key === DOMAIN_CACHE_TIME_KEY) return memoryDomainTime.toString();
-        return null;
-    } catch (e) {
-        console.error('读取存储失败:', key, e);
-        return null;
-    }
-}
-
-function safeSetItem(key, value) {
-    try {
-        if (storageType === 'localStorage') {
-            localStorage.setItem(key, value);
-        } else if (storageType === 'sessionStorage') {
-            sessionStorage.setItem(key, value);
-        }
-        // 同时更新内存
-        if (key === TOKEN_KEY) memoryToken = value;
-        if (key === DOMAIN_CACHE_KEY) memoryApiDomain = value;
-        if (key === DOMAIN_CACHE_TIME_KEY) memoryDomainTime = parseInt(value) || 0;
-    } catch (e) {
-        console.error('写入存储失败:', key, e);
-        // 至少更新内存
-        if (key === TOKEN_KEY) memoryToken = value;
-        if (key === DOMAIN_CACHE_KEY) memoryApiDomain = value;
-        if (key === DOMAIN_CACHE_TIME_KEY) memoryDomainTime = parseInt(value) || 0;
-    }
-}
-
-function safeRemoveItem(key) {
-    try {
-        if (storageType === 'localStorage') {
-            localStorage.removeItem(key);
-        } else if (storageType === 'sessionStorage') {
-            sessionStorage.removeItem(key);
-        }
-        // 同时清除内存
-        if (key === TOKEN_KEY) memoryToken = '';
-        if (key === DOMAIN_CACHE_KEY) memoryApiDomain = '';
-        if (key === DOMAIN_CACHE_TIME_KEY) memoryDomainTime = 0;
-    } catch (e) {
-        console.error('删除存储失败:', key, e);
-    }
-}
-
-// ========== Token 相关 ==========
+/**
+ * 获取 Token（从 localStorage）
+ * @returns {string} Token 或空字符串
+ */
 function getToken() {
-    return safeGetItem(TOKEN_KEY) || '';
+    return localStorage.getItem(TOKEN_KEY) || '';
 }
 
+/**
+ * 保存 Token
+ * @param {string} token 
+ */
 function saveToken(token) {
-    safeSetItem(TOKEN_KEY, token);
+    localStorage.setItem(TOKEN_KEY, token);
 }
 
+/**
+ * 清除 Token
+ */
 function clearToken() {
-    safeRemoveItem(TOKEN_KEY);
+    localStorage.removeItem(TOKEN_KEY);
 }
 
+/**
+ * 检查是否有 Token
+ * @returns {boolean}
+ */
 function hasToken() {
     return !!getToken();
 }
 
-// ========== 页面跳转 ==========
+/**
+ * 跳转到认证页面
+ * @param {string} returnUrl - 认证成功后返回的页面（默认当前页面）
+ */
 function redirectToAuth(returnUrl) {
     const url = returnUrl || window.location.href;
     const encodedReturnUrl = encodeURIComponent(url);
@@ -181,13 +113,21 @@ function redirectToAuth(returnUrl) {
     }, 10);
 }
 
-// ========== 带认证的请求 ==========
+/**
+ * 带认证的 Fetch 请求
+ * 自动添加 Token 到请求头，自动处理 401 错误
+ * 
+ * @param {string} url - 请求路径（不含域名，如 /api/v1/yunbisai/events）
+ * @param {object} options - fetch 选项
+ * @returns {Promise<Response|null>} 如果返回 null 表示已跳转
+ */
 async function fetchWithAuth(url, options = {}) {
     const token = getToken();
     const apiBase = await getApiBase();
     
     const fullUrl = url.startsWith('http') ? url : `${apiBase}${url}`;
     
+    // 添加认证头
     const headers = {
         ...options.headers,
         'Authorization': `Bearer ${token}`
@@ -215,6 +155,11 @@ async function fetchWithAuth(url, options = {}) {
     }
 }
 
+/**
+ * 验证 Token 是否有效
+ * @param {string} token 
+ * @returns {Promise<boolean>}
+ */
 async function validateToken(token) {
     try {
         const apiBase = await getApiBase();
@@ -227,11 +172,19 @@ async function validateToken(token) {
     }
 }
 
+/**
+ * 初始化页面（自动检查 Token）
+ * 如果页面需要 Token 但用户没有，自动跳转
+ * 
+ * @param {boolean} requireAuth - 是否强制需要 Token
+ * @returns {Promise<boolean>} 是否有 Token
+ */
 async function initAuth(requireAuth = true) {
     if (requireAuth && !hasToken()) {
         redirectToAuth();
         return false;
     }
+    // 预加载域名
     try {
         await getApiBase();
     } catch (e) {
