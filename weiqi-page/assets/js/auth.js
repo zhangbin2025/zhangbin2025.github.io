@@ -54,11 +54,18 @@ async function getApiBase() {
 // 动态加载 JS 文件（支持跨域）
 function loadScript(src) {
     return new Promise((resolve, reject) => {
+        console.log('[Auth] 正在加载域名配置:', src);
         const script = document.createElement('script');
         script.src = src;
         script.crossOrigin = 'anonymous';
-        script.onload = () => resolve();
-        script.onerror = () => reject(new Error('Failed to load: ' + src));
+        script.onload = () => {
+            console.log('[Auth] 域名配置加载完成, API_BASE=', window.API_BASE);
+            resolve();
+        };
+        script.onerror = (e) => {
+            console.error('[Auth] 加载失败:', src, e);
+            reject(new Error('Failed to load: ' + src));
+        };
         document.head.appendChild(script);
     });
 }
