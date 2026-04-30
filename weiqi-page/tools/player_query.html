@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>棋手查询1 - 围棋智能助手</title>
+    <title>棋手查询 - 围棋智能助手</title>
     <link rel="icon" type="image/x-icon" href="/weiqi-page/assets/favicon/favicon.ico">
     <script>document.write('<script src="/weiqi-page/assets/js/auth.js?v=' + Date.now() + '"><\/script>');</script>
+<script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+<script>new VConsole();</script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -313,8 +315,11 @@
     </div>
     
     <script>
+        console.log('[Page Debug] player_query.html 加载完成');
+        
         // 查询棋手
         async function queryPlayer() {
+            console.log('[Page Debug] queryPlayer 开始');
             const name = document.getElementById('nameInput').value.trim();
             const queryBtn = document.getElementById('queryBtn');
             const resultSection = document.getElementById('resultSection');
@@ -325,15 +330,19 @@
             }
             
             // 检查 Token（只在查询时判断）
+            console.log('[Page Debug] 检查 Token...');
             if (!hasToken()) {
+                console.log('[Page Debug] 无Token, 准备跳转认证页');
                 redirectToAuth();
                 return;
             }
+            console.log('[Page Debug] Token检查通过');
             
             // 禁用按钮，显示加载
             queryBtn.disabled = true;
             queryBtn.textContent = '查询中...';
             resultSection.style.display = 'block';
+            console.log('[Page Debug] 显示加载动画');
             resultSection.innerHTML = `
                 <div class="card loading">
                     <div class="spinner"></div>
@@ -362,6 +371,7 @@
                 displayResult(data);
                 
             } catch (error) {
+                console.error('[Page Debug] 查询异常:', error.message);
                 resultSection.innerHTML = `
                     <div class="card">
                         <div class="error">

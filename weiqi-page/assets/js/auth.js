@@ -75,7 +75,14 @@ function loadScript(src) {
  * @returns {string} Token 或空字符串
  */
 function getToken() {
-    return localStorage.getItem(TOKEN_KEY) || '';
+    try {
+        const token = localStorage.getItem(TOKEN_KEY);
+        console.log('[Auth Debug] getToken:', token ? '有Token' : '无Token');
+        return token || '';
+    } catch (e) {
+        console.error('[Auth Debug] getToken 错误:', e.message);
+        return '';
+    }
 }
 
 /**
@@ -98,7 +105,9 @@ function clearToken() {
  * @returns {boolean}
  */
 function hasToken() {
-    return !!getToken();
+    const has = !!getToken();
+    console.log('[Auth Debug] hasToken:', has);
+    return has;
 }
 
 /**
@@ -107,7 +116,9 @@ function hasToken() {
  */
 function redirectToAuth(returnUrl) {
     const url = returnUrl || window.location.href;
+    console.log('[Auth Debug] redirectToAuth, returnUrl:', url);
     const encodedReturnUrl = encodeURIComponent(url);
+    console.log('[Auth Debug] 即将跳转到:', `/weiqi-page/auth.html?return=${encodedReturnUrl}`);
     setTimeout(() => {
         window.location.replace(`/weiqi-page/auth.html?return=${encodedReturnUrl}`);
     }, 10);
@@ -122,10 +133,21 @@ function redirectToAuth(returnUrl) {
  * @returns {Promise<Response|null>} 如果返回 null 表示已跳转
  */
 async function fetchWithAuth(url, options = {}) {
+    console.log('[Auth Debug] fetchWithAuth 开始, url:', url);
     const token = getToken();
-    const apiBase = await getApiBase();
+    console.log('[Auth Debug] token:', token ? '有' : '无');
+    
+    let apiBase;
+    try {
+        apiBase = await getApiBase();
+        console.log('[Auth Debug] apiBase:', apiBase);
+    } catch (e) {
+        console.error('[Auth Debug] getApiBase 失败:', e.message);
+        throw new Error('获取 API 域名失败: ' + e.message);
+    }
     
     const fullUrl = url.startsWith('http') ? url : `${apiBase}${url}`;
+    console.log('[Auth Debug] fullUrl:', fullUrl);
     
     // 添加认证头
     const headers = {
@@ -134,13 +156,16 @@ async function fetchWithAuth(url, options = {}) {
     };
     
     try {
+        console.log('[Auth Debug] 开始 fetch...');
         const response = await fetch(fullUrl, {
             ...options,
             headers
         });
+        console.log('[Auth Debug] fetch 完成, status:', response.status);
         
         // 401/403 跳转到认证页面
         if (response.status === 401 || response.status === 403) {
+            console.log('[Auth Debug] 401/403, 清除Token并跳转');
             clearToken();
             setTimeout(() => {
                 redirectToAuth(window.location.href);
@@ -150,7 +175,7 @@ async function fetchWithAuth(url, options = {}) {
         
         return response;
     } catch (error) {
-        console.error('请求失败:', error);
+        console.error('[Auth Debug] fetch 失败:', error.message);
         throw new Error('网络请求失败，请检查网络连接');
     }
 }
