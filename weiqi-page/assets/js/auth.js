@@ -70,6 +70,15 @@ function loadScript(src) {
     });
 }
 
+// 检查字符串是否包含非 ISO-8859-1 字符
+function hasInvalidChars(str) {
+    if (!str) return false;
+    for (let i = 0; i < str.length; i++) {
+        if (str.charCodeAt(i) > 255) return true;
+    }
+    return false;
+}
+
 /**
  * 获取 Token（从 localStorage）
  * @returns {string} Token 或空字符串
@@ -77,6 +86,12 @@ function loadScript(src) {
 function getToken() {
     try {
         const token = localStorage.getItem(TOKEN_KEY);
+        // 检测 Token 是否包含非法字符（如中文）
+        if (token && hasInvalidChars(token)) {
+            console.warn('[Auth Debug] Token 包含非法字符，自动清除');
+            clearToken();
+            return '';
+        }
         console.log('[Auth Debug] getToken:', token ? '有Token' : '无Token');
         return token || '';
     } catch (e) {
@@ -132,6 +147,17 @@ function redirectToAuth(returnUrl) {
  * @param {object} options - fetch 选项
  * @returns {Promise<Response|null>} 如果返回 null 表示已跳转
  */
+// 检查字符串是否包含非 ISO-8859-1 字符
+function isValidHeaderValue(str) {
+    if (!str) return true;
+    for (let i = 0; i < str.length; i++) {
+        const code = str.charCodeAt(i);
+        // ISO-8859-1 范围是 0-255
+        if (code > 255) return false;
+    }
+    return true;
+}
+
 async function fetchWithAuth(url, options = {}) {
     console.log('[Auth Debug] fetchWithAuth 开始, url:', url);
     const token = getToken();
