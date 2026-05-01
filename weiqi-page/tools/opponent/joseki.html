@@ -244,6 +244,9 @@
         <iframe id="replayIframe" class="replay-iframe"></iframe>
     </div>
     
+    <div id="tempDiv" style="display:none">
+    </div>
+    
     <!-- 定式详情弹窗 -->
     <div id="modalBackdrop" class="modal-backdrop" onclick="closeModal()"></div>
     <div id="modalSheet" class="modal-sheet">
@@ -472,11 +475,23 @@
                 const htmlWithGoto = data.html.replace('</body>', gotoScript + '</body>');
                 
                 // 使用 iframe 全屏显示
-                const iframe = document.getElementById('replayIframe'); iframe.contentWindow.document.open(); iframe.contentWindow.document.write(htmlWithGoto); iframe.contentWindow.document.close();
+                const iframe = document.getElementById('replayIframe');
+                iframe.srcdoc = htmlWithGoto;
                 document.getElementById('replayOverlay').classList.add('active');
                 
                 // 添加历史记录，支持返回键关闭
                 history.pushState({replay: true}, '');
+                
+                // 添加 popstate 监听（只添加一次）
+                if (!window._replayPopstateAdded) {
+                    window._replayPopstateAdded = true;
+                    window.addEventListener('popstate', function(e) {
+                        if (document.getElementById('replayOverlay').classList.contains('active')) {
+                            document.getElementById('replayOverlay').classList.remove('active');
+                            iframe.srcdoc = '';
+                        }
+                    });
+                }
                 
             } catch (error) {
                 alert('加载失败: ' + error.message);
@@ -526,26 +541,27 @@
                 const htmlWithGoto = data.html.replace('</body>', gotoScript + '</body>');
                 
                 // 使用 iframe 全屏显示
-                const iframe = document.getElementById('replayIframe'); iframe.contentWindow.document.open(); iframe.contentWindow.document.write(htmlWithGoto); iframe.contentWindow.document.close();
+                const iframe = document.getElementById('replayIframe');
+                iframe.srcdoc = htmlWithGoto;
                 document.getElementById('replayOverlay').classList.add('active');
                 
                 // 添加历史记录，支持返回键关闭
                 history.pushState({replay: true}, '');
                 
+                // 添加 popstate 监听（只添加一次）
+                if (!window._replayPopstateAdded) {
+                    window._replayPopstateAdded = true;
+                    window.addEventListener('popstate', function(e) {
+                        if (document.getElementById('replayOverlay').classList.contains('active')) {
+                            document.getElementById('replayOverlay').classList.remove('active');
+                            iframe.srcdoc = '';
+                        }
+                    });
+                }
+                
             } catch (error) {
                 alert('加载失败: ' + error.message);
             }
-        }
-        
-        // 添加 popstate 监听（只添加一次）
-        if (!window._replayPopstateAdded) {
-            window._replayPopstateAdded = true;
-            window.addEventListener('popstate', function(e) {
-                if (document.getElementById('replayOverlay').classList.contains('active')) {
-                    document.getElementById('replayOverlay').classList.remove('active');
-                    const iframe = document.getElementById('replayIframe'); iframe.contentWindow.document.open(); iframe.contentWindow.document.write(''); iframe.contentWindow.document.close();
-                }
-            });
         }
         
         loadData();
