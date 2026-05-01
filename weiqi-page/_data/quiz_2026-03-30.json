@@ -2,7 +2,7 @@
   {
     "id": "202603311402510002",
     "source": "野狐",
-    "path": "/weiqi-page/quiz/2026-03-30/野狐/quiz_202603311402510002.html",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-30/野狐/quiz_202603311402510002.json",
     "game_path": "/weiqi-page/games/2026-03-30/野狐/game_202603311402510002.html",
     "black": "朴键昊",
     "white": "申旻埈",
@@ -23,7 +23,7 @@
   {
     "id": "202603311402510003",
     "source": "野狐",
-    "path": "/weiqi-page/quiz/2026-03-30/野狐/quiz_202603311402510003.html",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-30/野狐/quiz_202603311402510003.json",
     "game_path": "/weiqi-page/games/2026-03-30/野狐/game_202603311402510003.html",
     "black": "山下敬吾",
     "white": "伊田笃史",
@@ -44,7 +44,7 @@
   {
     "id": "202603311402510004",
     "source": "野狐",
-    "path": "/weiqi-page/quiz/2026-03-30/野狐/quiz_202603311402510004.html",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-30/野狐/quiz_202603311402510004.json",
     "game_path": "/weiqi-page/games/2026-03-30/野狐/game_202603311402510004.html",
     "black": "許家元",
     "white": "村本渉",

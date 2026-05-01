@@ -2,7 +2,7 @@
   {
     "id": "202604261614119468240032",
     "source": "野狐",
-    "path": "/weiqi-page/quiz/2026-03-22/野狐/quiz_202604261614119468240032.html",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-22/野狐/quiz_202604261614119468240032.json",
     "game_path": "/weiqi-page/games/2026-03-22/野狐/game_202604261614119468240032.html",
     "black": "한주영",
     "white": "최민서",
@@ -23,7 +23,7 @@
   {
     "id": "202604261614119468290033",
     "source": "野狐",
-    "path": "/weiqi-page/quiz/2026-03-22/野狐/quiz_202604261614119468290033.html",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-22/野狐/quiz_202604261614119468290033.json",
     "game_path": "/weiqi-page/games/2026-03-22/野狐/game_202604261614119468290033.html",
     "black": "陈耀烨",
     "white": "傅健恒",

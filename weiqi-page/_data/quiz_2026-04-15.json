@@ -2,7 +2,7 @@
   {
     "id": "202604160851170005",
     "source": "野狐",
-    "path": "/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851170005.html",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851170005.json",
     "game_path": "/weiqi-page/games/2026-04-15/野狐/game_202604160851170005.html",
     "black": "王元均",
     "white": "戎毅",
@@ -23,7 +23,7 @@
   {
     "id": "202604160851170006",
     "source": "野狐",
-    "path": "/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851170006.html",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851170006.json",
     "game_path": "/weiqi-page/games/2026-04-15/野狐/game_202604160851170006.html",
     "black": "上野愛咲美",
     "white": "藤沢里菜",
@@ -44,7 +44,7 @@
   {
     "id": "202604160851170009",
     "source": "野狐",
-    "path": "/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851170009.html",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851170009.json",
     "game_path": "/weiqi-page/games/2026-04-15/野狐/game_202604160851170009.html",
     "black": "谢尔豪",
     "white": "陈祈睿",
@@ -65,7 +65,7 @@
   {
     "id": "202604160851170010",
     "source": "野狐",
-    "path": "/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851170010.html",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851170010.json",
     "game_path": "/weiqi-page/games/2026-04-15/野狐/game_202604160851170010.html",
     "black": "申真谞",
     "white": "谢科",
@@ -86,7 +86,7 @@
   {
     "id": "202604160851170011",
     "source": "野狐",
-    "path": "/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851170011.html",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851170011.json",
     "game_path": "/weiqi-page/games/2026-04-15/野狐/game_202604160851170011.html",
     "black": "朴廷桓",
     "white": "陶欣然",
@@ -107,7 +107,7 @@
   {
     "id": "202604160851180014",
     "source": "野狐",
-    "path": "/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851180014.html",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851180014.json",
     "game_path": "/weiqi-page/games/2026-04-15/野狐/game_202604160851180014.html",
     "black": "申旻埈",
     "white": "夏晨琨",
@@ -128,7 +128,7 @@
   {
     "id": "202604160851180015",
     "source": "野狐",
-    "path": "/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851180015.html",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851180015.json",
     "game_path": "/weiqi-page/games/2026-04-15/野狐/game_202604160851180015.html",
     "black": "王星昊",
     "white": "廖元赫",
@@ -149,7 +149,7 @@
   {
     "id": "202604160851180016",
     "source": "野狐",
-    "path": "/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851180016.html",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851180016.json",
     "game_path": "/weiqi-page/games/2026-04-15/野狐/game_202604160851180016.html",
     "black": "李元荣",
     "white": "江维杰",
@@ -170,7 +170,7 @@
   {
     "id": "202604160851180017",
     "source": "野狐",
-    "path": "/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851180017.html",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851180017.json",
     "game_path": "/weiqi-page/games/2026-04-15/野狐/game_202604160851180017.html",
     "black": "陈玉侬",
     "white": "连笑",
@@ -191,7 +191,7 @@
   {
     "id": "202604160851180018",
     "source": "野狐",
-    "path": "/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851180018.html",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-15/野狐/quiz_202604160851180018.json",
     "game_path": "/weiqi-page/games/2026-04-15/野狐/game_202604160851180018.html",
     "black": "卞相壹",
     "white": "许嘉阳",
