@@ -272,10 +272,23 @@
                 }
                 const htmlWithGoto = data.html.replace('</body>', gotoScript + '</body>');
                 
-                const newWindow = window.open('', '_blank');
-                newWindow.document.open();
-                newWindow.document.write(htmlWithGoto);
-                newWindow.document.close();
+                // 使用 iframe 全屏显示
+                document.getElementById('replayIframe').srcdoc = htmlWithGoto;
+                document.getElementById('replayOverlay').classList.add('active');
+                
+                // 添加历史记录，支持返回键关闭
+                history.pushState({replay: true}, '');
+                
+                // 添加 popstate 监听（只添加一次）
+                if (!window._replayPopstateAdded) {
+                    window._replayPopstateAdded = true;
+                    window.addEventListener('popstate', function(e) {
+                        if (document.getElementById('replayOverlay').classList.contains('active')) {
+                            document.getElementById('replayOverlay').classList.remove('active');
+                            document.getElementById('replayIframe').srcdoc = '';
+                        }
+                    });
+                }
                 
             } catch (error) {
                 alert('加载失败: ' + error.message);
